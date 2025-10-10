@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
           cache: 'npm' # speeds up repeated installs
 
       - name: Create .env file
@@ -49,3 +49,4 @@ jobs:
           REMOTE_HOST: "project1.eaglesoftwareteam.com"
           REMOTE_USER: ubuntu
           TARGET: "/var/www/html/seiv2025/p2/t4"
+
