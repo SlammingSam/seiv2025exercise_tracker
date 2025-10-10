@@ -1,6 +1,5 @@
 name: Deploy dev to AWS
 
-#turn off deploy to AWS
 on:
   pull_request:
     types: [closed]
@@ -15,38 +14,31 @@ jobs:
       VITE_APP_API_URL: ${{secrets.VITE_APP_API_URL}}
       VITE_APP_CLIENT_URL: ${{secrets.VITE_APP_CLIENT_URL}}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: dev
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: |
+          cache: 'npm' # speeds up repeated installs
+
+      - name: Create .env file
+        run: |
           touch .env
           echo VITE_APP_CLIENT_ID="$VITE_APP_CLIENT_ID" >> .env
           echo VITE_APP_API_URL="$VITE_APP_API_URL" >> .env
           echo VITE_APP_CLIENT_URL=tutorial.eaglesoftwareteam.com >> .env
           echo VITE_APP_SITE_URL=tutorial.eaglesoftwareteam.com >> .env
 
-      name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.x # or 16 depending on your project
+      - name: Install dependencies (ignore peer conflicts)
+        run: npm ci --legacy-peer-deps
 
-      - name: Install dependencies
-        run: npm install
+      - name: Build app
+        run: npm run build
 
-      - name: Install dependencies for vite
-        run: npm ci
-
-      - name: Fix vite permissions
-        run: chmod +x node_modules/.bin/vite
-
-      - name: Build Vue project
-        run: npx vite build
-
-      - name: List build output
-        run: ls -R dist
+      - name: Bundle app
+        run: npm run bundle
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.1
@@ -57,4 +49,3 @@ jobs:
           REMOTE_HOST: "project1.eaglesoftwareteam.com"
           REMOTE_USER: ubuntu
           TARGET: "/var/www/html/seiv2025/p2/t4"
-
