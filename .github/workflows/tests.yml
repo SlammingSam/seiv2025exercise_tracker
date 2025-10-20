@@ -19,7 +19,7 @@ jobs:
           touch .env
           echo VITE_APP_CLIENT_ID=${{secrets.VITE_APP_CLIENT_ID}} >> .env
           echo VITE_APP_API_URL=${{secrets.VITE_APP_API_URL}} >> .env
-          echo VITE_APP_CLIENT_URL=https://tutorial.eaglesoftwareteam.com >> .env
+          echo VITE_APP_CLIENT_URL=https://project1.eaglesoftwareteam.com >> .env
           echo VITE_APP_CLIENT_SECRET=${{secrets.VITE_APP_CLIENT_SECRET}} >> .env
           echo VITE_APP_REFRESH_TOKEN=${{secrets.VITE_APP_REFRESH_TOKEN}} >> .env
 
