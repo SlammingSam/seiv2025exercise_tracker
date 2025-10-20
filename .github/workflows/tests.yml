@@ -35,3 +35,4 @@ jobs:
           build: npx cypress info
           config: baseUrl=https://project1.eaglesoftwareteam.com/seiv2025/p3/t4/
           headed: true
+ 
