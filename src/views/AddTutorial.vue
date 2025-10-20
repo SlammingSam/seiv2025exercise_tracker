@@ -4,6 +4,7 @@ import TutorialServices from "../services/tutorialServices";
 import Utils from "../config/utils.js";
 import { useRouter } from "vue-router";
 
+// Hello!
 const router = useRouter();
 const valid = ref(false);
 const user = Utils.getStore("user");
