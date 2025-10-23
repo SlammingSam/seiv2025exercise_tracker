@@ -13,6 +13,7 @@ jobs:
       VITE_APP_CLIENT_ID: ${{secrets.VITE_APP_CLIENT_ID}}
       VITE_APP_API_URL: ${{secrets.VITE_APP_API_URL}}
       VITE_APP_CLIENT_URL: ${{secrets.VITE_APP_CLIENT_URL}}
+      VITE_APP_SITE_URL: ${{secrets.VITE_APP_SITE_URL}}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -28,8 +29,8 @@ jobs:
           touch .env
           echo VITE_APP_CLIENT_ID="$VITE_APP_CLIENT_ID" >> .env
           echo VITE_APP_API_URL="$VITE_APP_API_URL" >> .env
-          echo VITE_APP_CLIENT_URL=tutorial.eaglesoftwareteam.com >> .env
-          echo VITE_APP_SITE_URL=tutorial.eaglesoftwareteam.com >> .env
+          echo VITE_APP_CLIENT_URL="$VITE_APP_CLIENT_URL" >> .env
+          echo VITE_APP_SITE_URL="$VITE_APP_SITE_URL" >> .env
 
       - name: Install dependencies (ignore peer conflicts)
         run: npm ci --legacy-peer-deps
