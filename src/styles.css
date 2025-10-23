@@ -1,0 +1,93 @@
+p{
+    text-align: center;
+}
+
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+
+.home-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center;    
+}
+
+.home-header{
+    font-size: 4vw;
+  font-weight: lighter;
+}
+
+.left-header{
+    font-size: 2vw;
+  font-weight: lighter;
+}
+
+.right-header{
+    margin-right: 12vw;
+    font-size: 2vw;
+  font-weight: lighter;
+}
+
+.flex-row-home{
+    
+    margin-top: 3vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+.quote {
+  display: flex;
+  margin: 1vw;
+  margin-left: 55vw;
+  justify-content: right; 
+  align-items: center;    
+}
+
+.home-pro{
+    margin-right: 5vw;
+}
+
+.progress-words{
+    font-size: 3vw;
+  font-weight: lighter;
+}
+
+table {
+  border-collapse: collapse;
+  width: 80%;
+  
+}
+
+tbody{
+    display: block;
+    overflow-y: auto; /* Enable vertical scrolling */
+    width: calc(100% - 17px); /* Adjust for scrollbar width if needed */
+}
+
+tbody tr {
+    display: table; /* Maintain table row behavior within the block tbody */
+    width: 25vw;
+    table-layout: fixed;
+}
+
+  th, td {
+  border: 1px solid #aaa;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+th {
+  background: #f0f0f0;
+}
+
+.v-progress-linear__indeterminate {
+    animation-duration: 3s; /* Adjust as needed */
+}
