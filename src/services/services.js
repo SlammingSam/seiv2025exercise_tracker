@@ -5,9 +5,9 @@ import Router from "../router.js";
 
 var baseurl = "";
 if (import.meta.env.DEV) {
-  baseurl = "http://localhost/tutorial/";
+  baseurl = "http://localhost:3100/exercise_tracker/";
 } else {
-  baseurl = "/tutorial/";
+  baseurl = "/exercise_tracker/";
 }
 
 const apiClient = axios.create({
@@ -30,9 +30,9 @@ const apiClient = axios.create({
   },
   transformResponse: function (data) {
     data = JSON.parse(data);
-    // if (!data.success && data.code == "expired-session") {
-    //   localStorage.deleteItem("user");
-    // }
+    if (!data.success && data.code == "expired-session") {
+     localStorage.deleteItem("user");
+    }
     if (data.message !== undefined && data.message.includes("Unauthorized")) {
       AuthServices.logoutUser(Utils.getStore("user"))
         .then((response) => {
