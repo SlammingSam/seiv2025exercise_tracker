@@ -15,6 +15,18 @@ export default () => {
     server: {
       host: "localhost",
       port: 8081,
+
+      proxy: {
+        "/api": {
+          target: "http://localhost:3100",
+          changeOrigin: true,
+          secure: false,
+        },
+      },
+
+      headers: {
+        "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+      },
     },
 
     base: baseURL,
