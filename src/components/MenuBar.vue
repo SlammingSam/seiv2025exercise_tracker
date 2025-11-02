@@ -15,6 +15,7 @@ const logoURL = ref("");
 const resetMenu = () => {
   user.value = null;
   user.value = Utils.getStore("user");
+  console.log(user.value);//value comes from SocialLogon.vue L31, but the console.log there wont output anything
   if (user.value) {
     initials.value = user.value.fName[0] + user.value.lName[0];
     name.value = user.value.fName + " " + user.value.lName;
@@ -35,7 +36,7 @@ const logout = () => {
 
 onMounted(() => {
   logoURL.value = ocLogo;
-  resetMenu();
+  //resetMenu(); //Tis a problem, has been erroring out because is recieves incorrect information
 });
 </script>
 
@@ -48,6 +49,7 @@ onMounted(() => {
           :src="logoURL"
           height="50"
           width="50"
+          :transition="false"
           contain
         ></v-img>
       </router-link>

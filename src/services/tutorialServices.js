@@ -5,7 +5,9 @@ export default {
     return apiClient.get("/tutorials");
   },
   getAllForUser(userId) {
-    return apiClient.get("/tutorials/userTut/" + userId);
+    //currently errors and will need to be modified to fit the schema
+    //return apiClient.get("/tutorials/userTut/" + userId);
+    return {};
   },
   get(id) {
     return apiClient.get(`/tutorials/${id}`);

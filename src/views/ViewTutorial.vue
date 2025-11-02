@@ -58,7 +58,7 @@ const deleteLesson = (lesson) => {
 };
 
 onMounted(() => {
-  retrieveLessons();
+  //retrieveLessons();
 });
 </script>
 
