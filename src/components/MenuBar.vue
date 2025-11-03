@@ -6,17 +6,14 @@ import AuthServices from "../services/authServices";
 import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
-const user = ref(null);
+let user = ref(Utils.getStore('user')); //need to import this here
 const title = ref("Exercise Tracker");
 const initials = ref("");
 const name = ref("");
 const logoURL = ref("");
 
 const resetMenu = () => {
-  user.value = null;
-  user.value = Utils.getStore("user");
-  console.log(user.value);//currently null for some reason
-  //works if you reload the page first
+  console.log(user.value);//null if you dont import user from the store as above
   if (user.value) {
     initials.value = user.value.fName[0] + user.value.lName[0];
     name.value = user.value.fName + " " + user.value.lName;
@@ -26,8 +23,9 @@ const resetMenu = () => {
 const logout = () => {
   AuthServices.logoutUser(user.value)
     .then((response) => {
-      //says here to push but its not pushing
+      //pushes correctly but its not reloading the bar?
       Utils.removeItem("user");
+      user = null;
       router.push({ name: "login" });
     })
     .catch((error) => {

@@ -37,7 +37,7 @@ const handleCredentialResponse = async (response) => {
       //console.log(JSON.stringify(response.data, null, 2));//displays the response from the backend, dont know why I need to stringify
       user.value = JSON.stringify(response.data, null, 2);
       Utils.setStore("user", response.data);
-      fName.value = user.value.fName;
+      fName.value = user.value.fName; //not needed?
       lName.value = user.value.lName;
       router.push({ name: "Home" });
     })
