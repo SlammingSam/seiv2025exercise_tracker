@@ -34,9 +34,9 @@ const handleCredentialResponse = async (response) => {
   };
   await AuthServices.loginUser(token)
     .then((response) => {
-      console.log(user);
-      user.value = response.data;
-      Utils.setStore("user", user.value);
+      //console.log(JSON.stringify(response.data, null, 2));//displays the response from the backend, dont know why I need to stringify
+      user.value = JSON.stringify(response.data, null, 2);
+      Utils.setStore("user", response.data);
       fName.value = user.value.fName;
       lName.value = user.value.lName;
       router.push({ name: "Home" });

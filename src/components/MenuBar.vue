@@ -15,7 +15,8 @@ const logoURL = ref("");
 const resetMenu = () => {
   user.value = null;
   user.value = Utils.getStore("user");
-  console.log(user.value);//value comes from SocialLogon.vue L31, but the console.log there wont output anything
+  console.log(user.value);//currently null for some reason
+  //works if you reload the page first
   if (user.value) {
     initials.value = user.value.fName[0] + user.value.lName[0];
     name.value = user.value.fName + " " + user.value.lName;
@@ -25,7 +26,7 @@ const resetMenu = () => {
 const logout = () => {
   AuthServices.logoutUser(user.value)
     .then((response) => {
-      
+      //says here to push but its not pushing
       Utils.removeItem("user");
       router.push({ name: "login" });
     })
@@ -36,7 +37,7 @@ const logout = () => {
 
 onMounted(() => {
   logoURL.value = ocLogo;
-  //resetMenu(); //Tis a problem, has been erroring out because is recieves incorrect information
+  resetMenu(); //was a problem, has been erroring out because is recieves incorrect information, but now that is fixed
 });
 </script>
 
