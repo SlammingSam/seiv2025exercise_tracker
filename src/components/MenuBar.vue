@@ -26,7 +26,7 @@ const resetMenu = () => {
   }
   else
   {
-    console.log("no user");
+    //console.log("no user");
   }
 };
 
@@ -34,7 +34,7 @@ watch(user, (newUser, oldUser) =>
 {
   if (newUser && !oldUser) 
   {
-    console.log("User data loaded after mount");
+    //console.log("User data loaded after mount");
     resetMenu();
   }
 });
