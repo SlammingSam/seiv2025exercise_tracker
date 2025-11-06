@@ -14,7 +14,7 @@ const currentProgress = ref(75);
     </v-toolbar>
     <div class="flex-row-home">
     <div class="left-header">
-      <p>My Plans</p>
+      <p>Current Athlete: (name)</p>
     </div>
 </div>
 <div class = "flex-row-search">
@@ -33,7 +33,7 @@ const currentProgress = ref(75);
   </div>
   </v-container>
   
-  <router-link :to="{ name: 'Home' }"><button class="home-button">Home Page Button</button></router-link>
+  <router-link :to="{ name: 'AddPlan' }"><button class="home-button">Add Plan Button</button></router-link>
   <p></p>
-  <router-link :to="{ name: 'Goals' }"><button class="home-button">Goal Button</button></router-link>
+  <router-link :to="{ name: 'Athletes' }"><button class="home-button">Back Button</button></router-link>
 </template>

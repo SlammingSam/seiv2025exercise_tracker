@@ -9,14 +9,10 @@ const currentProgress = ref(75);
   <v-container>
     <v-toolbar>
       <div class="home-header">
-      <p>Exercise Plans</p>
+      <p>My Athletes</p>
     </div>
     </v-toolbar>
-    <div class="flex-row-home">
-    <div class="left-header">
-      <p>My Plans</p>
-    </div>
-</div>
+   
 <div class = "flex-row-search">
     <input type="text"  class = inputBetter v-model="input" placeholder="Search workouts..." />
 </div>
@@ -25,7 +21,8 @@ const currentProgress = ref(75);
     <table class ="long-table">
       <tbody class ="long-table">
           <tr class ="long-table">
-            <td>Workout Name</td>
+           <td>Athlete name</td>
+             <td><router-link :to="{ name: 'AthletePlan' }"><button class="home-button">View Plan</button></router-link></td>
         </tr>
       </tbody>
     </table> 
