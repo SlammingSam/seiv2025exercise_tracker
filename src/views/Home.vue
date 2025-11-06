@@ -22,7 +22,7 @@ const currentProgress = ref(75);
 </div>
 
     <div class="flex-row-home">
-   <table>
+   <table class="home_table">
       <tbody>
           <tr>
             <td>Workouts</td>
