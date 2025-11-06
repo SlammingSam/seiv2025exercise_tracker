@@ -7,7 +7,7 @@ var baseurl = "";
 if (import.meta.env.DEV) {
   baseurl = "http://localhost:3100/exercise_tracker/";
 } else {
-  baseurl = "/exercise_tracker/";
+  baseurl = "/tracker-t4/";
 }
 
 const apiClient = axios.create({
