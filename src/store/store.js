@@ -1,16 +1,18 @@
 import { createStore } from "vuex";
 import Utils from "../config/utils";
+import { ref } from 'vue';
 
-const user = Utils.getStore("user");
+const user = Utils.getStore('user');
 
 const store = createStore({
   state: {
-    loginUser: user,
+    loginUser: user || null,
   },
   mutations: {
     setLoginUser(state, user) {
       state.loginUser = user;
-      Utils.setStore("user", user);
+      if (user) Utils.setStore('user', user);
+      else Utils.removeItem('user');
     },
   },
   actions: {},

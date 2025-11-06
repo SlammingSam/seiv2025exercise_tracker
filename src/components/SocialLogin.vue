@@ -3,11 +3,11 @@ import { ref, onMounted } from "vue";
 import AuthServices from "../services/authServices";
 import Utils from "../config/utils.js";
 import { useRouter } from "vue-router";
+import store from "../store/store.js";
 
+const user = store.getters.getLoginUserInfo;
 const router = useRouter();
-const fName = ref("");
-const lName = ref("");
-const user = ref({});
+//const user = ref({});
 
 const loginWithGoogle = () => {
   window.handleCredentialResponse = handleCredentialResponse;
@@ -34,11 +34,9 @@ const handleCredentialResponse = async (response) => {
   };
   await AuthServices.loginUser(token)
     .then((response) => {
-      //console.log(JSON.stringify(response.data, null, 2));//displays the response from the backend, dont know why I need to stringify
-      user.value = JSON.stringify(response.data, null, 2);
       Utils.setStore("user", response.data);
-      fName.value = user.value.fName; //not needed?
-      lName.value = user.value.lName;
+      store.commit('setLoginUser', response.data);
+      //setUser(response.data);
       router.push({ name: "Home" });
     })
     .catch((error) => {
