@@ -3,16 +3,16 @@ import { ref, onMounted } from "vue";
 import AuthServices from "../services/authServices";
 import Utils from "../config/utils.js";
 import { useRouter } from "vue-router";
+import store from "../store/store.js";
 
+const user = store.getters.getLoginUserInfo;
 const router = useRouter();
-const fName = ref("");
-const lName = ref("");
-const user = ref({});
+//const user = ref({});
 
 const loginWithGoogle = () => {
   window.handleCredentialResponse = handleCredentialResponse;
   const client = import.meta.env.VITE_APP_CLIENT_ID;
-  console.log(client);
+  //console.log(client);
   window.google.accounts.id.initialize({
     client_id: client,
     cancel_on_tap_outside: false,
@@ -34,11 +34,10 @@ const handleCredentialResponse = async (response) => {
   };
   await AuthServices.loginUser(token)
     .then((response) => {
-      user.value = response.data;
-      Utils.setStore("user", user.value);
-      fName.value = user.value.fName;
-      lName.value = user.value.lName;
-      router.push({ name: "ExercisePlan" });
+      Utils.setStore("user", response.data);
+      store.commit('setLoginUser', response.data);
+      //setUser(response.data);
+      router.push({ name: "Home" });
     })
     .catch((error) => {
       console.log("error", error);

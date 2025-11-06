@@ -1,5 +1,18 @@
 <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
+import Utils from "../config/utils.js";
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from 'vue-router'
+import store from "../store/store.js";
+
+const router = useRouter()
+const user = store.getters.getLoginUserInfo;
+
+onMounted(() => {
+  //console.log(user);
+  if(user) //if a user is already logged in go to their home page
+   router.push({ name: "Home" });
+});
 </script>
 
 <template>  
