@@ -59,6 +59,10 @@ p{
     font-size: 3vw;
   font-weight: lighter;
 }
+.profile-words{
+    font-size: 2vw;
+  font-weight: lighter;
+}
 
 table {
   border-collapse: collapse;
@@ -67,13 +71,11 @@ table {
 }
 
 tbody{
-    display: block;
-    overflow-y: auto; /* Enable vertical scrolling */
-    width: calc(100% - 17px); /* Adjust for scrollbar width if needed */
+    overflow-y: auto;
+    width: calc(100% - 17px); 
 }
 
 tbody tr {
-    display: table; /* Maintain table row behavior within the block tbody */
     width: 25vw;
     table-layout: fixed;
 }
@@ -88,6 +90,160 @@ th {
   background: #f0f0f0;
 }
 
-.v-progress-linear__indeterminate {
-    animation-duration: 3s; /* Adjust as needed */
+.v-progress-circular__indeterminate {
+    animation-duration: 3s; 
+}
+
+.inputBetter {
+  border: 2px solid blue;
+  border-radius: 10px;
+  padding: 8px;
+  font-size: 16px;
+  max-width: 10vw;
+}
+
+.flex-row-search{
+    justify-content: right;
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-row-table{
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.long-table{
+width: 100%;
+  
+}
+
+.image_pfp{
+  width: 250px;  
+  height: 250px; 
+  object-fit: cover; 
+}
+
+.pfp_table {
+  width: 25vw;
+}
+.home_table {
+  width: 35vw;
+}
+
+.flex-row-profile{
+    
+  align-items: flex-start;
+  margin-top: 3vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly; 
+}
+
+.flex-column-pfp{
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-column-right{
+  display: flex;
+  flex-direction: column;
+  height: 65vh;
+  justify-content: space-between;
+}
+
+.pfp-header{
+  text-align: left;
+    font-size: 3vw;
+  font-weight: lighter;
+}
+.pfp-table-header{
+  
+  text-align: left;
+}
+
+.save-button{
+  margin-left: 2vw;
+}
+.flex-row-add{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-right: 10vw;
+  margin-top: 2vh;
+}
+
+.form-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fafafa;  
+  overflow: auto; 
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 24px;
+}
+
+.form-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-field label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.no-resize {
+  resize: none;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.value-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.value-table th,
+.value-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: left;
+}
+
+.add-btn {
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.submit-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.flex-row-form{
+  display: flex;
+    flex-direction: row;    
+    justify-content: space-evenly;
+    margin-top: 5vh;
 }
