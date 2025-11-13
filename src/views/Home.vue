@@ -1,11 +1,14 @@
 <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
 import { ref, onMounted } from "vue";
+import RolePicker from "../components/RolePicker.vue";
 const currentProgress = ref(75);
 </script>
 
 <template>  
    
+  <role-picker/>
+
   <v-container>
     <v-toolbar>
       <div class="home-header">
