@@ -11,7 +11,7 @@ const store = createStore({
   mutations: {
     setLoginUser(state, user) {
       state.loginUser = user;
-      if (user) Utils.setStore('user', user);
+      if(user) Utils.setStore('user', user);
       else Utils.removeItem('user');
     },
   },
@@ -20,6 +20,12 @@ const store = createStore({
     getLoginUserInfo(state) {
       return state.loginUser;
     },
+    isLoggedIn(state) {
+      if(state?.loginUser?.email != null)
+        return true;
+      else
+        return false;
+  },
   },
 });
 
