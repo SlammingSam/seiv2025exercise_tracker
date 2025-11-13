@@ -5,7 +5,7 @@ import Router from "../router.js";
 
 var baseurl = "";
 if (import.meta.env.DEV) {
-  baseurl = "http://localhost:3100/exercise_tracker/";
+  baseurl = "http://localhost:3100/tracker-t4/";
 } else {
   baseurl = "/tracker-t4/";
 }
