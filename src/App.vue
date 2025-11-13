@@ -12,10 +12,13 @@ import MenuBar from "./components/MenuBar.vue";
         stroke-width="3"
         />
         <div id = "menu" class = "accordion-menu">
-    <h3>Home</h3>
-    <h3>Goals</h3>
-    <h3>Plans</h3>
-    <h3>Athletes</h3>
+    <h3><router-link :to="{ name: 'Home' }">Home</router-link></h3>
+     <h3><router-link :to="{ name: 'ExercisePlan' }">Exercise Plans</router-link></h3>
+      <h3><router-link :to="{ name: 'Goals' }">Goals</router-link></h3>
+       <h3><router-link :to="{ name: 'Profile' }">Profile</router-link></h3>
+        <h3><router-link :to="{ name: 'Athletes' }">Athletes</router-link></h3>
+        <h3><router-link :to="{ name: 'AthletePlan' }">Athlete Plans</router-link></h3>
+         <h3><router-link :to="{ name: 'AddPlan' }">Add a plan</router-link></h3>
 </div>
     <v-main id="main">
       <router-view />
