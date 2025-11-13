@@ -66,7 +66,7 @@ function showMenu(){
   }
   else{
       const menu = document.getElementById("menu")
-  menu.style.top ="-20%";
+  menu.style.top ="-55%";
   toggle = false
   }
 
