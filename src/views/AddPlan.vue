@@ -90,7 +90,4 @@ function removeRow(index) {
 
   </v-container>
   
-  <router-link :to="{ name: 'Home' }"><button class="home-button">Home Page Button</button></router-link>
-  <p></p>
-  <router-link :to="{ name: 'Goals' }"><button class="home-button">Goal Button</button></router-link>
 </template>

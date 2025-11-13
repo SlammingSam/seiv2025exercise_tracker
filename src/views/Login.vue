@@ -35,5 +35,4 @@ onMounted(() => {
     <p>“Best Training Platform for those who want to take the next step in fitness” -Someguy</p>
     </div>
   </v-container>
-  <router-link :to="{ name: 'Home' }"><button class="home-button">Home Page Button</button></router-link>
 </template>
