@@ -5,6 +5,13 @@ import Utils from "../config/utils";
 import AuthServices from "../services/authServices";
 import { useRouter, useRoute } from 'vue-router';
 import store from "../store/store.js";
+import BurgerIcon from "./BurgerIcon.vue";
+
+const props = defineProps({
+  size: { type: [Number, String], default: 24 },
+  color: { type: String, default: 'currentColor' },
+  strokeWidth: { type: [Number, String], default: 2 }
+})
 
 const router = useRouter()
 //const localUser = ref(Utils.getStore('user')); //need to import this here
@@ -49,7 +56,21 @@ const logout = () => {
       console.log("error", error);
     });
 };
+let toggle = false;
+function showMenu(){
+  if(!toggle){
+    const menu = document.getElementById("menu")
+    menu.style.top ="7%";
+    toggle = true;
+    return;
+  }
+  else{
+      const menu = document.getElementById("menu")
+  menu.style.top ="-20%";
+  toggle = false
+  }
 
+}
 onMounted(() => {
   logoURL.value = ocLogo;
   resetMenu(); //was a problem, has been erroring out because is recieves incorrect information, but now that is fixed
@@ -59,7 +80,23 @@ onMounted(() => {
 <template>
   <div>
     <v-app-bar app>
-      <router-link :to="{ name: 'tutorials' }">
+      <div id = "hamburger-icon-container" @click="showMenu()">
+        <svg class = "hamburger-icon"
+    :width="size"
+    :height="size"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    role="img"
+  >
+    <path d="M4 18L20 18" :stroke="color" :stroke-width="strokeWidth" stroke-linecap="round"/>
+    <path d="M4 12L20 12" :stroke="color" :stroke-width="strokeWidth" stroke-linecap="round"/>
+    <path d="M4 6L20 6" :stroke="color" :stroke-width="strokeWidth" stroke-linecap="round"/>
+  </svg>
+
+      </div>
+      
         <v-img
           class="mx-2"
           :src="logoURL"
@@ -68,7 +105,7 @@ onMounted(() => {
           :transition="false"
           contain
         ></v-img>
-      </router-link>
+  
       <v-toolbar-title class="title">
         {{ title }}
       </v-toolbar-title>

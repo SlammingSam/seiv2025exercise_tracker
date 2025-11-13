@@ -47,18 +47,7 @@ const router = createRouter({
       component: ViewTutorial,
       props: true,
     },
-    {
-      path: "/addLesson/:tutorialId",
-      name: "addLesson",
-      component: AddLesson,
-      props: true,
-    },
-    {
-      path: "/editLesson/:tutorialId/:lessonId",
-      name: "editLesson",
-      component: EditLesson,
-      props: true,
-    }, 
+
     {
         path: "/",
       name: "Home",

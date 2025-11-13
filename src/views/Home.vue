@@ -1,6 +1,7 @@
 <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
 import { ref, onMounted } from "vue";
+import BurgerIcon from "../components/BurgerIcon.vue";
 const currentProgress = ref(75);
 </script>
 
@@ -8,6 +9,7 @@ const currentProgress = ref(75);
    
   <v-container>
     <v-toolbar>
+      
       <div class="home-header">
       <p>Welcome, (name)!</p>
     </div>

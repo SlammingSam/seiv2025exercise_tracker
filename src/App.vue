@@ -6,8 +6,18 @@ import MenuBar from "./components/MenuBar.vue";
 
 <template>
   <v-app>
-    <MenuBar :key="$route.fullPath" />
-    <v-main>
+    <MenuBar :key="$route.fullPath" 
+        size="45" 
+        color="#9d9e9d" 
+        stroke-width="3"
+        />
+        <div id = "menu" class = "accordion-menu">
+    <h3>Home</h3>
+    <h3>Goals</h3>
+    <h3>Plans</h3>
+    <h3>Athletes</h3>
+</div>
+    <v-main id="main">
       <router-view />
     </v-main>
   </v-app>
