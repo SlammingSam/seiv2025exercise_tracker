@@ -73,6 +73,7 @@ function removeRow(index) {
               <td><input v-model="row.name" placeholder="Name" /></td>
               <td><input v-model="row.sets" placeholder="Sets" /></td>       
               <td><input v-model="row.reps" placeholder="Reps" /></td>
+              <td><input v-model="row.status" placeholder="Status" /></td>
               <td><button @click="removeRow(index)">Delete</button></td>
             </tr>
           </tbody>
