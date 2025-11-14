@@ -1,7 +1,28 @@
 <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
 import { ref, onMounted } from "vue";
+import { onBeforeMount } from "vue";
+import goalServices from "../services/goalServices";
 const currentProgress = ref(75);
+
+const lists = ref([]);
+
+async function getGoals(){
+  try{
+    const response = await goalServices.getAll();
+    lists.value = response.data;
+    message.value = "";
+  }
+  catch(error){
+    message.value = "Error: " + error.code + ":" + error.message;
+    console.log(error);
+  }
+}
+
+
+onBeforeMount(() => {
+  getGoals();
+});
 </script>
 
 <template>  
@@ -20,16 +41,12 @@ const currentProgress = ref(75);
   <div class = flex-row-table>
     <table class ="long-table">
       <tbody class ="long-table">
-          <tr class ="long-table">
-            <td>Goal Name</td>
+          <tr v-for="item in lists" :key="lists.goal_id" :list=list class ="long-table">
+            <td>{{ lists.name }}</td>
         </tr>
       </tbody>
     </table> 
  
   </div>
   </v-container>
-  
-  <router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Back Button</button></router-link>
-  <p></p>
-  <router-link :to="{ name: 'Profile' }"><button class="home-button">Profile Button</button></router-link>
 </template>

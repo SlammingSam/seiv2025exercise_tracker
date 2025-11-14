@@ -2,6 +2,7 @@ import axios from "axios";
 import Utils from "../config/utils.js";
 import AuthServices from "./authServices.js";
 import Router from "../router.js";
+import goalServices from "./goalServices.js";
 
 var baseurl = "";
 if (import.meta.env.DEV) {
