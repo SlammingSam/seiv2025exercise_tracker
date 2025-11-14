@@ -196,7 +196,8 @@ async function addExercises(parsedList)
                 name:parts[0],
                 sets:parts[1],
                 reps:parts[2],
-                exercise_plan_id:parts[3]
+                status:parts[3],
+                exercise_plan_id:parts[4]
             });
             console.log("Response:", response);
         } 

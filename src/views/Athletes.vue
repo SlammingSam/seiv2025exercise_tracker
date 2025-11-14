@@ -48,10 +48,9 @@ async function getUsers(){
              <th>Plans</th>
         </tr>
         <tr>
-          <td v-for="item in users" :key="item.user_id" class ="long-table">{{ item.fName }}</td>
-          <td  v-for="item in plans" :key="item.plan_id" class ="long-table"></td>
+          <td v-for="item in users" :key="item.user_id" class ="long-table"></td>
+          <td v-for="item in plans" :key="item.plan_id" class ="long-table"></td>
             <!-- i'll need to write this today. -->
-            
         </tr>
       </tbody>
     </table> 

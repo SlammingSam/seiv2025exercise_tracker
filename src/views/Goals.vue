@@ -33,6 +33,11 @@ const parsedList = ref([]);//list to send to the database
 function addGoalListener() {
     const customButton = document.getElementById("plus-icon");
     const fileInput = document.getElementById("file-input");
+      if (!customButton || !fileInput) {
+    console.warn('addExerciseListener: required element(s) not found', { customButton, fileInput });
+    return;
+  }
+
 
     if (!customButton.dataset.listenerAdded) {
         customButton.dataset.listenerAdded = "true";
@@ -129,11 +134,14 @@ async function addGoals(parsedList)
  <div class = "normal-header">
   <p>Add via file:</p>
  </div>
-   <plusIcon id="plus-icon"
+ <button>
+<plusIcon id="plus-icon"
         size="45" 
         color="#9d9e9d" 
         stroke-width="2"
         />
+ </button>
+   
         <input type="file" id="file-input" style="display:none;"></input>
     <input type="text"  class = inputBetter v-model="input" placeholder="Search goals" />
 </div>
