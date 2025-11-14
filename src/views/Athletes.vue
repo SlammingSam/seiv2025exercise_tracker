@@ -1,7 +1,30 @@
 <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
+import userServices from "../services/userServices.js"
 import { ref, onMounted } from "vue";
 const currentProgress = ref(75);
+const users = ref([])
+const plans = ref([])
+const message = ref("")
+
+onMounted(() => {
+  console.log("onMounted ran")
+  getUsers();
+});
+
+async function getUsers(){
+  try{
+    const response = await userServices.getAll();
+    users.value = response.data;
+    console.log(data)
+  }
+  catch(error){
+    message.value = "Error: " + error.code + ":" + error.message;
+    console.log(error);
+  }
+}
+
+
 </script>
 
 <template>  
@@ -21,8 +44,13 @@ const currentProgress = ref(75);
     <table class ="long-table">
       <tbody class ="long-table">
           <tr class ="long-table">
-           <td>Athlete name</td>
-             <td><router-link :to="{ name: 'AthletePlan' }"><button class="home-button">View Plan</button></router-link></td>
+           <th> Name</th>
+             <th>Plans</th>
+        </tr>
+        <tr>
+          <td v-for="item in users" :key="item.user_id" class ="long-table"></td>
+          <td v-for="item in plans" :key="item.plan_id" class ="long-table"></td>
+            <!-- i'll need to write this today. -->
         </tr>
       </tbody>
     </table> 
@@ -30,7 +58,4 @@ const currentProgress = ref(75);
   </div>
   </v-container>
   
-  <router-link :to="{ name: 'Home' }"><button class="home-button">Home Page Button</button></router-link>
-  <p></p>
-  <router-link :to="{ name: 'Goals' }"><button class="home-button">Goal Button</button></router-link>
 </template>

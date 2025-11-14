@@ -23,6 +23,12 @@ p{
   font-weight: lighter;
 }
 
+/*just trying to copy you, but smaller*/
+.normal-header{
+  font-size: 3vw;
+  font-weight: lighter;
+}
+
 .left-header{
     font-size: 2vw;
   font-weight: lighter;
@@ -269,7 +275,7 @@ textarea {
   flex-direction: column;
   width: 10vw;
   position:absolute;
-  top:-55%;
+  top:-30%;
   left:0%;
   z-index: 1;
   background-color: white;
@@ -280,7 +286,7 @@ textarea {
 }
 
 .accordion-menu > h3{
-  font-size: 2vw
+  font-size: 1vw
 
 }
 
@@ -288,7 +294,6 @@ textarea {
 .accordion-menu > h3:hover{
   background-color: rgb(232, 232, 232);
 }
-
 
 
 #main{
@@ -308,5 +313,17 @@ textarea {
 }
 
 a{
-  text-decoration: none;;
+  text-decoration: none;
+  color: black;
+}
+
+#plus-icon:hover{
+  cursor: pointer;
+}
+
+#plan-add:hover{
+  cursor: pointer;
+}
+#exercise-add{
+  cursor: pointer;
 }

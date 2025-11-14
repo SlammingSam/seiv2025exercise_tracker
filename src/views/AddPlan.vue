@@ -73,6 +73,7 @@ function removeRow(index) {
               <td><input v-model="row.name" placeholder="Name" /></td>
               <td><input v-model="row.sets" placeholder="Sets" /></td>       
               <td><input v-model="row.reps" placeholder="Reps" /></td>
+              <td><input v-model="row.status" placeholder="Status" /></td>
               <td><button @click="removeRow(index)">Delete</button></td>
             </tr>
           </tbody>
@@ -90,7 +91,4 @@ function removeRow(index) {
 
   </v-container>
   
-  <router-link :to="{ name: 'Home' }"><button class="home-button">Home Page Button</button></router-link>
-  <p></p>
-  <router-link :to="{ name: 'Goals' }"><button class="home-button">Goal Button</button></router-link>
 </template>
