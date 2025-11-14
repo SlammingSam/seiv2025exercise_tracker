@@ -81,7 +81,7 @@ function showMenu(){
   }
   else{
       const menu = document.getElementById("menu")
-  menu.style.top ="-55%";
+  menu.style.top ="-40%";
   toggle = false
   }
 

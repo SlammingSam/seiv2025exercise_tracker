@@ -49,46 +49,39 @@ const router = createRouter({
     },
 
     {
-        path: "/",
+      path: "/home",
       name: "Home",
       component: Home,
-
     },
     {
-        path: "/",
+      path: "/exercise-plan",
       name: "ExercisePlan",
       component: ExercisePlan,
-
     },
     {
-        path: "/",
+      path: "/goals",
       name: "Goals",
       component: Goals,
-
     },
     {
-        path: "/",
+      path: "/profile",
       name: "Profile",
       component: Profile,
-
     },
     {
-        path: "/",
+      path: "/athletes",
       name: "Athletes",
       component: Athletes,
-
     },
     {
-        path: "/",
+      path: "/athlete-plan",
       name: "AthletePlan",
       component: AthletePlan,
-
     },
     {
-        path: "/",
+      path: "/add-plan",
       name: "AddPlan",
       component: AddPlan,
-
     },
   ],
 });
