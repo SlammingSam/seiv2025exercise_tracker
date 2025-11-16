@@ -10,7 +10,7 @@ const currentProgress = ref(75);
    
 <div class="flex-row-profile">
     <div class="flex-column-right">
-        <img class="image_pfp" src = "../components/pfp_default.png"> 
+        <img class="image_pfp" src = "../public/oc-logo-white.png"> 
          <div class="pfp-header">
         <p class="pfp-table-header">(name)</p>
          </div>
