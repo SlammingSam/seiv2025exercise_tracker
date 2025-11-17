@@ -33,7 +33,4 @@ const currentProgress = ref(75);
   </div>
   </v-container>
   
-  <router-link :to="{ name: 'AddPlan' }"><button class="home-button">Add Plan Button</button></router-link>
-  <p></p>
-  <router-link :to="{ name: 'Athletes' }"><button class="home-button">Back Button</button></router-link>
 </template>
