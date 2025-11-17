@@ -18,6 +18,8 @@ const currentProgress = ref(75);
 
 <template>  
    
+  <role-picker/>
+
   <v-container>
     <v-toolbar>
       
