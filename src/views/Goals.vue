@@ -140,7 +140,8 @@ async function addGoals(parsedList)
         color="#9d9e9d" 
         stroke-width="2"
         />
- </button> 
+ </button>
+   
     <input type="file" id="file-input" style="display:none;"/>
     <input type="text"  class = inputBetter v-model="input" placeholder="Search goals" />
 </div>
