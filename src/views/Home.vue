@@ -5,11 +5,41 @@ import BurgerIcon from "../components/BurgerIcon.vue";
 import exercisesServices from "../services/exercisesServices";
 import exercise_planServices from "../services/exercise_planServices.js";
 import store from "../store/store.js";
+import userServices from "../services/userServices.js";
+import RolePicker from "../components/RolePicker.vue"
+
 const exercises = ref([])
-onMounted(() => {
-  console.log("onMounted ran")
-  getExercises();
+
+const user = store.getters.getLoginUserInfo;
+const name = ref("");
+const role = ref("");
+const testUser = ref(null);
+
+async function fetchUser(userId){
+  try{
+    const response = await userServices.get(userId);
+    testUser.value = response.data; 
+    role.value = testUser.value?.role || "";
+    name.value = testUser.value?.fName || "";
+  }
+  catch(error){
+    console.log("Error fetching user: " + error);
+  }
+}
+
+function checkRole(){
+  console.log(role.value)
+}
+
+onMounted(async () => {
+  console.log("onMounted ran");
+  await getExercises();
+  if (user?.userId) {
+    await fetchUser(user.userId);
+    console.log("fetched user:", testUser.value, "role:", role.value);
+  }
 });
+
 async function getExercises(){
   try{
     const response = await exercisesServices.getAll();
@@ -21,15 +51,16 @@ async function getExercises(){
     console.log(error);
   }
 }
-const name = ref("");
-
-const user = store.getters.getLoginUserInfo;
-//console.log(user);
 
 if(user)
 {
   name.value = user.fName;
 }
+
+if (role.value == null){
+  console.log("role is null");
+}
+
 const currentProgress = ref(75);
 </script>
 
