@@ -14,7 +14,7 @@ async function addGoal(){
     name:form.name
    })
    console.log(response)
-   this.$router.push('/goals')
+   
   }
 
 
@@ -31,7 +31,7 @@ async function addGoal(){
     <div class="flex-column">
      <div class = flex-row-add>
    <router-link :to="{ name: 'Goals' }"><button class="home-button">Cancel</button></router-link>
-    <button class="save-button" @click="addGoal()">Save</button>
+    <button class="save-button" @click="addGoal(), this.$router.push('/goals')">Save</button>
 </div>
 <div class="flex-row-form">
     <div class="form-container">
