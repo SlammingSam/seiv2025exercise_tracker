@@ -15,6 +15,7 @@ import Profile from "./views/Profile.vue";
 import Athletes from "./views/Athletes.vue";
 import AthletePlan from "./views/AthletePlan.vue";
 import AddPlan from "./views/AddPlan.vue";
+import AddGoal from "./views/AddGoal.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -82,6 +83,11 @@ const router = createRouter({
       path: "/add-plan",
       name: "AddPlan",
       component: AddPlan,
+    },
+    {
+      path: "/add-goal",
+      name: "AddGoal",
+      component: AddGoal,
     },
   ],
 });
