@@ -19,12 +19,8 @@ function addRow() {
 function removeRow(index) {
   form.values.splice(index, 1)
 }
-function addExercisePlan(){
+function addExercises(){
   for(let i = 0; i < form.values.length; i++){
-    planServices.create({
-      name: form.values.name,
-      description: form.values.description
-    })
     exercisesServices.create({
       name: form.values[i].name,
       sets: form.values[i].sets,
@@ -72,22 +68,19 @@ function addExercisePlan(){
 
       <!-- Right column: Table -->
       <div class="form-right">
-        <h3>Exercises</h3>
+        <h3>Plans</h3>
         <table class="value-table">
           <thead>
             <tr>
-              <th>#</th>
               <th>Name</th>
-              <th>Sets</th>
-              <th>Reps</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(row, index) in form.values" :key="index">
               <td>{{ index + 1 }}</td>
               <td><input class = "add-plan-input" v-model="row.name" placeholder="Name" /></td>
-              <td><input class = "add-plan-input" v-model="row.sets" placeholder="Sets" /></td>       
-              <td><input class = "add-plan-input" v-model="row.reps" placeholder="Reps" /></td>
+              <td><input class = "add-plan-input" v-model="row.sets" placeholder="description" /></td>       
               <td><button @click="removeRow(index)">Delete</button></td>
             </tr>
           </tbody>
