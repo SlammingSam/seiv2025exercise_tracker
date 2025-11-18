@@ -1,7 +1,56 @@
 <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
 import { ref, onMounted } from "vue";
+import goalServices from "../services/goalServices";
+import exercise_planServices from "../services/exercise_planServices";
+import exercisesServices from "../services/exercisesServices";
+const goals = ref([])
+const exercises = ref([])
+const message = ref("")
 const currentProgress = ref(75);
+onMounted(() => {
+  console.log("onMounted ran")
+  getGoals();
+  getExercises();
+});
+async function getGoals(){
+  try{
+    const response = await goalServices.getAll();
+    goals.value = response.data;
+    console.log(data)
+  }
+  catch(error){
+    message.value = "Error: " + error.code + ":" + error.message;
+    console.log(error);
+  }
+}
+
+async function getExercises(){
+  try{
+    const response = await exercisesServices.getAll();
+    exercises.value = response.data;
+    console.log(exercises)
+  }
+  catch(error){
+    message.value = "Error: " + error.code + ":" + error.message;
+    console.log(error);
+  }
+}
+async function getPlans(){
+  try{
+    const response = await planServices.getAll();
+    plans.value = response.data;
+    console.log(plans)
+  }
+  catch(error){
+    message.value = "Error: " + error.code + ":" + error.message;
+    console.log(error);
+  }
+}
+
+
+
+
 </script>
 
 <template>  
@@ -28,9 +77,9 @@ const currentProgress = ref(75);
          </div>
   <table class="pfp_table">
       <tbody class="pfp_table">
-          <tr class="pfp_table">
-            <td>Goals</td>
-             <td><router-link :to="{ name: 'Goals' }"><button class="home-button">Exercise</button></router-link></td>
+          <tr v-for="item in goals" :key="item.goal_id" class="pfp_table">
+            <td>{{ item.name }}</td>
+             <td>{{ item.status }}</td>
         </tr>
       </tbody>
     </table>   
@@ -42,18 +91,9 @@ const currentProgress = ref(75);
          </div>
   <table class="pfp_table" >
       <tbody class="pfp_table">
-          <tr class="pfp_table">
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
-        </tr><tr class="pfp_table">
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
-        </tr><tr class="pfp_table">
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
-        </tr><tr class="pfp_table">
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
+          <tr  v-for="item in exercises" :key="item.exercise_id" class="pfp_table">
+            <td>{{ item.name }}</td>
+            <td>{{ item.status }}</td>
         </tr>
       </tbody>
     </table>   

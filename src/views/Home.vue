@@ -2,8 +2,25 @@
 import SocialLogin from "../components/SocialLogin.vue";
 import { ref, onMounted } from "vue";
 import BurgerIcon from "../components/BurgerIcon.vue";
+import exercisesServices from "../services/exercisesServices";
+import exercise_planServices from "../services/exercise_planServices.js";
 import store from "../store/store.js";
-
+const exercises = ref([])
+onMounted(() => {
+  console.log("onMounted ran")
+  getExercises();
+});
+async function getExercises(){
+  try{
+    const response = await exercisesServices.getAll();
+    exercises.value = response.data;
+    console.log(exercises)
+  }
+  catch(error){
+    message.value = "Error: " + error.code + ":" + error.message;
+    console.log(error);
+  }
+}
 const name = ref("");
 
 const user = store.getters.getLoginUserInfo;
@@ -39,27 +56,9 @@ const currentProgress = ref(75);
     <div class="flex-row-home">
    <table class="home_table">
       <tbody>
-          <tr>
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
-        </tr><tr>
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
-        </tr><tr>
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
-        </tr><tr>
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
-        </tr><tr>
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
-        </tr><tr>
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
-        </tr><tr>
-            <td>Workouts</td>
-             <td><router-link :to="{ name: 'ExercisePlan' }"><button class="home-button">Exercise</button></router-link></td>
+          <tr  v-for="item in exercises" :key="item.exercise_id" class="pfp_table">
+            <td>{{ item.name }}</td>
+            <td>{{ item.status }}</td>
         </tr>
       </tbody>
     </table> 
