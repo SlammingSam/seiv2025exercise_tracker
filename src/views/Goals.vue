@@ -103,7 +103,7 @@ async function addGoals(parsedList)
         for(const list of parsedList.value)
         {
             let parts = list;
-            console.log("Sending:", {name: parts[1], status: parts[2]});
+            console.log("Sending:", { name: parts[0], status: parts[1]});
             const response = await goalServices.create({
                 name:parts[0],
                 status:parts[1]
@@ -134,8 +134,8 @@ async function addGoals(parsedList)
  <div class = "normal-header">
   <p>Add via file:</p>
  </div>
- <button>
-<plusIcon id="plus-icon"
+ <button id="plus-icon">
+<plusIcon
         size="45" 
         color="#9d9e9d" 
         stroke-width="2"
