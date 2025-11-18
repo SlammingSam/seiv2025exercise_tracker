@@ -45,7 +45,7 @@ async function addExercisePlan(){
   
   }
 
-   this.$router.push('/home');
+   
 }
 
 </script>
@@ -61,7 +61,7 @@ async function addExercisePlan(){
     <div class="flex-column">
      <div class = flex-row-add>
    <router-link :to="{ name: 'AthletePlan' }"><button class="home-button">Cancel</button></router-link>
-    <button class="save-button" @click="addExercisePlan()">Save</button>
+    <button class="save-button" @click="addExercisePlan(), this.$router.push('/exercise-plan');">Save</button>
 </div>
 <div class="flex-row-form">
     <div class="form-container">
