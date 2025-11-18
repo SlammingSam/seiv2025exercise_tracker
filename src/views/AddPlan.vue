@@ -4,6 +4,8 @@ import { ref, onMounted } from "vue";
 const currentProgress = ref(75);
 import { reactive } from 'vue'
 import exercisesServices from "../services/exercisesServices";
+import exercise_planServices from "../services/exercise_planServices"
+import planServices from "../services/planServices";
 
 const form = reactive({
   name: '',
@@ -19,19 +21,31 @@ function addRow() {
 function removeRow(index) {
   form.values.splice(index, 1)
 }
-function addExercisePlan(){
-  for(let i = 0; i < form.values.length; i++){
-    planServices.create({
-      name: form.values.name,
-      description: form.values.description
+async function addExercisePlan(){
+  console.log("plan name " +form.name)
+ const plan_response = await planServices.create({
+      name: form.name,
+      description: form.description
     })
+    console.log(plan_response)
+   const response = await exercise_planServices.create({
+    plan_id:plan_response.data.plan_id,
+    goal_id:"1"
+
+   });
+   console.log(response)
+    
+     for(let i = 0; i < form.values.length; i++){
     exercisesServices.create({
       name: form.values[i].name,
       sets: form.values[i].sets,
-      reps: form.values[i].reps
+      reps: form.values[i].reps,
+      exercise_plan_id: response.data.exercise_plan_id
     })
   
   }
+
+   this.$router.push('/home');
 }
 
 </script>
@@ -47,7 +61,7 @@ function addExercisePlan(){
     <div class="flex-column">
      <div class = flex-row-add>
    <router-link :to="{ name: 'AthletePlan' }"><button class="home-button">Cancel</button></router-link>
-    <button class="save-button" @click="addExercises()">Save</button>
+    <button class="save-button" @click="addExercisePlan()">Save</button>
 </div>
 <div class="flex-row-form">
     <div class="form-container">
