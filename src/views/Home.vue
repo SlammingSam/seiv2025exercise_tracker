@@ -5,7 +5,9 @@ import BurgerIcon from "../components/BurgerIcon.vue";
 import exercisesServices from "../services/exercisesServices";
 import exercise_planServices from "../services/exercise_planServices.js";
 import store from "../store/store.js";
-const exercises = ref([])
+const exercises = ref([]);
+const message = ref("");
+
 onMounted(() => {
   console.log("onMounted ran")
   getExercises();
