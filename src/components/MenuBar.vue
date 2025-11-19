@@ -14,8 +14,6 @@ const props = defineProps({
   strokeWidth: { type: [Number, String], default: 2 }
 })
 
-
-
 const router = useRouter()
 const user = computed(() => store.getters.getLoginUserInfo);
 const title = ref("Exercise Tracker");
@@ -28,7 +26,8 @@ const isLoggedIn = computed(() => store.getters.isLoggedIn);
 const resetMenu = () => {
   if(user.value)//stops the menu from erroring when the below problem exists
   {
-    //console.log(user);//null if you dont import user from the store as above
+    //console.log(user.value.picture);
+    //console.log(user.value);//null if you dont import user from the store as above
     initials.value = user.value.fName[0] + user.value.lName[0];
     name.value = user.value.fName + " " + user.value.lName;
     email.value = user.value.email;

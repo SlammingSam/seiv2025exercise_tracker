@@ -4,20 +4,36 @@ import { ref, onMounted } from "vue";
 import goalServices from "../services/goalServices";
 import exercise_planServices from "../services/exercise_planServices";
 import exercisesServices from "../services/exercisesServices";
+import store from "../store/store.js";
+import { computed, watch } from "vue";
+
 const goals = ref([])
 const exercises = ref([])
 const message = ref("")
 const currentProgress = ref(75);
+const user = computed(() => store.getters.getLoginUserInfo);
+const picture = ref("../public/oc-logo-white.png");
+const name = ref("");
+
 onMounted(() => {
-  console.log("onMounted ran")
+  //console.log("onMounted ran")
   getGoals();
   getExercises();
+  if(user.value)
+  {
+    picture.value = user.value.picture;
+    let temp = user.value.fName;
+    name.value = temp + "'s Progress";
+  }
 });
+
+console.log(user.value.picture);
+
 async function getGoals(){
   try{
     const response = await goalServices.getAll();
     goals.value = response.data;
-    console.log(data)
+    console.log("Goals: " + goals.value)
   }
   catch(error){
     message.value = "Error: " + error.code + ":" + error.message;
@@ -29,13 +45,14 @@ async function getExercises(){
   try{
     const response = await exercisesServices.getAll();
     exercises.value = response.data;
-    console.log(exercises)
+    console.log("Exercises: " + exercises.value)
   }
   catch(error){
     message.value = "Error: " + error.code + ":" + error.message;
     console.log(error);
   }
 }
+
 async function getPlans(){
   try{
     const response = await planServices.getAll();
@@ -47,10 +64,6 @@ async function getPlans(){
     console.log(error);
   }
 }
-
-
-
-
 </script>
 
 <template>  
@@ -59,15 +72,13 @@ async function getPlans(){
    
 <div class="flex-row-profile">
     <div class="flex-column-right">
-        <img class="image_pfp" src = "../public/oc-logo-white.png"> 
+        <img class="image_pfp" :src="picture"/> 
          <div class="pfp-header">
-        <p class="pfp-table-header">(name)</p>
+        <p class="pfp-table-header">{{ name }}</p>
          </div>
      <div class="left-header">
       <p>Today's Workouts</p>
     </div>
-   
-
         <v-progress-circular :model-value="currentProgress" :rotate="90" :size="140" :width="10" class="home-pro"><span class="profile-words">75%</span> 
   </v-progress-circular>
     </div>
