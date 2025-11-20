@@ -12,6 +12,7 @@ const props = defineProps({
 })
 
 // Checkbox selections
+// Do I need to change how this is formatted?
 const selectedUserIds = ref([])
 // Only show users with role "athlete"
 const athletes = computed(() => {
@@ -60,6 +61,7 @@ console.log(athletes.value);
     </div>
 </template>
 
+<!-- Probrably put this in CSS-->
 <style scoped>
 .backdrop {
     position: fixed;
