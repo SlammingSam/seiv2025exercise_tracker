@@ -2,6 +2,7 @@
 import SocialLogin from "../components/SocialLogin.vue";
 import { ref, onMounted } from "vue";
 import BurgerIcon from "../components/BurgerIcon.vue";
+//import RolePicker from "../components/RolePicker.vue";
 import exercisesServices from "../services/exercisesServices";
 import exercise_planServices from "../services/exercise_planServices.js";
 import store from "../store/store.js";
@@ -31,7 +32,7 @@ async function getExercises(){
 const name = ref("");
 
 const user = computed(() => store.getters.getLoginUserInfo);
-//console.log(user);
+console.log(user.value);
 
 if(user)
 {
