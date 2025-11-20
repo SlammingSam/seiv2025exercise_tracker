@@ -70,7 +70,7 @@ const parsedList = ref([]);//list to send to the database
       <button id = "plan-add" @click=" this.$router.push('/add-plan')">
          <PlusIcon/>
       </button>
-        <input type="file" id="plan-file-input" style="display:none;"></input>
+        <input type="file" id="plan-file-input" style="display:none;"/>
     <table class ="long-table">
       <tbody class ="long-table">
        
@@ -96,7 +96,7 @@ const parsedList = ref([]);//list to send to the database
       >
          <PlusIcon/>
       </button>
-        <input type="file" id="exercise-file-input" style="display:none;"></input>
+        <input type="file" id="exercise-file-input" style="display:none;"/>
        
       </div>
          <table class ="long-table">
