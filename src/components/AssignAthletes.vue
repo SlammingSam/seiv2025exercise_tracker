@@ -13,6 +13,7 @@ const props = defineProps({
 
 // Checkbox selections
 // Do I need to change how this is formatted?
+// Once Julian gets assigning users to teams working, I can complete this implementation.
 const selectedUserIds = ref([])
 // Only show users with role "athlete"
 const athletes = computed(() => {
