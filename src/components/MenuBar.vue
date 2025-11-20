@@ -1,6 +1,6 @@
 <script setup>
 import ocLogo from "../public/oc-logo-white.png";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted } from "vue";
 import Utils from "../config/utils";
 import AuthServices from "../services/authServices";
 import { useRouter, useRoute } from 'vue-router';
@@ -14,6 +14,8 @@ const props = defineProps({
   strokeWidth: { type: [Number, String], default: 2 }
 })
 
+
+
 const router = useRouter()
 const user = computed(() => store.getters.getLoginUserInfo);
 const title = ref("Exercise Tracker");
@@ -22,41 +24,34 @@ const name = ref("");
 const logoURL = ref("");
 const email = ref("")
 const isLoggedIn = computed(() => store.getters.isLoggedIn);
-const isOpen = ref(false);
 
 const resetMenu = () => {
-  if(user.value)//stops the menu from erroring when the below problem exists
+  if (user.value)//stops the menu from erroring when the below problem exists
   {
-    //console.log(user.value.picture);
-    //console.log(user.value);//null if you dont import user from the store as above
+    //console.log(user);//null if you dont import user from the store as above
     initials.value = user.value.fName[0] + user.value.lName[0];
     name.value = user.value.fName + " " + user.value.lName;
     email.value = user.value.email;
   }
-  else
-  {
+  else {
     //console.log("no user");
   }
 };
 
-watch(user, (newUser, oldUser) => 
-{
-  if (newUser && !oldUser) 
-  {
+watch(user, (newUser, oldUser) => {
+  if (newUser && !oldUser) {
     //console.log("User data loaded after mount");
     resetMenu();
   }
 });
 
-const logout = () => 
-{
+const logout = () => {
   //console.log(user.value);
-  if(!user.value)//this does trigger correctly, catches null users which should not be an issue anymore
+  if (!user.value)//this does trigger correctly, catches null users which should not be an issue anymore
   {
     window.location.reload();
   }
-  else
-  {
+  else {
     AuthServices.logoutUser(user.value)
       .then(() => {
         //pushes correctly but on error its not reloading the bar
@@ -71,23 +66,21 @@ const logout = () =>
       });
   }
 };
-
-function showMenu()
-{
-  const menu = document.getElementById("menu");
-  if(!isOpen.value)
-  {
-    menu.style.top = "9vh";
-    isOpen.value = true;
+let toggle = false;
+function showMenu() {
+  if (!toggle) {
+    const menu = document.getElementById("menu")
+    menu.style.top = "7%";
+    toggle = true;
     return;
   }
-  else
-  {
-    menu.style.top ="-9vh";
-    isOpen.value = false;
+  else {
+    const menu = document.getElementById("menu")
+    menu.style.top = "-40%";
+    toggle = false
   }
-}
 
+}
 onMounted(() => {
   logoURL.value = ocLogo;
   resetMenu(); //was a problem, has been erroring out because is recieves incorrect information, but now that is fixed
@@ -97,36 +90,24 @@ onMounted(() => {
 <template>
   <div>
     <v-app-bar app>
-      <div id = "hamburger-icon-container" @click="showMenu()">
-        <svg class = "hamburger-icon"
-    :width="size"
-    :height="size"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-    role="img"
-  >
-    <path d="M4 18L20 18" :stroke="color" :stroke-width="strokeWidth" stroke-linecap="round"/>
-    <path d="M4 12L20 12" :stroke="color" :stroke-width="strokeWidth" stroke-linecap="round"/>
-    <path d="M4 6L20 6" :stroke="color" :stroke-width="strokeWidth" stroke-linecap="round"/>
-  </svg>
+      <div id="hamburger-icon-container" @click="showMenu()">
+        <svg class="hamburger-icon" :width="size" :height="size" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+          <path d="M4 18L20 18" :stroke="color" :stroke-width="strokeWidth" stroke-linecap="round" />
+          <path d="M4 12L20 12" :stroke="color" :stroke-width="strokeWidth" stroke-linecap="round" />
+          <path d="M4 6L20 6" :stroke="color" :stroke-width="strokeWidth" stroke-linecap="round" />
+        </svg>
 
       </div>
-      
-        <v-img
-          class="mx-2"
-          :src="logoURL"
-          height="50"
-          width="50"
-          :transition="false"
-          contain
-        ></v-img>
-  
+
+      <v-img class="mx-2" :src="logoURL" height="50" width="50" :transition="false" contain></v-img>
+
       <v-toolbar-title class="title">
         {{ title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <div v-if="isLoggedIn">
+      </div>
       <v-menu bottom min-width="200px" rounded offset-y v-if="isLoggedIn">
         <template v-slot:activator="{ props }">
           <v-btn v-bind="props" icon x-large>

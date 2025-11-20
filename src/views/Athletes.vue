@@ -1,7 +1,10 @@
 <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
 import userServices from "../services/userServices.js"
+import AssignAthletes from "../components/AssignAthletes.vue";
 import { ref, onMounted } from "vue";
+
+const showModal = ref(false);
 const currentProgress = ref(75);
 const users = ref([])
 const plans = ref([])
@@ -14,50 +17,53 @@ onMounted(() => {
   menu.style.top = "-9vh";
 });
 
-async function getUsers(){
-  try{
+async function getUsers() {
+  try {
     const response = await userServices.getAll();
     users.value = response.data;
     console.log(data)
   }
-  catch(error){
+  catch (error) {
     message.value = "Error: " + error.code + ":" + error.message;
     console.log(error);
   }
 }
-
-
 </script>
 
-<template>  
-   
+<template>
+
   <v-container>
     <v-toolbar>
       <div class="home-header">
-      <p>My Athletes</p>
-    </div>
+        <p>My Athletes</p>
+      </div>
     </v-toolbar>
-   
-<div class = "flex-row-search">
-    <input type="text"  class = inputBetter v-model="input" placeholder="Search workouts..." />
-</div>
-   
-  <div class = flex-row-table>
-    <table class ="long-table">
-      <tbody class ="long-table">
-          <tr class ="long-table">
-           <th> Name</th>
-           <th> email</th>
-        </tr>
-        <tr v-for="item in users" :key="item.user_id" class ="long-table">
-          <td>{{ item.fName }}</td>
-           <td >{{ item.email }}</td>
+
+    <div class="flex-row-search">
+      <input type="text" class=inputBetter v-model="input" placeholder="Search Athletes..." />
+    </div>
+    <div class="">
+      <button @click="showModal = true">Assign Athletes</button>
+
+      <AssignAthletes v-if="showModal" :users="users" @close="showModal = false" />
+    </div>
+
+    <div class=flex-row-table>
+      <table class="long-table">
+        <tbody class="long-table">
+          <tr class="long-table">
+            <th> Name</th>
+            <th> email</th>
+          </tr>
+          <tr v-for="item in users" :key="item.user_id" class="long-table">
+            <td>{{ item.fName }} {{ item.lName }}</td>
+            <td>{{ item.email }}</td>
             <!-- i'll need to write this today. -->
-        </tr>
-      </tbody>
-    </table> 
- 
-  </div>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
   </v-container>
-  
+
 </template>
