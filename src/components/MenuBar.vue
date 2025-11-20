@@ -77,13 +77,13 @@ function showMenu()
   const menu = document.getElementById("menu");
   if(!isOpen.value)
   {
-    menu.style.top = "9vh";
+    menu.style.top = "9%";
     isOpen.value = true;
     return;
   }
   else
   {
-    menu.style.top ="-12vh";
+    menu.style.top ="-30%";
     isOpen.value = false;
   }
 }
