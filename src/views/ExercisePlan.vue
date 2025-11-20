@@ -40,7 +40,31 @@ async function getPlans(){
   }
 }
 
+let input = ref("");
+let arr = [];
+let deptArr = [];
 
+function filteredList() {
+  arr = [];
+  deptArr = [];
+
+  for (let name in plans.value) {
+    arr.push(plans.value[name]);
+    console.log(plans.value[name]);
+  } 
+
+  for (let el in arr) {
+    if(arr[el].name.toUpperCase().includes(input.value.toUpperCase())){
+      deptArr.push(arr[el]);
+    }
+  }
+  
+  if(input.value.toUpperCase() == ""){
+  return arr;
+  }else{ 
+    return deptArr;
+  }
+}
 
 
 const lists = ref([]);//list for the page display
@@ -63,7 +87,7 @@ const parsedList = ref([]);//list to send to the database
     </div>
 </div>
 <div class = "flex-row-search">
-    <input type="text"  class = inputBetter v-model="input" placeholder="Search workouts..." />
+    <input type="text"  class = inputBetter v-model="input" placeholder="Search Plans..." />
 </div>
    
   <div class = flex-row-table>
@@ -83,8 +107,7 @@ const parsedList = ref([]);//list to send to the database
           </th>
         </tr>
        
-           <tr v-for="item in plans" :key="item.plan_id" class ="long-table">
-            
+           <tr v-for="item in filteredList()" :key="item.plan_id" class ="long-table">
             <td>{{ item.name }}</td>
             <td>{{ item.description }}</td>
         </tr>
