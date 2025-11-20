@@ -83,7 +83,7 @@ function showMenu()
   }
   else
   {
-    menu.style.top ="-30%";
+    menu.style.top ="-50%";
     isOpen.value = false;
   }
 }
