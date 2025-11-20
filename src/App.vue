@@ -34,7 +34,7 @@ watch(user, (newUser, oldUser) =>
        <h3><router-link :to="{ name: 'Profile' }" v-if="isLoggedIn">Profile</router-link></h3>
         <h3><router-link :to="{ name: 'Athletes' }" v-if="isLoggedIn && isCoach.value">Athletes</router-link></h3>
         <h3><router-link :to="{ name: 'AthletePlan' }" v-if="isLoggedIn && isCoach.value">Athlete Plans</router-link></h3>
-        <h3><router-link :to="{ name: 'Plan' }" v-if="isLoggedIn">Athlete Plans</router-link></h3>
+        <h3><router-link :to="{ name: 'AthletePlan' }" v-if="isLoggedIn">Plans</router-link></h3>
          <h3><router-link :to="{ name: 'AddPlan' }" v-if="isLoggedIn">Add a plan</router-link></h3>
 </div>
     <v-main id="main">
