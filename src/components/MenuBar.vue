@@ -1,6 +1,6 @@
 <script setup>
 import ocLogo from "../public/oc-logo-white.png";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import Utils from "../config/utils";
 import AuthServices from "../services/authServices";
 import { useRouter, useRoute } from 'vue-router';
@@ -14,8 +14,6 @@ const props = defineProps({
   strokeWidth: { type: [Number, String], default: 2 }
 })
 
-
-
 const router = useRouter()
 const user = computed(() => store.getters.getLoginUserInfo);
 const title = ref("Exercise Tracker");
@@ -24,11 +22,13 @@ const name = ref("");
 const logoURL = ref("");
 const email = ref("")
 const isLoggedIn = computed(() => store.getters.isLoggedIn);
+const isOpen = ref(false);
 
 const resetMenu = () => {
   if(user.value)//stops the menu from erroring when the below problem exists
   {
-    //console.log(user);//null if you dont import user from the store as above
+    //console.log(user.value.picture);
+    //console.log(user.value);//null if you dont import user from the store as above
     initials.value = user.value.fName[0] + user.value.lName[0];
     name.value = user.value.fName + " " + user.value.lName;
     email.value = user.value.email;
@@ -71,21 +71,23 @@ const logout = () =>
       });
   }
 };
-let toggle = false;
-function showMenu(){
-  if(!toggle){
-    const menu = document.getElementById("menu")
-    menu.style.top ="7%";
-    toggle = true;
+
+function showMenu()
+{
+  const menu = document.getElementById("menu");
+  if(!isOpen.value)
+  {
+    menu.style.top = "9vh";
+    isOpen.value = true;
     return;
   }
-  else{
-      const menu = document.getElementById("menu")
-  menu.style.top ="-40%";
-  toggle = false
+  else
+  {
+    menu.style.top ="-9vh";
+    isOpen.value = false;
   }
-
 }
+
 onMounted(() => {
   logoURL.value = ocLogo;
   resetMenu(); //was a problem, has been erroring out because is recieves incorrect information, but now that is fixed
@@ -125,10 +127,6 @@ onMounted(() => {
         {{ title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <div v-if="isLoggedIn">
-        <v-btn class="mx-2" :to="{ name: 'tutorials' }"> List </v-btn>
-        <v-btn class="mx-2" :to="{ name: 'add' }"> Add Tutorial </v-btn>
-      </div>
       <v-menu bottom min-width="200px" rounded offset-y v-if="isLoggedIn">
         <template v-slot:activator="{ props }">
           <v-btn v-bind="props" icon x-large>

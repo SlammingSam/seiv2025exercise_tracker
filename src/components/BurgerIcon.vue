@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  size: { type: [Number, String], default: 24 },
+  size: { type: [Number, String], default: 32 },
   color: { type: String, default: 'currentColor' },
   strokeWidth: { type: [Number, String], default: 2 }
 })

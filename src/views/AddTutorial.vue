@@ -40,6 +40,8 @@ const cancel = () => {
 
 onMounted(() => {
   user.value = Utils.getStore("user");
+  let menu = document.getElementById("menu");
+  menu.style.top = "-9vh";
 });
 </script>
 

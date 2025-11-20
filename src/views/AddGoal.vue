@@ -14,10 +14,7 @@ async function addGoal(){
     name:form.name
    })
    console.log(response)
-   
   }
-
-
 </script>
 
 <template>  

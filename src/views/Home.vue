@@ -5,25 +5,32 @@ import BurgerIcon from "../components/BurgerIcon.vue";
 import exercisesServices from "../services/exercisesServices";
 import exercise_planServices from "../services/exercise_planServices.js";
 import store from "../store/store.js";
+import { computed, watch } from "vue";
+
 const exercises = ref([])
+
 onMounted(() => {
-  console.log("onMounted ran")
+  //console.log("onMounted ran")
   getExercises();
+  let menu = document.getElementById("menu");
+  menu.style.top = "-9vh";
 });
+
 async function getExercises(){
   try{
     const response = await exercisesServices.getAll();
     exercises.value = response.data;
-    console.log(exercises)
+    console.log(exercises.value)
   }
   catch(error){
     message.value = "Error: " + error.code + ":" + error.message;
     console.log(error);
   }
 }
+
 const name = ref("");
 
-const user = store.getters.getLoginUserInfo;
+const user = computed(() => store.getters.getLoginUserInfo);
 //console.log(user);
 
 if(user)

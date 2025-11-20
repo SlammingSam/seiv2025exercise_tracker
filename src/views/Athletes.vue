@@ -10,6 +10,8 @@ const message = ref("")
 onMounted(() => {
   console.log("onMounted ran")
   getUsers();
+  let menu = document.getElementById("menu");
+  menu.style.top = "-9vh";
 });
 
 async function getUsers(){

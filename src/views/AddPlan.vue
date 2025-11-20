@@ -31,7 +31,6 @@ async function addExercisePlan(){
    const response = await exercise_planServices.create({
     plan_id:plan_response.data.plan_id,
     goal_id:"1"
-
    });
    console.log(response)
     
@@ -42,11 +41,13 @@ async function addExercisePlan(){
       reps: form.values[i].reps,
       exercise_plan_id: response.data.exercise_plan_id
     })
-  
   }
-
-   
 }
+
+onMounted(() => {
+  let menu = document.getElementById("menu");
+  menu.style.top = "-9vh";
+});
 
 </script>
 

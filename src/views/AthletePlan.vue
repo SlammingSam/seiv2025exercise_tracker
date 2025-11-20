@@ -2,6 +2,11 @@
 import SocialLogin from "../components/SocialLogin.vue";
 import { ref, onMounted } from "vue";
 const currentProgress = ref(75);
+
+onMounted(() => {
+  let menu = document.getElementById("menu");
+  menu.style.top = "-9vh";
+});
 </script>
 
 <template>  
