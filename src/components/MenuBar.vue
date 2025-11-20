@@ -77,7 +77,7 @@ function showMenu()
   const menu = document.getElementById("menu");
   if(!isOpen.value)
   {
-    menu.style.top = "9%";
+    menu.style.top = "7%";
     isOpen.value = true;
     return;
   }
