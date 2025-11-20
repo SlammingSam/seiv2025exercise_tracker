@@ -56,6 +56,8 @@ const cancel = () => {
 
 onMounted(() => {
   retrieveLesson();
+  let menu = document.getElementById("menu");
+  menu.style.top = "-9vh";
 });
 </script>
 

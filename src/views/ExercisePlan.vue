@@ -12,6 +12,9 @@ onMounted(() => {
   console.log("onMounted ran")
   getPlans();
   getExercises();
+  let menu = document.getElementById("menu")
+  menu.style.top = "-9vh"
+  
   // Use Vue lifecycle instead of DOMContentLoaded so elements from this component are present
 });
 async function getExercises(){

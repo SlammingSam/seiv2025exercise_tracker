@@ -25,9 +25,11 @@ onMounted(() => {
     let temp = user.value.fName;
     name.value = temp + "'s Progress";
   }
+  let menu = document.getElementById("menu");
+  menu.style.top = "-9vh";
 });
 
-console.log(user.value.picture);
+//console.log(user.value.picture);
 
 async function getGoals(){
   try{

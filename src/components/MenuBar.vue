@@ -1,6 +1,6 @@
 <script setup>
 import ocLogo from "../public/oc-logo-white.png";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import Utils from "../config/utils";
 import AuthServices from "../services/authServices";
 import { useRouter, useRoute } from 'vue-router';
@@ -22,6 +22,7 @@ const name = ref("");
 const logoURL = ref("");
 const email = ref("")
 const isLoggedIn = computed(() => store.getters.isLoggedIn);
+const isOpen = ref(false);
 
 const resetMenu = () => {
   if(user.value)//stops the menu from erroring when the below problem exists
@@ -70,21 +71,23 @@ const logout = () =>
       });
   }
 };
-let toggle = false;
-function showMenu(){
-  if(!toggle){
-    const menu = document.getElementById("menu")
-    menu.style.top ="7%";
-    toggle = true;
+
+function showMenu()
+{
+  const menu = document.getElementById("menu");
+  if(!isOpen.value)
+  {
+    menu.style.top = "9vh";
+    isOpen.value = true;
     return;
   }
-  else{
-      const menu = document.getElementById("menu")
-  menu.style.top ="-40%";
-  toggle = false
+  else
+  {
+    menu.style.top ="-9vh";
+    isOpen.value = false;
   }
-
 }
+
 onMounted(() => {
   logoURL.value = ocLogo;
   resetMenu(); //was a problem, has been erroring out because is recieves incorrect information, but now that is fixed

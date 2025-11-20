@@ -10,15 +10,17 @@ import { computed, watch } from "vue";
 const exercises = ref([])
 
 onMounted(() => {
-  console.log("onMounted ran")
+  //console.log("onMounted ran")
   getExercises();
+  let menu = document.getElementById("menu");
+  menu.style.top = "-9vh";
 });
 
 async function getExercises(){
   try{
     const response = await exercisesServices.getAll();
     exercises.value = response.data;
-    console.log(exercises)
+    console.log(exercises.value)
   }
   catch(error){
     message.value = "Error: " + error.code + ":" + error.message;

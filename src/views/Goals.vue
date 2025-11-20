@@ -6,10 +6,13 @@ import plusIcon from "../components/plusIcon.vue"
 const currentProgress = ref(75);
 const message = ref("");
 const data = ref([]);
-console.log("on goals page!")
+//console.log("on goals page!");
+
 onMounted(() => {
   console.log("onMounted ran")
   getGoals();
+  let menu = document.getElementById("menu");
+  menu.style.top = "-9vh";
 });
 
 async function getGoals(){
