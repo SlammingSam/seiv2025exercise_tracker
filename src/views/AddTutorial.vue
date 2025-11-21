@@ -41,7 +41,7 @@ const cancel = () => {
 onMounted(() => {
   user.value = Utils.getStore("user");
   let menu = document.getElementById("menu");
-  menu.style.top = "-9vh";
+  menu.style.top = "-12vh";
 });
 </script>
 

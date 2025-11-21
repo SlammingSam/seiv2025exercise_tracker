@@ -13,7 +13,7 @@ onMounted(() => {
   if(user) //if a user is already logged in go to their home page
    router.push({ name: "Home" });
   let menu = document.getElementById("menu");
-  menu.style.top = "-9vh";
+  menu.style.top = "-12vh";
 });
 </script>
 
