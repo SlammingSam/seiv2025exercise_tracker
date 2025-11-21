@@ -46,7 +46,7 @@ async function addExercisePlan(){
 
 onMounted(() => {
   let menu = document.getElementById("menu");
-  menu.style.top = "-9vh";
+  menu.style.top = "-12vh";
 });
 
 </script>

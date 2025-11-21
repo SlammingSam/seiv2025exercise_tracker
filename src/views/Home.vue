@@ -14,7 +14,7 @@ onMounted(() => {
   //console.log("onMounted ran")
   getExercises();
   let menu = document.getElementById("menu");
-  menu.style.top = "-9vh";
+  menu.style.top = "-12vh";
 });
 
 async function getExercises(){

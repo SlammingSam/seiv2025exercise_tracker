@@ -13,7 +13,7 @@ onMounted(() => {
   getPlans();
   getExercises();
   let menu = document.getElementById("menu")
-  menu.style.top = "-9vh"
+  menu.style.top = "-12vh"
   
   // Use Vue lifecycle instead of DOMContentLoaded so elements from this component are present
 });

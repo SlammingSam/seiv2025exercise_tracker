@@ -12,7 +12,7 @@ onMounted(() => {
   console.log("onMounted ran")
   getGoals();
   let menu = document.getElementById("menu");
-  menu.style.top = "-9vh";
+  menu.style.top = "-12vh";
 });
 
 async function getGoals(){

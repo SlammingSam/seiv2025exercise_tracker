@@ -26,7 +26,7 @@ onMounted(() => {
     name.value = temp + "'s Progress";
   }
   let menu = document.getElementById("menu");
-  menu.style.top = "-9vh";
+  menu.style.top = "-12vh";
 });
 
 //console.log(user.value.picture);
