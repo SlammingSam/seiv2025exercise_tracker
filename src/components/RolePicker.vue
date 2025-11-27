@@ -5,7 +5,6 @@
             <h2>Who are you?</h2>
             <button @click="select('Coach')">Coach</button>
             <button @click="select('Athlete')">Athlete</button>
-            <button @click="select('Other')">Other</button>
         </div>
         <div>
             <button @click="select('Done')">Done</button>

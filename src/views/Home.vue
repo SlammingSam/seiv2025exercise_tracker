@@ -9,11 +9,14 @@ import userServices from "../services/userServices.js";
 import RolePicker from "../components/RolePicker.vue"
 
 const exercises = ref([])
+const showRolePicker = ref(false);
 
 const user = store.getters.getLoginUserInfo;
 const name = ref("");
 const role = ref("");
 const testUser = ref(null);
+const message = ref("");
+
 
 async function fetchUser(userId){
   try{
@@ -21,14 +24,34 @@ async function fetchUser(userId){
     testUser.value = response.data; 
     role.value = testUser.value?.role || "";
     name.value = testUser.value?.fName || "";
+    if (role.value === 'Unset') {
+      showRolePicker.value = true;
+    }
   }
   catch(error){
     console.log("Error fetching user: " + error);
   }
 }
 
-function checkRole(){
-  console.log(role.value)
+async function handleRoleSelected(selectedRole) {
+  if (selectedRole !== 'Done') {
+    try {
+      const updatedUser = { ...testUser.value, role: selectedRole };
+      await userServices.update(user.userId, updatedUser);
+      store.commit('setLoginUser', updatedUser);
+      role.value = selectedRole;
+      showRolePicker.value = false;
+      location.reload();
+    } catch (error) {
+      console.error("Error updating role:", error);
+    }
+  } else {
+    showRolePicker.value = false;
+  }
+}
+
+function closeRolePicker() {
+  showRolePicker.value = false;
 }
 
 onMounted(async () => {
@@ -57,22 +80,22 @@ if(user)
   name.value = user.fName;
 }
 
-if (role.value == null){
-  console.log("role is null");
-}
 
 const currentProgress = ref(75);
+
+console.log(role.value);
 </script>
 
 <template>  
    
-  <role-picker/>
+  <role-picker v-if="showRolePicker" @select="handleRoleSelected" @close="closeRolePicker" />
 
   <v-container>
     <v-toolbar>
       
       <div class="home-header">
       <p>Welcome, {{ name }}!</p>
+      
     </div>
     </v-toolbar>
     <div class="flex-row-home">
