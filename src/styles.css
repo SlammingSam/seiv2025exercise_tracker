@@ -295,8 +295,12 @@ textarea {
   background-color: rgb(232, 232, 232);
 }
 
-.add-plan-input{
-  
+.role-button{
+  background-color: #aaa;
+  transition: 0.2s;
+}
+.role-button:hover{
+  background-color: #ddd;
 }
 
 #main{
