@@ -4,9 +4,10 @@ import AuthServices from "../services/authServices";
 import Utils from "../config/utils.js";
 import { useRouter } from "vue-router";
 import store from "../store/store.js";
-
-const user = store.getters.getLoginUserInfo;
+import userServices from "../services/userServices.js";
+const message = ref("")
 const router = useRouter();
+const currentUser = ref([])
 //const user = ref({});
 
 const loginWithGoogle = () => {
@@ -37,13 +38,32 @@ const handleCredentialResponse = async (response) => {
       Utils.setStore("user", response.data);
       store.commit('setLoginUser', response.data);
       //setUser(response.data);
-      router.push({ name: "Home" });
+      getCurrentUser(store.getters.getLoginUserInfo)
+
+      
     })
     .catch((error) => {
       console.log("error", error);
     });
 };
-
+async function getCurrentUser(user){
+  try{
+    const response = await userServices.get(user.userId);
+    currentUser.value = response.data;
+    console.log(currentUser.value)
+      console.log(currentUser.value.role)
+      if(currentUser.value.role == "Unset"){
+        router.push({ name: "RoleSelect" });
+      }
+      else{
+        router.push({ name: "Home" });
+      }
+  }
+  catch(error){
+    message.value = "Error: " + (error.code || error.response?.status) + ":" + (error.message || error.response?.data);
+    console.log(error);
+  }
+}
 onMounted(() => {
   loginWithGoogle();
 });
