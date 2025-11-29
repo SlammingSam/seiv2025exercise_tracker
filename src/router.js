@@ -14,6 +14,7 @@ import AthletePlan from "./views/AthletePlan.vue";
 import AddPlan from "./views/AddPlan.vue";
 import AddGoal from "./views/AddGoal.vue";
 import RoleSelect from "./views/RoleSelect.vue";
+import Teams from "./views/Teams.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,6 +74,11 @@ const router = createRouter({
       path: "/role-select",
       name: "RoleSelect",
       component: RoleSelect,
+    },
+    {
+      path: "/teams",
+      name: "Teams",
+      component: Teams,
     },
   ],
 });
