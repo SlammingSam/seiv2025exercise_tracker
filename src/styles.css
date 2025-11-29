@@ -291,6 +291,8 @@ textarea {
 }
 
 
+
+
 .accordion-menu > h3:hover{
   background-color: rgb(232, 232, 232);
 }
@@ -303,6 +305,16 @@ textarea {
   background-color: #ddd;
 }
 
+.team_edit_modal{
+  transition: 0.2s;
+  opacity: 0%;
+  position:absolute;
+  top:30%;
+
+}
+#teamEdit{
+
+}
 #main{
   z-index: 0;
 }
