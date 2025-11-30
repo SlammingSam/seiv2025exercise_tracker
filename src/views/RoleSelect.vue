@@ -2,26 +2,31 @@
 import SocialLogin from "../components/SocialLogin.vue";
 import Utils from "../config/utils.js";
 import { ref, onMounted } from "vue";
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router';
+import { computed} from "vue";
 import store from "../store/store.js";
 import userServices from "../services/userServices.js";
 
 const router = useRouter()
-const user = store.getters.getLoginUserInfo;
+const user = computed(() => store.getters.getLoginUserInfo);
+
+// while (!user || !user.userId) {//might need something like this in every single file now
+//     console.warn("getCurrentUser called without a valid user:", user);
+// }
 
 async function setRole(new_role){
     const new_user = {
-        fName: user.fName,
-          lName: user.lName,
-          email: user.email,
-          role: new_role
+      fName: user.value.fName,
+      lName: user.value.lName,
+      email: user.value.email,
+      role: new_role
     }
     console.log("running Function")
     await userServices.update(user.userId, new_user)
      router.push({ name: "Home" });
 }
 onMounted(() => {
-  console.log(user);
+  console.log(user.value);
   let menu = document.getElementById("menu");
   menu.style.top = "-12vh";
 });

@@ -38,16 +38,19 @@ const handleCredentialResponse = async (response) => {
       Utils.setStore("user", response.data);
       store.commit('setLoginUser', response.data);
       //setUser(response.data);
-      getCurrentUser(store.getters.getLoginUserInfo)
-
-      
+      getCurrentUser(store.getters.getLoginUserInfo);
     })
     .catch((error) => {
       console.log("error", error);
     });
 };
+
 async function getCurrentUser(user){
-  try{
+  while (!user || !user.userId) {//might need something like this in every single file now
+    console.warn("getCurrentUser called without a valid user:", user);
+    getCurrentUser(store.getters.getLoginUserInfo);
+  }
+  try {
     const response = await userServices.get(user.userId);
     currentUser.value = response.data;
     console.log(currentUser.value)
@@ -64,6 +67,7 @@ async function getCurrentUser(user){
     console.log(error);
   }
 }
+
 onMounted(() => {
   loginWithGoogle();
 });

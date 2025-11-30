@@ -8,10 +8,14 @@ import exercise_planServices from "../services/exercise_planServices.js";
 import store from "../store/store.js";
 import { computed, watch } from "vue";
 
-const exercises = ref([])
+const exercises = ref([]);
+const currentProgress = ref(75);
+const name = ref("");
+
+const user = computed(() => store.getters.getLoginUserInfo);
+console.log(user.value);
 
 onMounted(() => {
-  //console.log("onMounted ran")
   getExercises();
   let menu = document.getElementById("menu");
   menu.style.top = "-12vh";
@@ -29,16 +33,12 @@ async function getExercises(){
   }
 }
 
-const name = ref("");
-
-const user = computed(() => store.getters.getLoginUserInfo);
-console.log(user.value);
-
 if(user)
 {
-  name.value = user.fName;
+  name.value = user.value.fName;
+  //console.log(name.value);
 }
-const currentProgress = ref(75);
+
 </script>
 
 <template>  
