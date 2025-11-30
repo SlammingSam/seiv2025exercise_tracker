@@ -4,14 +4,17 @@ import { computed, ref, onMounted } from "vue";
 import teamServices from "../services/teamServices";
 import userServices from "../services/userServices"
 import plusIcon from "../components/plusIcon.vue";
-import teamEdit from "../components/TeamEdit.vue";
+import TeamCreate from "../components/TeamCreate.vue";
 import store from "../store/store.js";
+import AthleteAdd from "../components/AthleteAdd.vue";
 const message = ref("");
 const data = ref([]);
 const teams = ref([])
 const teamEditModal = ref(false)
 const currentUser = ref(null)
 const user_id = ref("")
+const team_id = ref(null)
+const team_name = ref(null)
 const loadingUser = ref(true);
  const userSession = computed(() => store.getters.getLoginUserInfo);
 //console.log("on goals page!");
@@ -43,8 +46,9 @@ async function getTeams(){
 }
 
 function toggleTeamEdit(){
-    let modal = document.getElementById("teamEdit")
+    let modal = document.getElementById("teamCreate")
    modal.style.opacity = "100%"
+   modal.style.top = "30%"
 }
 
 async function getCurrentUser(){
@@ -59,7 +63,14 @@ async function getCurrentUser(){
 }
 
 
-
+function changeTeamId(id, name){
+  team_id.value = id;
+  team_name.value = name;
+  console.log(team_name)
+   let modal = document.getElementById("athleteAdd")
+   modal.style.opacity = "100%"
+   modal.style.top = "30%"
+}
 
 const lists = ref([]);//list for the page display
 const parsedList = ref([]);//list to send to the database
@@ -106,13 +117,18 @@ const parsedList = ref([]);//list to send to the database
           <tr v-for="item in data" :key="item.id" class ="long-table">
             <td v-if="item.user_id == userSession?.userId">{{ item.name }}</td>
             <button v-if="item.user_id == userSession?.userId">Edit</button>
-            <button v-if="item.user_id == userSession?.userId">Add to Team</button>
+            <button v-if="item.user_id == userSession?.userId" @click="changeTeamId(item.id, item.name)">Add to Team</button>
             <button v-if="item.user_id == userSession?.userId">remove</button>
+      
         </tr>
       </tbody>
     </table> 
-    <teamEdit id = "teamEdit" class = "team_edit_modal"
+    <TeamCreate id = "teamCreate" class = "team_create_modal"
        />
+          <AthleteAdd id="athleteAdd" class = "athlete_add_modal"
+            :teamId="team_id"
+            :teamName="team_name"          
+          />
   </div>
   </v-container>
 </template>

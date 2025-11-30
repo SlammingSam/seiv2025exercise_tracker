@@ -21,8 +21,9 @@ async function addTeam(){
    console.log(response)
   }
   function hideModal(){
-      let modal = document.getElementById("teamEdit")
+      let modal = document.getElementById("teamCreate")
    modal.style.opacity = "0%"
+   modal.style.top = "-30%"
   }
   async function getCurrentUser(){
   let userSession = computed(() => store.getters.getLoginUserInfo);

@@ -305,14 +305,20 @@ textarea {
   background-color: #ddd;
 }
 
-.team_edit_modal{
+.team_create_modal{
   transition: 0.2s;
   opacity: 0%;
   position:absolute;
-  top:30%;
-
+  top:-30%;
 }
-#teamEdit{
+
+.athlete_add_modal{
+  transition: 0.2s;
+  opacity: 0%;
+  position:absolute;
+  top:-30%;
+}
+#teamCreate{
 
 }
 #main{
