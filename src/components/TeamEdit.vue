@@ -1,6 +1,7 @@
 <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
 import userServices from "../services/userServices.js"
+import TeamNameEdit from "./TeamNameEdit.vue";
 import { ref, onMounted } from "vue";
 const currentProgress = ref(75);
 const users = ref([])
@@ -27,7 +28,18 @@ async function getUsers(){
     console.log(error);
   }
 }
+function changeName(){
 
+}
+async function removeFromTeam(id){
+  const response = await userServices.update(id,
+    {
+      team_id: null
+    }
+   )
+   console.log(response)
+ 
+}
 
 async function addToTeam(user_id){
   userServices.update(user_id, {
@@ -54,6 +66,7 @@ async function addToTeam(user_id){
    
 <div class = "flex-row-search">
   <button @click="hideModal()">Back</button>
+  <button @click="changeName()">change Name</button>
     <input type="text"  class = inputBetter v-model="input" placeholder="Search Athletes..." />
 </div>
    
@@ -67,6 +80,7 @@ async function addToTeam(user_id){
         <tr v-for="item in users" :key="item.user_id" class ="long-table">
           <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.fName }}</td>
           <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.lName }}</td>
+          <td v-if="item.role == 'Athlete' && item.team_id == props.teamId"><button @click="removeFromTeam(item.id)">Remove</button></td>
             <!-- i'll need to write this today. -->
         </tr>
       </tbody>
@@ -74,5 +88,7 @@ async function addToTeam(user_id){
  
   </div>
   </v-container>
+
+   
   
 </template>
