@@ -7,6 +7,8 @@ import plusIcon from "../components/plusIcon.vue";
 import TeamCreate from "../components/TeamCreate.vue";
 import store from "../store/store.js";
 import AthleteAdd from "../components/AthleteAdd.vue";
+import TeamEdit from "../components/TeamEdit.vue"
+import DeleteConfirm from "../components/DeleteConfirm.vue";
 const message = ref("");
 const data = ref([]);
 const teams = ref([])
@@ -45,10 +47,10 @@ async function getTeams(){
   }
 }
 
-function toggleTeamEdit(){
+function toggleTeamCreate(){
     let modal = document.getElementById("teamCreate")
    modal.style.opacity = "100%"
-   modal.style.top = "30%"
+   modal.style.top = "7%"
 }
 
 async function getCurrentUser(){
@@ -69,13 +71,27 @@ function changeTeamId(id, name){
   console.log(team_name)
    let modal = document.getElementById("athleteAdd")
    modal.style.opacity = "100%"
-   modal.style.top = "30%"
+   modal.style.top = "7%"
 }
 
 const lists = ref([]);//list for the page display
 const parsedList = ref([]);//list to send to the database
 
+function toggleTeamEdit(id, name){
+   team_id.value = id;
+  team_name.value = name;
+    let modal = document.getElementById("teamEdit")
+   modal.style.opacity = "100%"
+   modal.style.top = "7%"
+}
 
+function toggleDeleteConfirm(id, name){
+    team_id.value = id;
+  team_name.value = name;
+    let modal = document.getElementById("deleteConfirm")
+   modal.style.opacity = "100%"
+   modal.style.top = "20%"
+}
 </script>
 
 <template>  
@@ -91,7 +107,7 @@ const parsedList = ref([]);//list to send to the database
  <div class = "normal-header">
   <p>Create a team:</p>
  </div>
- <button id="plus-icon" @click="toggleTeamEdit()">
+ <button id="plus-icon" @click="toggleTeamCreate()">
 <plusIcon
         size="45" 
         color="#9d9e9d" 
@@ -116,9 +132,9 @@ const parsedList = ref([]);//list to send to the database
         <!-- Here the type can be declared to represent the item, just like other languages.  -->
           <tr v-for="item in data" :key="item.id" class ="long-table">
             <td v-if="item.user_id == userSession?.userId">{{ item.name }}</td>
-            <button v-if="item.user_id == userSession?.userId">Edit</button>
+            <button v-if="item.user_id == userSession?.userId" @click = "toggleTeamEdit(item.id, item.name)">Edit</button>
             <button v-if="item.user_id == userSession?.userId" @click="changeTeamId(item.id, item.name)">Add to Team</button>
-            <button v-if="item.user_id == userSession?.userId">remove</button>
+            <button v-if="item.user_id == userSession?.userId" @click="toggleDeleteConfirm(item.id, item.name)">remove</button>
       
         </tr>
       </tbody>
@@ -128,6 +144,15 @@ const parsedList = ref([]);//list to send to the database
           <AthleteAdd id="athleteAdd" class = "athlete_add_modal"
             :teamId="team_id"
             :teamName="team_name"          
+          />
+          <TeamEdit id = "teamEdit" class = "team_edit_modal"
+           :teamId="team_id"
+            :teamName="team_name"  
+          />
+          <!-- I intended on using this for multiple things, but thats ok. Thats why the props are named different. -->
+          <DeleteConfirm class = "delete_confirm" id = "deleteConfirm"
+          :objectId="team_id"
+            :objectName="team_name"
           />
   </div>
   </v-container>

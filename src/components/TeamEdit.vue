@@ -35,7 +35,7 @@ async function addToTeam(user_id){
   })
 }
   function hideModal(){
-      let modal = document.getElementById("athleteAdd")
+      let modal = document.getElementById("teamEdit")
    modal.style.opacity = "0%"
    modal.style.top = "-100%"
   }
@@ -47,13 +47,13 @@ async function addToTeam(user_id){
   <v-container>
     <v-toolbar>
       <div class="home-header">
-      <p>Add Athletes to {{ props.teamName }}</p>
+      <p>{{ props.teamName }}'s Athletes</p>
     </div>
     
     </v-toolbar>
    
 <div class = "flex-row-search">
-  <button @click="hideModal()">Cancel</button>
+  <button @click="hideModal()">Back</button>
     <input type="text"  class = inputBetter v-model="input" placeholder="Search Athletes..." />
 </div>
    
@@ -63,13 +63,10 @@ async function addToTeam(user_id){
           <tr class ="long-table">
            <th> First Name</th>
            <th> Last Name</th>
-           <th> email</th>
         </tr>
         <tr v-for="item in users" :key="item.user_id" class ="long-table">
-          <td v-if="item.role == 'Athlete' && item.team_id == null">{{ item.fName }}</td>
-          <td v-if="item.role == 'Athlete' && item.team_id == null">{{ item.lName }}</td>
-           <td v-if="item.role == 'Athlete' && item.team_id == null">{{ item.email }}</td>
-           <button v-if="item.role == 'Athlete' && item.team_id == null" @click="addToTeam(item.id)">Add to Team</button>
+          <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.fName }}</td>
+          <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.lName }}</td>
             <!-- i'll need to write this today. -->
         </tr>
       </tbody>

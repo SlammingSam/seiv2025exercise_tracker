@@ -18,16 +18,20 @@ async function addTeam(){
     user_id: currentUser.value.id,
     name:form.name
    })
+       let modal = document.getElementById("teamCreate")
+   modal.style.opacity = "0%"
+   modal.style.top = "-100%"
    console.log(response)
   }
   function hideModal(){
       let modal = document.getElementById("teamCreate")
    modal.style.opacity = "0%"
-   modal.style.top = "-30%"
+   modal.style.top = "-100%"
   }
   async function getCurrentUser(){
   let userSession = computed(() => store.getters.getLoginUserInfo);
     const response = await userServices.get(userSession.value.userId);
+ 
 
     currentUser.value = response.data;
   }
