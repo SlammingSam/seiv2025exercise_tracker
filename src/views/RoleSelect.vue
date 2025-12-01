@@ -28,26 +28,37 @@ onMounted(() => {
 </script>
 
 <template>  
-   
   <v-container>
-    <v-toolbar>
-      <div class="home-header">
-      <p>
-        First time?
-      </p>
+    <div class="modal-overlay" @click.self="close">
+    <div class="modal-content">
+        <div>
+            <h2>Who are you?</h2>
+                <button class = "role-button" @click ="setRole('Coach')">Coach</button>
+                <button class = "role-button" @click ="setRole('Athlete')">Athlete</button>
+        </div>
+        <div>
+        </div>
     </div>
-    </v-toolbar>
-    <br /><br />
-    
-    <div class="home-container">
-    <p>looks like you're brand new. Select a role to get started!</p>
-    </div>
+  </div>
 
-     <button class = "role-button" @click ="setRole('Athlete')">
-        Athlete
-    </button>
-    <button class = "role-button" @click ="setRole('Coach')">
-        Coach
-    </button>
   </v-container>
 </template>
+
+<style scoped>
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+button {
+  margin: 0.5rem;
+}
+</style>
