@@ -84,7 +84,9 @@ function closeModal() {
       <div class="flex-column-right">
         <img class="image_pfp" :src="picture" />
         <div class="pfp-header">
-          <button @click="openModal" class="role-button">Click Me</button>
+          <button @click="openModal" class="role-button">
+            Change Role - MAKE PRETTIER
+          </button>
           <p class="pfp-table-header">{{ name }}</p>
         </div>
         <div class="left-header">
