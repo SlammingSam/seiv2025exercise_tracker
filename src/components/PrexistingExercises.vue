@@ -4,10 +4,8 @@ import SocialLogin from "../components/SocialLogin.vue";
 import exerciseServices from "../services/exercisesServices.js"
 import planServices from "../services/planServices.js"
 import { ref, onMounted } from "vue";
-
 const currentProgress = ref(75);
 const plans = ref([])
-const plan_id = ref(null)
 const exercises = ref([])
 const message = ref("");
 onMounted(() => {
@@ -19,7 +17,6 @@ onMounted(() => {
   
   // Use Vue lifecycle instead of DOMContentLoaded so elements from this component are present
 });
-import ExercisePlanView from "../components/ExercisePlanView.vue";
 async function getExercises(){
   try{
     const response = await exerciseServices.getAll();
@@ -73,72 +70,31 @@ function filteredList() {
 const lists = ref([]);//list for the page display
 const parsedList = ref([]);//list to send to the database
 
-function toggleViewExercisePlan(id){
-    plan_id.value = id;
-    let modal = document.getElementById("exercisePlanView")
-   modal.style.opacity = "100%"
-   modal.style.top = "20%"
-}
+
 </script>
 
 <template>  
    
   <v-container>
-    <v-toolbar>
-      <div class="home-header">
-      <p>Exercise Plans</p>
-    </div>
-    </v-toolbar>
-    <div class="flex-row-home">
-    <div class="left-header">
-      <p>My Plans</p>
-    </div>
-</div>
-<div class = "flex-row-search">
-    <input type="text"  class = inputBetter v-model="input" placeholder="Search Plans..." />
-</div>
-   
-  <div class = flex-row-table>
-      <button id = "plan-add" @click=" this.$router.push('/add-plan')">
-         <PlusIcon/>
-      </button>
-        <input type="file" id="plan-file-input" style="display:none;"/>
-    <table class ="long-table">
+    <div>
+         <table class ="long-table">
       <tbody class ="long-table">
-       <tr>
-        <h2 v-if="filteredList().length < 1">Looks like you don't have any plans yet.</h2>
-       </tr>
-         <tr v-for="item in filteredList()" :key="item.id" class ="long-table">
-          <th>
-            Plan name
-          </th>
-          <th>
-            Description
-          </th>
+        <h3>Exercises</h3>
+        <tr class ="long-table">
+          <th>name</th>
+            <th>sets</th>
+            <th>reps</th>
         </tr>
-       
-           <tr v-for="item in filteredList()" :key="item.id" class ="long-table">
-            <td>{{ item.name }}</td>
-            <td>{{ item.description }}</td>
-            <td><button @click = "toggleViewExercisePlan(item.id)">view</button></td>
+         <tr v-for="item in exercises" :key="item.exercise_id" class ="long-table">
+          <td>{{ item.name }}</td>
+            <td>{{ item.sets }}</td>
+            <td>{{ item.reps }}</td>
+            <td><button>Add exercise</button></td>
         </tr>
       </tbody>
-      </table>
-
-      <div>
-      <button id = "exercise-add" @click="this.$router.push('/add-plan')"
-      >
-         <PlusIcon/>
-      </button>
-        <input type="file" id="exercise-file-input" style="display:none;"/>
-       
-      </div>
+    </table> 
  
   </div>
   </v-container>
 
-
-<ExercisePlanView id = "exercisePlanView" class = "exercise_plan_modal"
-:planId="plan_id"
-/>
 </template>
