@@ -111,12 +111,11 @@ function togglePlanView(){
           </th>
         </tr>
        <tr v-for="item in plans" :key="item.id" class ="long-table">
-           <tr v-for="exercise_plan in exercise_plans" :key="exercise_plan.id" class ="long-table">
-            <td v-if= "exercise_plan.user_id == currentUser?.value?.id && item.id == exercise_plan.plan_id">{{ item.name }}</td>
-            <td v-if= "exercise_plan.user_id == currentUser?.value?.id && item.id == exercise_plan.plan_id">{{ item.description }}</td>
-            <td v-if= "exercise_plan.user_id == currentUser?.value?.id && item.id == exercise_plan.plan_id"><button @click="togglePlanView(exercise_plan.id, item.id)">View</button></td>
+            <td>{{ item.name }}</td>
+            <td >{{ item.description }}</td>
+            <td><button @click="togglePlanView(exercise_plan.id, item.id)">View</button></td>
         </tr>
-        </tr>
+  
       </tbody>
       </table>
 
