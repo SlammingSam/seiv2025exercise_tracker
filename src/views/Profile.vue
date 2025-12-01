@@ -6,6 +6,7 @@ import exercise_planServices from "../services/exercise_planServices";
 import exercisesServices from "../services/exercisesServices";
 import store from "../store/store.js";
 import { computed, watch } from "vue";
+import RoleModal from "../components/RoleModal.vue";
 
 const goals = ref([])
 const exercises = ref([])
@@ -66,18 +67,30 @@ async function getPlans(){
     console.log(error);
   }
 }
+
+const isModalVisible = ref(false);
+
+function openModal() {
+  isModalVisible.value = true;
+  console.log('openModal ->', isModalVisible.value);
+}
+function closeModal() {
+  isModalVisible.value = false;
+  console.log('closeModal ->', isModalVisible.value);
+}
 </script>
 
 <template>  
    
   <v-container>
-   
+       <RoleModal v-if="isModalVisible" :user="user" @close="closeModal" />
 <div class="flex-row-profile">
     <div class="flex-column-right">
         <img class="image_pfp" :src="picture"/> 
          <div class="pfp-header">
-        <p class="pfp-table-header">{{ name }}</p>
-         </div>
+          <button @click="openModal" class="role-button">Click Me</button>
+          <p class="pfp-table-header">{{ name }}</p>
+        </div>
      <div class="left-header">
       <p>Today's Workouts</p>
     </div>
