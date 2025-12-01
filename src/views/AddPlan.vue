@@ -1,6 +1,6 @@
 <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 const currentProgress = ref(75);
 import { reactive } from 'vue'
 import exercisesServices from "../services/exercisesServices";
@@ -9,6 +9,8 @@ import planServices from "../services/planServices";
 import exercise_dayServices from "../services/exercise_dayServices";
 import userServices from "../services/userServices";
 import { useRouter } from 'vue-router'
+import store from "../store/store.js";
+ const userSession = computed(() => store.getters.getLoginUserInfo);
 const currentUser = ref(null)
 
 const form = reactive({
@@ -50,10 +52,10 @@ async function addExercisePlan(){
 
     // accept multiple possible id field names depending on backend
     const planId = plan_response?.data?.plan_id ?? plan_response?.data?.id ?? plan_response?.data?.planId
-
+    console.log("user id before making plan: " + currentUser.value.id)
     const exercisePlanResp = await exercise_planServices.create({
       plan_id: planId,
-      user_id: currentUser.value.user_id
+      user_id: currentUser?.value?.id
     })
     console.log("exercisePlanResp.data:", exercisePlanResp.data)
     const exercisePlanId = exercisePlanResp?.data?.exercise_plan_id ?? exercisePlanResp?.data?.id ?? exercisePlanResp?.data?.exercisePlanId
@@ -85,8 +87,9 @@ async function savePlan(){
   router.push({ name: 'ExercisePlan' })
 }
 
-onMounted(() => {
-  getCurrentUser()
+onMounted(async () => {
+  await getCurrentUser()
+  console.log(currentUser)
   let menu = document.getElementById("menu");
   menu.style.top = "-12vh";
 });

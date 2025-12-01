@@ -5,22 +5,28 @@ import exerciseServices from "../services/exercisesServices.js"
 import exercise_planServices from "../services/exercise_planServices.js";
 import planServices from "../services/planServices.js"
 import PlanView from "../components/PlanView.vue"
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import userServices from "../services/userServices.js";
+import store from "../store/store.js";
 const currentUser = ref(null)
 const currentProgress = ref(75);
 const plans = ref([])
 const plan_id = ref(null)
+const exercise_plan_id = ref(null)
 const exercises = ref([])
 const message = ref("");
 const exercise_plans = ref([])
-onMounted(() => {
+ const userSession = computed(() => store.getters.getLoginUserInfo);
+onMounted(async () => {
   console.log("onMounted ran")
-  getPlans();
-  getExercisePlans();
-  getCurrentUser()
+  await getPlans();
+  await getExercisePlans();
+  await getCurrentUser()
   let menu = document.getElementById("menu")
   menu.style.top = "-12vh"
+   console.log("length of plans:" + plans.value.length)
+   console.log("length of exercise plans:" + exercise_plans.value.length)
+  
   
   // Use Vue lifecycle instead of DOMContentLoaded so elements from this component are present
 });
@@ -64,7 +70,8 @@ let deptArr = [];
 
 
 function togglePlanView(){
-
+  plan_id.value = plan_id;
+  exercise_plan_id.value = exercise_plan_id;
 }
 </script>
 
@@ -93,9 +100,9 @@ function togglePlanView(){
     <table class ="long-table">
       <tbody class ="long-table">
        <tr>
-        <h2 v-if="plans.values.length() < 1">Looks like you don't have any plans yet.</h2>
+        <h2 v-if="plans?.value?.length < 1">Looks like you don't have any plans yet.</h2>
        </tr>
-         <tr v-for="item in plans" :key="item.id" class ="long-table">
+         <tr>
           <th>
             Plan name
           </th>
@@ -103,11 +110,12 @@ function togglePlanView(){
             Description
           </th>
         </tr>
-       <tr v-for="exercise_plan in exercise_plans" :key="exercise_plan.id" class ="long-table"></tr>
-           <tr v-if= "item.user_id == currentUser?.value?.id" v-for="item in plans" :key="item.id" class ="long-table">
-            <td>{{ item.name }}</td>
-            <td>{{ item.description }}</td>
-            <td><button @click="togglePlanView()">View</button></td>
+       <tr v-for="item in plans" :key="item.id" class ="long-table">
+           <tr v-for="exercise_plan in exercise_plans" :key="exercise_plan.id" class ="long-table">
+            <td v-if= "exercise_plan.user_id == currentUser?.value?.id && item.id == exercise_plan.plan_id">{{ item.name }}</td>
+            <td v-if= "exercise_plan.user_id == currentUser?.value?.id && item.id == exercise_plan.plan_id">{{ item.description }}</td>
+            <td v-if= "exercise_plan.user_id == currentUser?.value?.id && item.id == exercise_plan.plan_id"><button @click="togglePlanView(exercise_plan.id, item.id)">View</button></td>
+        </tr>
         </tr>
       </tbody>
       </table>
@@ -119,8 +127,9 @@ function togglePlanView(){
   </div>
   </v-container>
 
- <PlanView
- :exercise_plan_id=""
+ <PlanView id = "planView" class ="plan_view_modal"
+ :exercisePlanId="exercise_plan_id"
+ :planId ="plan_id"
  />
 
 </template>

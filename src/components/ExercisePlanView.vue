@@ -3,11 +3,13 @@ import PlusIcon from "../components/plusIcon.vue";
 import SocialLogin from "../components/SocialLogin.vue";
 import exerciseServices from "../services/exercisesServices.js"
 import planServices from "../services/planServices.js"
+import exercise_dayServices from "../services/exercise_dayServices.js";
 import { ref, onMounted, watch } from "vue";
 const currentProgress = ref(75);
 const plan = ref(null)
 const exercises = ref([])
 const message = ref("");
+const exerciseDays = ref([])
 const props = defineProps({
   planId: { type: [Number, String]},
   exercisePlanId: { type: [Number, String]}
@@ -16,6 +18,7 @@ const props = defineProps({
 onMounted(() => {
   console.log("onMounted ran")
   getExercises();
+  getExerciseDays();
   let menu = document.getElementById("menu")
   if (menu) menu.style.top = "-12vh"
 });
@@ -46,6 +49,12 @@ async function getPlans(){
     message.value = "Error: " + error.code + ":" + error.message;
     console.log(error);
   }
+}
+
+async function getExerciseDays(){
+  const response = await exercise_dayServices.getAll();
+  exerciseDays.value = response.data
+  
 }
 
 let input = ref("");
@@ -100,11 +109,14 @@ const parsedList = ref([]);//list to send to the database
             <th>sets</th>
             <th>reps</th>
         </tr>
-         <tr v-for="item in exercises" :key="item.exercise_id" class ="long-table">
+       
+          <tr v-for="item in exercises" :key="item.exercise_id" class ="long-table">
           <td>{{ item.name }}</td>
             <td>{{ item.sets }}</td>
             <td>{{ item.reps }}</td>
         </tr>
+         
+        
       </tbody>
     </table> 
  
