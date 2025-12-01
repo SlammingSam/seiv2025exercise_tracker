@@ -3,6 +3,7 @@ import PlusIcon from "../components/plusIcon.vue";
 import SocialLogin from "../components/SocialLogin.vue";
 import exerciseServices from "../services/exercisesServices.js"
 import planServices from "../services/planServices.js"
+import PlanView from "../components/PlanView.vue"
 import { ref, onMounted } from "vue";
 
 const currentProgress = ref(75);
@@ -73,11 +74,8 @@ function filteredList() {
 const lists = ref([]);//list for the page display
 const parsedList = ref([]);//list to send to the database
 
-function toggleViewExercisePlan(id){
-    plan_id.value = id;
-    let modal = document.getElementById("exercisePlanView")
-   modal.style.opacity = "100%"
-   modal.style.top = "20%"
+function togglePlanView(){
+
 }
 </script>
 
@@ -120,16 +118,12 @@ function toggleViewExercisePlan(id){
            <tr v-for="item in filteredList()" :key="item.id" class ="long-table">
             <td>{{ item.name }}</td>
             <td>{{ item.description }}</td>
-            <td><button @click = "toggleViewExercisePlan(item.id)">view</button></td>
+            <td><button @click="togglePlanView()">View</button></td>
         </tr>
       </tbody>
       </table>
 
       <div>
-      <button id = "exercise-add" @click="this.$router.push('/add-plan')"
-      >
-         <PlusIcon/>
-      </button>
         <input type="file" id="exercise-file-input" style="display:none;"/>
        
       </div>
@@ -137,8 +131,6 @@ function toggleViewExercisePlan(id){
   </div>
   </v-container>
 
+ 
 
-<ExercisePlanView id = "exercisePlanView" class = "exercise_plan_modal"
-:planId="plan_id"
-/>
 </template>
