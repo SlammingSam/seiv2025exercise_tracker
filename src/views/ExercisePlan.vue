@@ -113,7 +113,7 @@ function togglePlanView(){
        <tr v-for="item in plans" :key="item.id" class ="long-table">
             <td>{{ item.name }}</td>
             <td >{{ item.description }}</td>
-            <td><button @click="togglePlanView(exercise_plan.id, item.id)">View</button></td>
+            <td><button @click="togglePlanView(item.id)">View</button></td>
         </tr>
   
       </tbody>
