@@ -7,8 +7,9 @@ import exercisesServices from "../services/exercisesServices";
 import exercise_planServices from "../services/exercise_planServices"
 import planServices from "../services/planServices";
 import exercise_dayServices from "../services/exercise_dayServices";
+import userServices from "../services/userServices";
 import { useRouter } from 'vue-router'
-
+const currentUser = ref(null)
 
 const form = reactive({
   name: '',
@@ -27,6 +28,17 @@ function removeRow(index) {
 
 const router = useRouter()
 
+async function getCurrentUser(){
+    //this guard is not needed, session works as intended.
+    console.log('userSession.value:', userSession.value);
+    if (!userSession.value || !userSession.value.userId) {
+      console.log('No user session or userId');
+      return;
+    }
+    const response = await userServices.get(userSession.value.userId);
+    currentUser.value = response.data;
+}
+
 async function addExercisePlan(){
   try{
     console.log("plan name " + form.name)
@@ -41,6 +53,7 @@ async function addExercisePlan(){
 
     const exercisePlanResp = await exercise_planServices.create({
       plan_id: planId,
+      user_id: currentUser.value.user_id
     })
     console.log("exercisePlanResp.data:", exercisePlanResp.data)
     const exercisePlanId = exercisePlanResp?.data?.exercise_plan_id ?? exercisePlanResp?.data?.id ?? exercisePlanResp?.data?.exercisePlanId
@@ -69,10 +82,11 @@ async function addExercisePlan(){
 
 async function savePlan(){
   await addExercisePlan()
-  router.push({ name: 'exercise-plan' })
+  router.push({ name: 'ExercisePlan' })
 }
 
 onMounted(() => {
+  getCurrentUser()
   let menu = document.getElementById("menu");
   menu.style.top = "-12vh";
 });

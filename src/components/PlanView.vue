@@ -3,10 +3,12 @@ import PlusIcon from "../components/plusIcon.vue";
 import SocialLogin from "../components/SocialLogin.vue";
 import exerciseServices from "../services/exercisesServices.js"
 import planServices from "../services/planServices.js"
+import exercise_dayServices from "../services/exercise_dayServices.js";
 import { ref, onMounted } from "vue";
 const currentProgress = ref(75);
 const plans = ref([])
 const exercises = ref([])
+const exerciseDays = ref([])
 const message = ref("");
 
 const props = defineProps({
@@ -18,6 +20,7 @@ onMounted(() => {
   console.log("onMounted ran")
   getPlans();
   getExercises();
+  getExerciseDays();
   let menu = document.getElementById("menu")
   menu.style.top = "-12vh"
   
@@ -34,6 +37,11 @@ async function getExercises(){
     console.log(error);
   }
 }
+async function getExerciseDays(){
+  const response = await exercise_dayServices.getAll();
+  exerciseDays.value = response.data
+  
+}
 async function getPlans(){
   try{
     const response = await planServices.getAll();
@@ -49,9 +57,7 @@ async function getPlans(){
 const lists = ref([]);//list for the page display
 const parsedList = ref([]);//list to send to the database
 
-function togglePlanView(){
 
-}
 </script>
 
 <template>  
@@ -72,17 +78,19 @@ function togglePlanView(){
             <th>reps</th>
             <th>status</th>
         </tr>
-         <tr v-for="item in exercises" :key="item.exercise_id" class ="long-table">
-          <td v-if="item.role == 'Athlete' && item.exercise_plan_id == props.exercise_plan_id">{{ item.name }}</td>
+         <tr v-for="day in exercises_days" :key="day.id" class ="long-table">
+          <tr v-for="item in exercises" :key="item.id" class ="long-table">
+          <td v-if="props.exercise_plan_id == day.exercise_plan_id && item.id == day.exercise_id">{{ item.name }}</td>
             <td>{{ item.sets }}</td>
             <td>{{ item.reps }}</td>
             <td>{{ item.status }}</td>
+            </tr>
         </tr>
       </tbody>
     </table> 
  
   </v-container>
 
-  <PlanView id = "PlanView"/>
+
 
 </template>
