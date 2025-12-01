@@ -305,11 +305,48 @@ textarea {
   background-color: #ddd;
 }
 
+.team_create_modal{
+  transition: 0.2s;
+  opacity: 0%;
+  position:absolute;
+  top:-100%;
+  background-color: white;
+  height: 100%
+}
+
+.athlete_add_modal{
+  transition: 0.2s;
+  opacity: 0%;
+  position:absolute;
+  top:-100%;
+  background-color: white;
+  height: 100%;
+}
+
 .team_edit_modal{
   transition: 0.2s;
   opacity: 0%;
   position:absolute;
-  top:30%;
+  top:-100%;
+  background-color: white;
+  height: 100%;
+}
+
+.delete_confirm{
+   transition: 0.2s;
+  opacity: 0%;
+  position:absolute;
+  top:-100%;
+  left: 30%;
+  background-color: rgb(133, 133, 133);
+  height: 30%;
+  width:40%
+}
+
+.small_modal_body{
+
+}
+#teamCreate{
 
 }
 #teamEdit{

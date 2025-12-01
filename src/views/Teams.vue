@@ -4,14 +4,20 @@ import { computed, ref, onMounted } from "vue";
 import teamServices from "../services/teamServices";
 import userServices from "../services/userServices"
 import plusIcon from "../components/plusIcon.vue";
-import teamEdit from "../components/TeamEdit.vue";
+import TeamCreate from "../components/TeamCreate.vue";
 import store from "../store/store.js";
+import AthleteAdd from "../components/AthleteAdd.vue";
+import TeamEdit from "../components/TeamEdit.vue"
+import DeleteConfirm from "../components/DeleteConfirm.vue";
+import TeamNameEdit from "../components/TeamNameEdit.vue"
 const message = ref("");
 const data = ref([]);
 const teams = ref([])
 const teamEditModal = ref(false)
 const currentUser = ref(null)
 const user_id = ref("")
+const team_id = ref(null)
+const team_name = ref(null)
 const loadingUser = ref(true);
  const userSession = computed(() => store.getters.getLoginUserInfo);
 //console.log("on goals page!");
@@ -42,9 +48,10 @@ async function getTeams(){
   }
 }
 
-function toggleTeamEdit(){
-    let modal = document.getElementById("teamEdit")
+function toggleTeamCreate(){
+    let modal = document.getElementById("teamCreate")
    modal.style.opacity = "100%"
+   modal.style.top = "7%"
 }
 
 async function getCurrentUser(){
@@ -59,12 +66,41 @@ async function getCurrentUser(){
 }
 
 
-
+function changeTeamId(id, name){
+  team_id.value = id;
+  team_name.value = name;
+  console.log(team_name)
+   let modal = document.getElementById("athleteAdd")
+   modal.style.opacity = "100%"
+   modal.style.top = "7%"
+}
 
 const lists = ref([]);//list for the page display
 const parsedList = ref([]);//list to send to the database
 
+function toggleTeamEdit(id, name){
+   team_id.value = id;
+  team_name.value = name;
+    let modal = document.getElementById("teamEdit")
+   modal.style.opacity = "100%"
+   modal.style.top = "7%"
+}
 
+function toggleNameChange(id, name){
+   team_id.value = id;
+  team_name.value = name;
+    let modal = document.getElementById("teamNameEdit")
+   modal.style.opacity = "100%"
+   modal.style.top = "7%"
+}
+
+function toggleDeleteConfirm(id, name){
+    team_id.value = id;
+  team_name.value = name;
+    let modal = document.getElementById("deleteConfirm")
+   modal.style.opacity = "100%"
+   modal.style.top = "20%"
+}
 </script>
 
 <template>  
@@ -80,7 +116,7 @@ const parsedList = ref([]);//list to send to the database
  <div class = "normal-header">
   <p>Create a team:</p>
  </div>
- <button id="plus-icon" @click="toggleTeamEdit()">
+ <button id="plus-icon" @click="toggleTeamCreate()">
 <plusIcon
         size="45" 
         color="#9d9e9d" 
@@ -105,14 +141,38 @@ const parsedList = ref([]);//list to send to the database
         <!-- Here the type can be declared to represent the item, just like other languages.  -->
           <tr v-for="item in data" :key="item.id" class ="long-table">
             <td v-if="item.user_id == userSession?.userId">{{ item.name }}</td>
-            <button v-if="item.user_id == userSession?.userId">Edit</button>
-            <button v-if="item.user_id == userSession?.userId">Add to Team</button>
-            <button v-if="item.user_id == userSession?.userId">remove</button>
+            <button v-if="item.user_id == userSession?.userId" @click = "toggleTeamEdit(item.id, item.name)">View</button>
+            <button v-if="item.user_id == userSession?.userId" @click = "toggleNameChange(item.id, item.name)">Change Name</button>
+            <button v-if="item.user_id == userSession?.userId" @click="changeTeamId(item.id, item.name)">Add to Team</button>
+            <button v-if="item.user_id == userSession?.userId" @click="toggleDeleteConfirm(item.id, item.name)">remove</button>
+      
         </tr>
       </tbody>
     </table> 
-    <teamEdit id = "teamEdit" class = "team_edit_modal"
+    <TeamCreate id = "teamCreate" class = "team_create_modal"
+            teamName=""  
+            :id="'teamCreate'"
        />
+          <AthleteAdd id="athleteAdd" class = "athlete_add_modal"
+            :teamId="team_id"
+            :teamName="team_name"          
+          />
+          <TeamEdit id = "teamEdit" class = "team_edit_modal"
+           :teamId="team_id"
+            :teamName="team_name"  
+          />
+          <!-- I intended on using this for multiple things, but thats ok. Thats why the props are named different. -->
+          <DeleteConfirm class = "delete_confirm" id = "deleteConfirm"
+          :objectId="team_id"
+            :objectName="team_name"
+          />
+          <TeamNameEdit id = "teamNameEdit" class = "team_create_modal"
+          
+           :teamId="team_id"
+            :teamName="team_name" 
+             />
+
+
   </div>
   </v-container>
 </template>
