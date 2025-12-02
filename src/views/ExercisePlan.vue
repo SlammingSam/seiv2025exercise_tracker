@@ -11,7 +11,7 @@ import store from "../store/store.js";
 const currentUser = ref(null)
 const currentProgress = ref(75);
 const plans = ref([])
-const plan_id = ref(null)
+const plan_name = ref(null)
 const exercise_plan_id = ref(null)
 const exercises = ref([])
 const message = ref("");
@@ -23,9 +23,6 @@ onMounted(async () => {
   await getPlans(currentUser.value.id)
   let menu = document.getElementById("menu")
   menu.style.top = "-12vh"
-   console.log("length of plans:" + plans.value.length)
-   console.log("length of exercise plans:" + exercise_plans.value.length)
-  
   
   // Use Vue lifecycle instead of DOMContentLoaded so elements from this component are present
 });
@@ -57,10 +54,16 @@ let arr = [];
 let deptArr = [];
 
 
-function togglePlanView(){
-  plan_id.value = plan_id;
-  exercise_plan_id.value = exercise_plan_id;
+function togglePlanView(id, name){
+  exercise_plan_id.value = id;
+  plan_name.value = name;
+      let modal = document.getElementById("planView")
+   modal.style.opacity = "100%"
+   modal.style.top = "7%"
+   console.log("id selected: " + exercise_plan_id.value)
 }
+  
+
 </script>
 
 <template>  
@@ -101,7 +104,7 @@ function togglePlanView(){
        <tr v-for="item in plans" :key="item.id" class ="long-table">
             <td>{{ item.name }}</td>
             <td >{{ item.description }}</td>
-            <td><button @click="togglePlanView(item.id)">View</button></td>
+            <td><button @click="togglePlanView(item.exercise_plans[0].id, item.name)">View</button></td>
         </tr>
   
       </tbody>
@@ -116,7 +119,7 @@ function togglePlanView(){
 
  <PlanView id = "planView" class ="plan_view_modal"
  :exercisePlanId="exercise_plan_id"
- :planId ="plan_id"
+ :planName="plan_name"
  />
 
 </template>

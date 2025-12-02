@@ -57,7 +57,6 @@ async function addExercisePlan(){
       plan_id: planId,
       user_id: currentUser?.value?.id
     })
-    console.log("exercisePlanResp.data:", exercisePlanResp.data)
     const exercisePlanId = exercisePlanResp?.data?.exercise_plan_id ?? exercisePlanResp?.data?.id ?? exercisePlanResp?.data?.exercisePlanId
 
     for(let i = 0; i < form.values.length; i++){
@@ -67,14 +66,12 @@ async function addExercisePlan(){
         sets: ex.sets,
         reps: ex.reps,
       })
-      console.log("exercise_response.data:", exercise_response.data)
       const exerciseId = exercise_response?.data?.exercise_id ?? exercise_response?.data?.id ?? exercise_response?.data?.exerciseId
 
       const exercise_day_response = await exercise_dayServices.create({
         exercise_id: exerciseId,
         exercise_plan_id: exercisePlanId
       })
-      console.log("exercise_day_response.data:", exercise_day_response.data)
     }
   } catch (err) {
     console.error('addExercisePlan error', err)

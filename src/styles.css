@@ -366,6 +366,11 @@ textarea {
 .small_modal_body{
 
 }
+
+#planViewContainer{
+  max-width: 100%;
+  width: 100%
+}
 #teamCreate{
 
 }

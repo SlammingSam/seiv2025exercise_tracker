@@ -10,7 +10,7 @@ export default {
     return {};
   },
   get(id) {
-    return apiClient.get(`/exercise_days/${id}`);
+    return apiClient.get(`/exercise_days/exercise_plans/${id}`);
   },
   create(data) {
     return apiClient.post("/exercise_days", data);
