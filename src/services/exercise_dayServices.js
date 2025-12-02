@@ -5,8 +5,6 @@ export default {
     return apiClient.get("/exercises");
   },
   getAllForUser(userId) {
-    //currently errors and will need to be modified to fit the schema
-    //return apiClient.get("/tutorials/userTut/" + userId);
     return {};
   },
   get(id) {
@@ -23,5 +21,8 @@ export default {
   },
   deleteAll() {
     return apiClient.delete(`/exercise_days`);
+  },
+  reset(exercisePlanId) {
+    return apiClient.delete(`/exercise_days/reset/${exercisePlanId}`);
   },
 };
