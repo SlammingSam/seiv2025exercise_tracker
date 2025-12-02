@@ -114,7 +114,6 @@ function toggleDeleteConfirm(id, name){
     
 <div class = "flex-row-search">
  <div class = "normal-header">
-  <p>Create a team:</p>
  </div>
  <button id="plus-icon" @click="toggleTeamCreate()">
 <plusIcon
@@ -130,21 +129,25 @@ function toggleDeleteConfirm(id, name){
    
   <div class = flex-row-table>
     <div v-if="loadingUser">Loading...</div>
-    <table v-else class ="long-table">
+    <table v-else class ="my-table">
       <thead>
         <tr>
           <th>Name</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
           <!-- This is the header for the list. -->
         </tr>
       </thead>
-      <tbody class ="long-table">
+      <tbody >
         <!-- Here the type can be declared to represent the item, just like other languages.  -->
-          <tr v-for="item in data" :key="item.id" class ="long-table">
-            <td v-if="item.user_id == userSession?.userId">{{ item.name }}</td>
-            <button v-if="item.user_id == userSession?.userId" @click = "toggleTeamEdit(item.id, item.name)">View</button>
-            <button v-if="item.user_id == userSession?.userId" @click = "toggleNameChange(item.id, item.name)">Change Name</button>
-            <button v-if="item.user_id == userSession?.userId" @click="changeTeamId(item.id, item.name)">Add to Team</button>
-            <button v-if="item.user_id == userSession?.userId" @click="toggleDeleteConfirm(item.id, item.name)">remove</button>
+          <tr v-for="item in data" :key="item.id" >
+            <td class ="padding-team" v-if="item.user_id == userSession?.userId">{{ item.name }}</td>
+            <td class ="centerTable"><button class="button-gradient" v-if="item.user_id == userSession?.userId" @click = "toggleTeamEdit(item.id, item.name)">View</button></td>
+            <td class ="centerTable"><button class="button-gradient" v-if="item.user_id == userSession?.userId" @click = "toggleNameChange(item.id, item.name)">Change Name</button></td>
+            <td class ="centerTable"><button class="button-gradient" v-if="item.user_id == userSession?.userId" @click="changeTeamId(item.id, item.name)">Add to Team</button></td>
+            <td class ="centerTable"><button class="button-gradient" v-if="item.user_id == userSession?.userId" @click="toggleDeleteConfirm(item.id, item.name)">Remove</button></td>
       
         </tr>
       </tbody>
