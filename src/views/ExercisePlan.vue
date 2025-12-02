@@ -19,9 +19,8 @@ const exercise_plans = ref([])
  const userSession = computed(() => store.getters.getLoginUserInfo);
 onMounted(async () => {
   console.log("onMounted ran")
-  await getPlans();
-  await getExercisePlans();
   await getCurrentUser()
+  await getPlans(currentUser.value.id)
   let menu = document.getElementById("menu")
   menu.style.top = "-12vh"
    console.log("length of plans:" + plans.value.length)
@@ -30,21 +29,10 @@ onMounted(async () => {
   
   // Use Vue lifecycle instead of DOMContentLoaded so elements from this component are present
 });
-import ExercisePlanView from "../components/ExercisePlanView.vue";
-async function getExercisePlans(){
+
+async function getPlans(id){
   try{
-    const response = await exerciseServices.getAll();
-    exercise_plans.value = response.data;
-    console.log(exercises)
-  }
-  catch(error){
-    message.value = "Error: " + error.code + ":" + error.message;
-    console.log(error);
-  }
-}
-async function getPlans(){
-  try{
-    const response = await planServices.getAll();
+    const response = await planServices.get(id);
     plans.value = response.data;
     console.log(plans)
   }

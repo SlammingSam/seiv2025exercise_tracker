@@ -10,7 +10,7 @@ export default {
     return {};
   },
   get(id) {
-    return apiClient.get(`/plans/${id}`);
+    return apiClient.get(`/plans/user/${id}`);
   },
   create(data) {
     return apiClient.post("/plans", data);
