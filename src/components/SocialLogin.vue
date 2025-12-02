@@ -44,7 +44,6 @@ const handleCredentialResponse = async (response) => {
       console.log("error", error);
     });
 };
-
 async function getCurrentUser(user){
   try {
     const response = await userServices.get(user.userId);
