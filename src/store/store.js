@@ -9,17 +9,21 @@ const store = createStore({
     loginUser: user || null,
   },
   mutations: {
-    setLoginUser(state, user) {
+    setNewUser(state, user) {
       state.loginUser = user ? { ...user } : null;//... is called the spread operator, it makes a shallow clone object of another object,
-      if(user) Utils.setStore('user', user);      //    bit of a wierd fix since I just need vue to see a new object to trigger the watch function
-      else Utils.removeItem('user');              //    otherwise the value of a nested object changing would not trigger the watch
+      if(user)                                    //    bit of a wierd fix since I just need vue to see a new object to trigger the watch function
+        Utils.setStore('user', user);             //    otherwise the value of a nested object changing would not trigger the watch
+      else 
+        Utils.removeItem('user');
+      //console.log("New user set: " + user.value);
     },
   },
   actions: {
     updateUserRole({ commit, getters }, newRole) {//apperently setters in not something I can add so this is in here
       const currentUser = getters.getUserInfo;
       const updatedUser = { ...currentUser, role: newRole };
-      commit('setLoginUser', updatedUser);
+      //console.log("triggered update");
+      commit('setNewUser', updatedUser);
     }
   },
   getters: {
@@ -33,12 +37,11 @@ const store = createStore({
     },
     isLoggedIn(state) 
     {
-      //console.log(state?.loginUser?.role);//role no longer returned here
-      if(state?.loginUser?.email != null)
+      if(state?.loginUser?.role == "Athlete" || state?.loginUser?.role == "Coach")
         return true;
       else
         return false;
-  },
+    },
   },
 });
 

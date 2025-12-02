@@ -32,10 +32,11 @@ async function loadUserRole(user) {
     currentUser.value = payload;
     const role = (payload?.role ?? '').toString();
     store.dispatch('updateUserRole', role);//never used an action from the store before
-    console.log('Loaded user role:', role);
+    //console.log('Loaded user role:', role);
     isCoach.value = role.toLowerCase() === 'coach';
     // optional routing if role unset
-    if (role === 'Unset') {
+    if (role === 'Unset') { 
+      console.log("App Routed to RoleSelect");
       try { router.push({ name: 'RoleSelect' }); } catch(e) { /* ignore if router not ready */ }
     }
   } catch (error) {
@@ -52,11 +53,9 @@ onMounted(() => {
 });
 
 watch(role, (newRole) => {
-  if (newRole)
-  {
-    menuKey.value++;
-  } 
-}, { immediate: true });
+    window.location.reload();
+  }
+);
 
 watch(() => store.getters.getUserInfo?.id,(newId) => {//changed from the last version to only watch the id (fires when you login not when role changes)
     if (newId) 
@@ -73,22 +72,30 @@ watch(() => store.getters.getUserInfo?.id,(newId) => {//changed from the last ve
 
 <template>
   <v-app>
-    <MenuBar :key="$route.fullPath" 
-        size="45" 
-        color="#9d9e9d" 
-        stroke-width="3"
-        />
-        <div id = "menu" class = "accordion-menu" :key="menuKey">
-    <h3><router-link :to="{ name: 'Home' }" v-if="isLoggedIn">Home</router-link></h3>
-     <h3><router-link :to="{ name: 'ExercisePlan' }" v-if="isLoggedIn">Exercise Plans</router-link></h3>
-      <h3><router-link :to="{ name: 'Goals' }" v-if="isLoggedIn">Goals</router-link></h3>
-       <h3><router-link :to="{ name: 'Profile' }" v-if="isLoggedIn">Profile</router-link></h3>
-        <h3><router-link :to="{ name: 'Teams' }" v-if="isLoggedIn && isCoach">My Teams</router-link></h3>
-         <h3><router-link :to="{ name: 'AthletePlan' }" v-if="isLoggedIn && isCoach">Athlete Plans</router-link></h3>
-          <h3><router-link :to="{ name: 'AthletePlan' }" v-if="isLoggedIn">Plans</router-link></h3>
-            <h3><router-link :to="{ name: 'AddPlan' }" v-if="isLoggedIn">Add a plan</router-link></h3>
-    </div>
-    <v-main id="main">
+    <MenuBar :key="$route.fullPath"
+      size="45" 
+      color="#9d9e9d" 
+      stroke-width="3"
+      />
+      <div id = "menu" class = "accordion-menu" v-if="isLoggedIn && !isCoach">
+       <h3><router-link :to="{ name: 'Home' }">Home</router-link></h3>
+        <h3><router-link :to="{ name: 'ExercisePlan' }">Exercise Plans</router-link></h3>
+         <h3><router-link :to="{ name: 'Goals' }">Goals</router-link></h3>
+          <h3><router-link :to="{ name: 'Profile' }">Profile</router-link></h3>
+           <h3><router-link :to="{ name: 'AthletePlan' }">Plans</router-link></h3>
+            <h3><router-link :to="{ name: 'AddPlan' }">Add a plan</router-link></h3>
+      </div>
+      <div id = "menu" class = "accordion-menu" v-if="isLoggedIn && isCoach">
+       <h3><router-link :to="{ name: 'Home' }">Home</router-link></h3>
+        <h3><router-link :to="{ name: 'ExercisePlan' }">Exercise Plans</router-link></h3>
+         <h3><router-link :to="{ name: 'Goals' }">Goals</router-link></h3>
+          <h3><router-link :to="{ name: 'Profile' }">Profile</router-link></h3>
+           <h3><router-link :to="{ name: 'Teams' }">My Teams</router-link></h3>
+            <h3><router-link :to="{ name: 'AthletePlan' }">Athlete Plans</router-link></h3>
+             <h3><router-link :to="{ name: 'AthletePlan' }">Plans</router-link></h3>
+              <h3><router-link :to="{ name: 'AddPlan' }">Add a plan</router-link></h3>
+      </div>
+      <v-main id="main">
       <router-view />
     </v-main>
   </v-app>

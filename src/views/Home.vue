@@ -12,20 +12,18 @@ const exercises = ref([]);
 const currentProgress = ref(75);
 const name = ref("");
 
-const user = computed(() => store.getters.getLoginUserInfo);
-console.log(user.value);
+const user = computed(() => store.getters.getUserInfo);
+//console.log(user.value);
 
 onMounted(() => {
   getExercises();
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
 });
 
 async function getExercises(){
   try{
     const response = await exercisesServices.getAll();
     exercises.value = response.data;
-    console.log(exercises.value)
+    //console.log(exercises.value)
   }
   catch(error){
     message.value = "Error: " + error.code + ":" + error.message;
@@ -48,7 +46,7 @@ if(user)
   <v-container>
     <v-toolbar>
       
-      <div class="home-header">
+    <div class="home-header">
       <p>Welcome, {{ name }}!</p>
     </div>
     </v-toolbar>

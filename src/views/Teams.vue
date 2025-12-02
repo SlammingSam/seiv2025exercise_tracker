@@ -6,6 +6,8 @@ import userServices from "../services/userServices"
 import plusIcon from "../components/plusIcon.vue";
 import teamEdit from "../components/TeamEdit.vue";
 import store from "../store/store.js";
+import { useRouter, useRoute } from 'vue-router';
+
 const message = ref("");
 const data = ref([]);
 const teams = ref([])
@@ -13,7 +15,8 @@ const teamEditModal = ref(false)
 const currentUser = ref(null)
 const user_id = ref("")
 const loadingUser = ref(true);
- const userSession = computed(() => store.getters.getLoginUserInfo);
+ const userSession = computed(() => store.getters.getUserInfo);
+ const router = useRouter();
 //console.log("on goals page!");
 
 onMounted(async () => {
@@ -24,8 +27,16 @@ onMounted(async () => {
   } finally {
     loadingUser.value = false;
   }
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+  try
+  {
+    let menu = document.getElementById("menu");
+    menu.style.top = "-12vh";
+  }
+  catch(e)
+  {
+    //reroute to login screen
+    router.push({ name: "login" });
+  }
 });
 
 async function getTeams(){

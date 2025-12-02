@@ -15,7 +15,7 @@ const props = defineProps({
 })
 
 const router = useRouter()
-const user = computed(() => store.getters.getLoginUserInfo);
+const user = computed(() => store.getters.getUserInfo);
 const title = ref("Exercise Tracker");
 const initials = ref("");
 const name = ref("");
@@ -41,7 +41,7 @@ const resetMenu = () => {
 
 watch(user, (newUser, oldUser) => 
 {
-  if (newUser && !oldUser) 
+  if (newUser) 
   {
     //console.log("User data loaded after mount");
     resetMenu();
@@ -57,13 +57,15 @@ const logout = () =>
   }
   else
   {
+    //console.log(user.value);
     AuthServices.logoutUser(user.value)
       .then(() => {
         //pushes correctly but on error its not reloading the bar
         Utils.removeItem('token');//needed?
         //Utils.removeItem("user");
-        store.commit('setLoginUser', null);
+        store.commit('setNewUser', null);
         //setUser(null);
+        console.log("MenuBar Routed to Login");
         router.push({ name: "login" });
       })
       .catch((error) => {
@@ -74,17 +76,24 @@ const logout = () =>
 
 function showMenu()
 {
-  const menu = document.getElementById("menu");
-  if(!isOpen.value)
+  try
   {
-    menu.style.top = "7%";
-    isOpen.value = true;
-    return;
+    const menu = document.getElementById("menu");
+    if(!isOpen.value)
+    {
+      menu.style.top = "7%";
+      isOpen.value = true;
+      return;
+    }
+    else
+    {
+      menu.style.top ="-50%";
+      isOpen.value = false;
+    }
   }
-  else
+  catch(e)
   {
-    menu.style.top ="-50%";
-    isOpen.value = false;
+    //user is not logged in
   }
 }
 

@@ -50,8 +50,16 @@ async function addExercisePlan()
 }
 
 onMounted(() => {
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+  try
+   {
+      let menu = document.getElementById("menu");
+      menu.style.top = "-12vh";
+   }
+   catch(e)
+   {
+      //reroute to login screen
+      router.push({ name: "login" });
+   }
 });
 
 </script>

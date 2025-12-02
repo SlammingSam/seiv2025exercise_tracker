@@ -9,10 +9,18 @@ const data = ref([]);
 //console.log("on goals page!");
 
 onMounted(() => {
-  console.log("onMounted ran")
+  //console.log("onMounted ran")
   getGoals();
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+  try
+  {
+    let menu = document.getElementById("menu");
+    menu.style.top = "-12vh";
+  }
+  catch(e)
+  {
+    //reroute to login screen
+    router.push({ name: "login" });
+  }
 });
 
 async function getGoals(){

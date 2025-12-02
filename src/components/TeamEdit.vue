@@ -25,7 +25,7 @@ async function addTeam(){
    modal.style.opacity = "0%"
   }
   async function getCurrentUser(){
-  let userSession = computed(() => store.getters.getLoginUserInfo);
+  let userSession = computed(() => store.getters.getUserInfo);
     const response = await userServices.get(userSession.value.userId);
 
     currentUser.value = response.data;
@@ -35,8 +35,16 @@ async function addTeam(){
   console.log("onMounted ran")
   await getCurrentUser()
   console.log(currentUser.value.id)
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+  try
+   {
+      let menu = document.getElementById("menu");
+      menu.style.top = "-12vh";
+   }
+   catch(e)
+   {
+      //reroute to login screen
+      router.push({ name: "login" });
+   }
 });
 </script>
 

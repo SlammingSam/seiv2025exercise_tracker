@@ -6,14 +6,24 @@ import { useRouter, useRoute } from 'vue-router'
 import store from "../store/store.js";
 
 const router = useRouter()
-const user = store.getters.getLoginUserInfo;
+const user = store.getters.getUserInfo;
 
 onMounted(() => {
   //console.log(user);
   if(user) //if a user is already logged in go to their home page
-   router.push({ name: "Home" });
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+  {
+    console.log("Login Routed to Home");
+    router.push({ name: "Home" });
+  }
+  try 
+  {
+    let menu = document.getElementById("menu");
+    menu.style.top = "-12vh";
+  }
+  catch
+  {
+    //user not logged in
+  }
 });
 </script>
 

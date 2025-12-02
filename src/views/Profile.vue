@@ -11,7 +11,7 @@ const goals = ref([])
 const exercises = ref([])
 const message = ref("")
 const currentProgress = ref(75);
-const user = computed(() => store.getters.getLoginUserInfo);
+const user = computed(() => store.getters.getUserInfo);
 const picture = ref("../public/oc-logo-white.png");
 const name = ref("");
 
@@ -25,8 +25,16 @@ onMounted(() => {
     let temp = user.value.fName;
     name.value = temp + "'s Progress";
   }
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+  try
+  {
+    let menu = document.getElementById("menu");
+    menu.style.top = "-12vh";
+  }
+  catch(e)
+  {
+    //reroute to login screen
+    router.push({ name: "login" });
+  }
 });
 
 //console.log(user.value.picture);

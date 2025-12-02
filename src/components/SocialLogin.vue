@@ -5,10 +5,10 @@ import Utils from "../config/utils.js";
 import { useRouter } from "vue-router";
 import store from "../store/store.js";
 import userServices from "../services/userServices.js";
+
 const message = ref("")
 const router = useRouter();
 const currentUser = ref([])
-//const user = ref({});
 
 const loginWithGoogle = () => {
   window.handleCredentialResponse = handleCredentialResponse;
@@ -36,9 +36,9 @@ const handleCredentialResponse = async (response) => {
   await AuthServices.loginUser(token)
     .then((response) => {
       Utils.setStore("user", response.data);
-      store.commit('setLoginUser', response.data);
+      store.commit('setNewUser', response.data);
       //setUser(response.data);
-      getCurrentUser(store.getters.getLoginUserInfo);
+      getCurrentUser(store.getters.getUserInfo);
     })
     .catch((error) => {
       console.log("error", error);
@@ -46,21 +46,35 @@ const handleCredentialResponse = async (response) => {
 };
 
 async function getCurrentUser(user){
-  while (!user || !user.userId) {//might need something like this in every single file now
-    console.warn("getCurrentUser called without a valid user:", user);
-    getCurrentUser(store.getters.getLoginUserInfo);
-  }
   try {
     const response = await userServices.get(user.userId);
-    currentUser.value = response.data;
-    console.log(currentUser.value)
-      console.log(currentUser.value.role)
-      if(currentUser.value.role == "Unset"){
-        router.push({ name: "RoleSelect" });
-      }
-      else{
-        router.push({ name: "Home" });
-      }
+    //console.log(response.data);
+    const backendUser = response.data;//does not include token for some reason
+    const token = store.getters.getUserInfo?.token;//so get the token
+
+    const reassembled_user = {//assemble the user with all of the pieces
+      fName: response.data.fName,
+      lName: response.data.lName,
+      email: response.data.email,
+      id: response.data.id,
+      picture: response.data.picture,
+      token: response.data.token,
+      team_id: response.data.team_id,
+      token: token,
+      role: response.data.role,
+    }
+    //console.log(reassembled_user);
+    store.commit('setNewUser', reassembled_user);//and put it in the store
+    if(reassembled_user.role == "Unset")
+    {
+      //router.push({ name: "RoleSelect" });
+      //console.log("Social Login Routed to RoleSelect"); //not needed because App.vue handles this
+    }
+    else
+    {
+      console.log("Social Login Routed to Home");
+      router.push({ name: "Home" });
+    }
   }
   catch(error){
     message.value = "Error: " + (error.code || error.response?.status) + ":" + (error.message || error.response?.data);

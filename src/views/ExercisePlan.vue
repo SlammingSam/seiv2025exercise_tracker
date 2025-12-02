@@ -12,8 +12,16 @@ onMounted(() => {
   console.log("onMounted ran")
   getPlans();
   getExercises();
-  let menu = document.getElementById("menu")
-  menu.style.top = "-12vh"
+  try
+  {
+    let menu = document.getElementById("menu");
+    menu.style.top = "-12vh";
+  }
+  catch(e)
+  {
+    //reroute to login screen
+    router.push({ name: "login" });
+  }
   
   // Use Vue lifecycle instead of DOMContentLoaded so elements from this component are present
 });
