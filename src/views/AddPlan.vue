@@ -21,26 +21,31 @@ function addRow() {
 function removeRow(index) {
   form.values.splice(index, 1)
 }
-async function addExercisePlan(){
-  console.log("plan name " +form.name)
- const plan_response = await planServices.create({
+
+async function addExercisePlan()
+{
+  if(form.name != "" || form.description != "")//if either box is empty dont save it 
+  {
+    console.log("plan name " +form.name)
+    const plan_response = await planServices.create({
       name: form.name,
       description: form.description
     })
     console.log(plan_response)
-   const response = await exercise_planServices.create({
-    plan_id:plan_response.data.plan_id,
-    goal_id:"1"
-   });
-   console.log(response)
-    
-     for(let i = 0; i < form.values.length; i++){
-    exercisesServices.create({
-      name: form.values[i].name,
-      sets: form.values[i].sets,
-      reps: form.values[i].reps,
-      exercise_plan_id: response.data.exercise_plan_id
-    })
+    const response = await exercise_planServices.create({
+      plan_id:plan_response.data.plan_id,
+      goal_id:"1"
+    });
+    console.log(response)
+      
+    for(let i = 0; i < form.values.length; i++){
+      exercisesServices.create({
+        name: form.values[i].name,
+        sets: form.values[i].sets,
+        reps: form.values[i].reps,
+        exercise_plan_id: response.data.exercise_plan_id
+      })
+    }
   }
 }
 

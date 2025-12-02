@@ -10,11 +10,13 @@ import userServices from "./services/userServices.js";
 const router = useRouter();
 const currentUser = ref(null);
 const message = ref("");
-const userSession = computed(() => store.getters.getLoginUserInfo);
+const userSession = computed(() => store.getters.getUserInfo);
 // the store now stores the session, not the user
 const isLoggedIn = computed(() => store.getters.isLoggedIn);
+const role = computed(() => store.getters.getUserRole);
 const isCoach = ref(false);
 const loadingRole = ref(false);
+const menuKey = ref(0);//variable of the menu, increment this to update the hamburger menu
 
 async function loadUserRole(user) {
   if (!user) return;
@@ -29,6 +31,7 @@ async function loadUserRole(user) {
     const payload = response?.data ?? response;
     currentUser.value = payload;
     const role = (payload?.role ?? '').toString();
+    store.dispatch('updateUserRole', role);//never used an action from the store before
     console.log('Loaded user role:', role);
     isCoach.value = role.toLowerCase() === 'coach';
     // optional routing if role unset
@@ -48,13 +51,24 @@ onMounted(() => {
   if (userSession.value) loadUserRole(userSession.value);
 });
 
-watch(userSession, (newUser) => {
-  if (newUser) loadUserRole(newUser);
-  else {
-    isCoach.value = false;
-    currentUser.value = null;
-  }
+watch(role, (newRole) => {
+  if (newRole)
+  {
+    menuKey.value++;
+  } 
 }, { immediate: true });
+
+watch(() => store.getters.getUserInfo?.id,(newId) => {//changed from the last version to only watch the id (fires when you login not when role changes)
+    if (newId) 
+      loadUserRole({ id: newId });
+    else 
+    {
+      isCoach.value = false;
+      currentUser.value = null;
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -64,7 +78,7 @@ watch(userSession, (newUser) => {
         color="#9d9e9d" 
         stroke-width="3"
         />
-        <div id = "menu" class = "accordion-menu">
+        <div id = "menu" class = "accordion-menu" :key="menuKey">
     <h3><router-link :to="{ name: 'Home' }" v-if="isLoggedIn">Home</router-link></h3>
      <h3><router-link :to="{ name: 'ExercisePlan' }" v-if="isLoggedIn">Exercise Plans</router-link></h3>
       <h3><router-link :to="{ name: 'Goals' }" v-if="isLoggedIn">Goals</router-link></h3>
