@@ -12,7 +12,7 @@ import Profile from "./views/Profile.vue";
 import Athletes from "./views/Athletes.vue";
 import AthletePlan from "./views/AthletePlan.vue";
 import AddPlan from "./views/AddPlan.vue";
-import AddGoal from "./views/AddGoal.vue";
+import AddGoal from "./components/AddGoal.vue";
 import RoleSelect from "./views/RoleSelect.vue";
 import Teams from "./views/Teams.vue"
 

@@ -22,7 +22,6 @@ const calendarData = ref([]);
 const loading = ref(true);
 
 onMounted(async () => {
-  console.log("PlanAssignment component mounted for team:", props.teamId);
   try {
     await loadAvailablePlans();
     await loadPlanAssignments();
@@ -224,7 +223,7 @@ function hideModal() {
   let modal = document.getElementById("planAssignment");
   if (modal) {
     modal.style.opacity = "0%";
-    modal.style.top = "-100%";
+    modal.style.top = "-300%";
   }
 }
 

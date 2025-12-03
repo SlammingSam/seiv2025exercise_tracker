@@ -9,6 +9,10 @@ export default {
     //return apiClient.get("/tutorials/userTut/" + userId);
     return {};
   },
+  getByTeam(teamId) {
+  return apiClient.get(`/plan_assignments/team/${teamId}`);
+},
+
   get(id) {
     return apiClient.get(`/plan_assignments/${id}`);
   },

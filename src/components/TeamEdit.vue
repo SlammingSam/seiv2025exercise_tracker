@@ -1,77 +1,98 @@
 <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
-import userServices from "../services/userServices.js"
+import userServices from "../services/userServices.js";
+import goalServices from "../services/goalServices.js"; 
 import TeamNameEdit from "./TeamNameEdit.vue";
-import { ref, onMounted } from "vue";
+import {watch, ref, onMounted } from "vue";
 
 const currentProgress = ref(75);
-const users = ref([])
-const message = ref("")
+const users = ref([]);
+const message = ref("");
 const emit = defineEmits(['select-user']);
+const teamGoals = ref([]); 
 
 const props = defineProps({
-  teamId: { type: [Number, String]},
-  teamName: { type: [Number, String]},
-})
+  teamId: { type: [Number, String] },
+  teamName: { type: [Number, String] },
+});
 
 onMounted(() => {
-  console.log(props.teamName)
-  console.log("onMounted ran")
+  console.log("team id:" + props.teamId);
+  console.log("onMounted ran");  
   getUsers();
+
   let menu = document.getElementById("menu");
   menu.style.top = "-12vh";
 });
+watch(() => props.teamId, (newId) => {
+  if (newId) loadTeamGoals();
+});
 
-async function getUsers(){
-  try{
+async function getUsers() {
+  try {
     const response = await userServices.getAll();
     users.value = response.data;
-  }
-  catch(error){
+  } catch (error) {
     message.value = "Error: " + error.code + ":" + error.message;
     console.log(error);
   }
 }
 
-function changeName(){
-  // Your existing changeName logic
+function changeName() {}
+
+async function removeFromTeam(id) {
+  const response = await userServices.update(id, {
+    team_id: null,
+  });
+  console.log(response);
 }
 
-async function removeFromTeam(id){
-  const response = await userServices.update(id,
-    {
-      team_id: null
-    }
-   )
-   console.log(response)
-}
-
-async function addToTeam(user_id){
+async function addToTeam(user_id) {
   userServices.update(user_id, {
-      team_id: props.teamId
-  })
+    team_id: props.teamId,
+  });
 }
 
-function hideModal(){
-  let modal = document.getElementById("teamEdit")
-  modal.style.opacity = "0%"
-  modal.style.top = "-100%"
+function hideModal() {
+  let modal = document.getElementById("teamEdit");
+  modal.style.opacity = "0%";
+  modal.style.top = "-100%";
 }
 
-function openPlanAssignment(){
-  let modal = document.getElementById("planAssignment")
-  modal.style.opacity = "100%"
-  modal.style.top = "7%"
+function openPlanAssignment() {
+  let modal = document.getElementById("planAssignment");
+  modal.style.opacity = "100%";
+  modal.style.top = "7%";
 }
 
-function toggleAthleteView(){
+function toggleAthleteView() {
+  let modal = document.getElementById("athleteView");
+  modal.style.opacity = "100%";
+  modal.style.top = "7%";
+}
 
-   let modal = document.getElementById("athleteView")
-   modal.style.opacity = "100%"
-   modal.style.top = "7%"
+
+  async function loadTeamGoals() {
+  try {
+    const response = await goalServices.get(props.teamId);
+    console.log("loadTeamGoals response:", response);
+    teamGoals.value = response.data; // check if response.data is actually an array
+  } catch (err) {
+    console.error("Error loading team goals:", err);
+  }
+}
+
+
+
+function openAddGoal() {
+  const modal = document.getElementById("addGoal");
+  modal.style.opacity = "100%";
+  modal.style.top = "7%";
 }
 
 </script>
+
+
 
 <template>  
   <v-container>
@@ -92,19 +113,57 @@ function toggleAthleteView(){
       <table class="long-table">
         <tbody class="long-table">
           <tr class="long-table">
-            <th>First Name</th>
-            <th>Last Name</th>
-          </tr>
-          <tr v-for="item in users" :key="item.id" class="long-table">
-            <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.fName }}</td>
-            <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.lName }}</td>
-            <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">
-              <button @click="$emit('select-user', item.id), toggleAthleteView()">View</button>
-              <button @click="removeFromTeam(item.id)">Remove</button>
-            </td>
-          </tr>
-        </tbody>
-      </table> 
+           <th>First Name</th>
+           <th>Last Name</th>
+        </tr>
+        <tr v-for="item in users" :key="item.id" class="long-table">
+          <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.fName }}</td>
+          <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.lName }}</td>
+          <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">
+            <button @click="$emit('select-user', item.id); toggleAthleteView()">View</button>
+            <button @click="removeFromTeam(item.id)">Remove</button>
+          </td>
+            <!-- i'll need to write this today. -->
+        </tr>
+      </tbody>
+    </table> 
     </div>
+
+
+    <div style="margin-top: 24px;">
+      <h3>{{ props.teamName }}'s Goals</h3>
+      <div class="flex-between mb-2">
+  <h3>Team Goals</h3>
+  <button class="add-button" @click="openAddGoal()">
+    + Add Goal
+  </button>
+</div>
+
+
+      <div class="flex-row-table" style="margin-top: 8px;">
+        <table class="long-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody class="long-table">
+            <tr v-for="goal in teamGoals" :key="goal.id" class="long-table">
+              <td>{{ goal.name }}</td>
+              <td>{{ goal.status }}</td>
+            </tr>
+
+            <tr v-if="teamGoals.length === 0">
+              <td colspan="2" style="text-align:center; padding: 10px;">
+                No goals have been created for this team yet.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </v-container>
 </template>

@@ -12,6 +12,7 @@ import DeleteConfirm from "../components/DeleteConfirm.vue";
 import TeamNameEdit from "../components/TeamNameEdit.vue"
 import PlanAssignment from "../components/PlanAssignment.vue"
 import AthleteView from "../components/AthleteView.vue";
+import AddGoal from "../components/AddGoal.vue";
 
 const selectedUserId = ref(null);
 
@@ -209,6 +210,10 @@ function openAthleteProfile(id) {
       <AthleteView id="athleteView" class = "athlete_view_modal"
         :currentAthlete="selectedUserId"
       />
+      <AddGoal id ="addGoal" class = "add_goal_modal"
+        :teamId ="team_id"
+      />
+
     </div>
   </v-container>
 </template>
