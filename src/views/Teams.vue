@@ -11,11 +11,13 @@ import TeamEdit from "../components/TeamEdit.vue"
 import DeleteConfirm from "../components/DeleteConfirm.vue";
 import TeamNameEdit from "../components/TeamNameEdit.vue"
 import PlanAssignment from "../components/PlanAssignment.vue"
+import AthleteView from "../components/AthleteView.vue";
 
 const message = ref("");
 const data = ref([]);
 const teams = ref([])
 const teamEditModal = ref(false)
+const current_athlete = ref(null)
 const currentUser = ref(null)
 const user_id = ref("")
 const team_id = ref(null)
@@ -153,6 +155,7 @@ function toggleDeleteConfirm(id, name){
       <TeamEdit id="teamEdit" class="team_edit_modal"
         :teamId="team_id"
         :teamName="team_name"  
+        :currentAthlete="current_athlete"
       />
       <DeleteConfirm class="delete_confirm" id="deleteConfirm"
         :objectId="team_id"
@@ -165,6 +168,9 @@ function toggleDeleteConfirm(id, name){
       <PlanAssignment id="planAssignment" class="plan_assignment_modal"
         :teamId="team_id"
         :teamName="team_name"
+      />
+      <AthleteView id="athleteView" class = "athlete_view_modal"
+        :currentAthlete="current_athlete"
       />
     </div>
   </v-container>
