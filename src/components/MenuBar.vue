@@ -28,7 +28,7 @@ const resetMenu = () => {
   if(user.value)//stops the menu from erroring when the below problem exists
   {
     //console.log(user.value.picture);
-    //console.log(user.value);//null if you dont import user from the store as above
+    console.log(user.value);//null if you dont import user from the store as above
     initials.value = user.value.fName[0] + user.value.lName[0];
     name.value = user.value.fName + " " + user.value.lName;
     email.value = user.value.email;
