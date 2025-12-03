@@ -10,6 +10,8 @@ import AthleteAdd from "../components/AthleteAdd.vue";
 import TeamEdit from "../components/TeamEdit.vue"
 import DeleteConfirm from "../components/DeleteConfirm.vue";
 import TeamNameEdit from "../components/TeamNameEdit.vue"
+import PlanAssignment from "../components/PlanAssignment.vue"
+
 const message = ref("");
 const data = ref([]);
 const teams = ref([])
@@ -19,8 +21,7 @@ const user_id = ref("")
 const team_id = ref(null)
 const team_name = ref(null)
 const loadingUser = ref(true);
- const userSession = computed(() => store.getters.getLoginUserInfo);
-//console.log("on goals page!");
+const userSession = computed(() => store.getters.getLoginUserInfo);
 
 onMounted(async () => {
   console.log("onMounted ran")
@@ -39,8 +40,6 @@ async function getTeams(){
     const response = await teamServices.getAll();
     data.value = response.data;
     console.log(data)
-   
-    
   }
   catch(error){
     message.value = "Error: " + error.code + ":" + error.message;
@@ -55,7 +54,6 @@ function toggleTeamCreate(){
 }
 
 async function getCurrentUser(){
-    //this guard is not needed, session works as intended.
     console.log('userSession.value:', userSession.value);
     if (!userSession.value || !userSession.value.userId) {
       console.log('No user session or userId');
@@ -64,7 +62,6 @@ async function getCurrentUser(){
     const response = await userServices.get(userSession.value.userId);
     currentUser.value = response.data;
 }
-
 
 function changeTeamId(id, name){
   team_id.value = id;
@@ -75,8 +72,8 @@ function changeTeamId(id, name){
    modal.style.top = "7%"
 }
 
-const lists = ref([]);//list for the page display
-const parsedList = ref([]);//list to send to the database
+const lists = ref([]);
+const parsedList = ref([]);
 
 function toggleTeamEdit(id, name){
    team_id.value = id;
@@ -104,12 +101,11 @@ function toggleDeleteConfirm(id, name){
 </script>
 
 <template>  
-   
   <v-container>
     <v-toolbar>
       <div class="home-header">
-      <p>Teams</p>
-    </div>
+        <p>Teams</p>
+      </div>
     </v-toolbar>
     
 <div class = "flex-row-search">
@@ -121,11 +117,10 @@ function toggleDeleteConfirm(id, name){
         color="#9d9e9d" 
         stroke-width="2"
         />
- </button>
-   
-    <input type="file" id="file-input" style="display:none;"/>
-    <input type="text"  class = inputBetter v-model="input" placeholder="Search teams" />
-</div>
+      </button>
+      <input type="file" id="file-input" style="display:none;"/>
+      <input type="text" class="inputBetter" v-model="input" placeholder="Search teams" />
+    </div>
    
   <div class = flex-row-table>
     <div v-if="loadingUser">Loading...</div>
@@ -175,7 +170,30 @@ function toggleDeleteConfirm(id, name){
             :teamName="team_name" 
              />
 
-
-  </div>
+      <TeamCreate id="teamCreate" class="team_create_modal"
+        teamName=""  
+        :id="'teamCreate'"
+      />
+      <AthleteAdd id="athleteAdd" class="athlete_add_modal"
+        :teamId="team_id"
+        :teamName="team_name"          
+      />
+      <TeamEdit id="teamEdit" class="team_edit_modal"
+        :teamId="team_id"
+        :teamName="team_name"  
+      />
+      <DeleteConfirm class="delete_confirm" id="deleteConfirm"
+        :objectId="team_id"
+        :objectName="team_name"
+      />
+      <TeamNameEdit id="teamNameEdit" class="team_create_modal"
+        :teamId="team_id"
+        :teamName="team_name" 
+      />
+      <PlanAssignment id="planAssignment" class="plan_assignment_modal"
+        :teamId="team_id"
+        :teamName="team_name"
+      />
+    </div>
   </v-container>
 </template>

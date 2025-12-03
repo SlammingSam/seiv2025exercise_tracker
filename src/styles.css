@@ -323,6 +323,7 @@ textarea {
   background-color: white;
   height: 100%;
 }
+.plan_assignment_modal{
 
 .delete_confirm {
   transition: 0.2s;
