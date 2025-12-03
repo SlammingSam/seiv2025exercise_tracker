@@ -7,7 +7,7 @@ import exercisesServices from "../services/exercisesServices";
 import exercise_planServices from "../services/exercise_planServices.js";
 import store from "../store/store.js";
 import { computed, watch } from "vue";
-
+//help!
 const exercises = ref([])
 
 onMounted(() => {

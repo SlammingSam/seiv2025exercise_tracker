@@ -4,21 +4,30 @@ import { ref, onMounted } from "vue";
 import goalServices from "../services/goalServices";
 import exercise_planServices from "../services/exercise_planServices";
 import exercisesServices from "../services/exercisesServices";
+import userServices from "../services/userServices.js";
 import store from "../store/store.js";
 import { computed, watch } from "vue";
 
+const currentAthlete = ref(null);
 const goals = ref([])
 const exercises = ref([])
 const message = ref("")
 const currentProgress = ref(75);
-const user = computed(() => store.getters.getLoginUserInfo);
+const user = ref(null)
 const picture = ref("../public/oc-logo-white.png");
 const name = ref("");
+const props = defineProps({
+  currentAthlete: { type: [Number, String] }
+})
 
-onMounted(() => {
+defineExpose({
+  currentAthlete
+})
+onMounted(async () => {
   //console.log("onMounted ran")
-  getGoals();
-  getExercises();
+  await getGoals();
+  await getExercises();
+  await getUser(props.currentAthlete);
   if(user.value)
   {
     picture.value = user.value.picture;
@@ -55,23 +64,27 @@ async function getExercises(){
   }
 }
 
-async function getPlans(){
+async function getUser(id){
   try{
-    const response = await planServices.getAll();
-    plans.value = response.data;
-    console.log(plans)
+    const response = await userServices.get(id);
   }
   catch(error){
     message.value = "Error: " + error.code + ":" + error.message;
     console.log(error);
   }
 }
+function hideModal(){
+  let modal = document.getElementById("athleteView")
+  modal.style.opacity = "0%"
+  modal.style.top = "-100%"
+}
+
 </script>
 
 <template>  
    
   <v-container>
-   
+   <button @click = "hideModal()"> Back</button>
 <div class="flex-row-profile">
     <div class="flex-column-right">
         <img class="image_pfp" :src="picture"/> 

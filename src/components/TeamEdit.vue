@@ -10,7 +10,8 @@ const message = ref("")
 
 const props = defineProps({
   teamId: { type: [Number, String]},
-  teamName: { type: [Number, String]}
+  teamName: { type: [Number, String]},
+  currentAthlete: { type: [Object] }
 })
 
 onMounted(() => {
@@ -63,6 +64,14 @@ function openPlanAssignment(){
   modal.style.top = "7%"
 }
 
+function toggleAthleteView(id){
+
+  console.log(props.currentAthlete)
+   let modal = document.getElementById("athleteView")
+   modal.style.opacity = "100%"
+   modal.style.top = "7%"
+}
+
 </script>
 
 <template>  
@@ -87,10 +96,11 @@ function openPlanAssignment(){
             <th>First Name</th>
             <th>Last Name</th>
           </tr>
-          <tr v-for="item in users" :key="item.user_id" class="long-table">
+          <tr v-for="item in users" :key="item.id" class="long-table">
             <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.fName }}</td>
             <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.lName }}</td>
             <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">
+              <button @click="toggleAthleteView(item.id)">View</button>
               <button @click="removeFromTeam(item.id)">Remove</button>
             </td>
           </tr>
