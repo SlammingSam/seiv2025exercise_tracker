@@ -9,8 +9,8 @@ export default {
     //return apiClient.get("/tutorials/userTut/" + userId);
     return {};
   },
-  get(id) {
-    return apiClient.get(`/goals/${id}`);
+  get(team_id) {
+    return apiClient.get(`/goals/team/${team_id}`);
   },
   create(data) {
     return apiClient.post("/goals", data);

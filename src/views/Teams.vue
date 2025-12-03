@@ -11,11 +11,16 @@ import TeamEdit from "../components/TeamEdit.vue"
 import DeleteConfirm from "../components/DeleteConfirm.vue";
 import TeamNameEdit from "../components/TeamNameEdit.vue"
 import PlanAssignment from "../components/PlanAssignment.vue"
+import AthleteView from "../components/AthleteView.vue";
+import AddGoal from "../components/AddGoal.vue";
+
+const selectedUserId = ref(null);
 
 const message = ref("");
 const data = ref([]);
 const teams = ref([])
 const teamEditModal = ref(false)
+const current_athlete = ref(null)
 const currentUser = ref(null)
 const user_id = ref("")
 const team_id = ref(null)
@@ -98,6 +103,16 @@ function toggleDeleteConfirm(id, name){
    modal.style.opacity = "100%"
    modal.style.top = "20%"
 }
+
+function openAthleteProfile(id) {
+  console.log("id selected: " + id)
+  selectedUserId.value = id;
+
+  const modal = document.getElementById("athleteView");
+  modal.style.opacity = "100%";
+  modal.style.top = "7%";
+}
+
 </script>
 
 <template>  
@@ -155,10 +170,6 @@ function toggleDeleteConfirm(id, name){
             :teamId="team_id"
             :teamName="team_name"          
           />
-          <TeamEdit id = "teamEdit" class = "team_edit_modal"
-           :teamId="team_id"
-            :teamName="team_name"  
-          />
           <!-- I intended on using this for multiple things, but thats ok. Thats why the props are named different. -->
           <DeleteConfirm class = "delete_confirm" id = "deleteConfirm"
           :objectId="team_id"
@@ -168,6 +179,7 @@ function toggleDeleteConfirm(id, name){
           
            :teamId="team_id"
             :teamName="team_name" 
+            
              />
 
       <TeamCreate id="teamCreate" class="team_create_modal"
@@ -181,6 +193,7 @@ function toggleDeleteConfirm(id, name){
       <TeamEdit id="teamEdit" class="team_edit_modal"
         :teamId="team_id"
         :teamName="team_name"  
+        @select-user="openAthleteProfile"
       />
       <DeleteConfirm class="delete_confirm" id="deleteConfirm"
         :objectId="team_id"
@@ -194,6 +207,13 @@ function toggleDeleteConfirm(id, name){
         :teamId="team_id"
         :teamName="team_name"
       />
+      <AthleteView id="athleteView" class = "athlete_view_modal"
+        :currentAthlete="selectedUserId"
+      />
+      <AddGoal id ="addGoal" class = "add_goal_modal"
+        :teamId ="team_id"
+      />
+
     </div>
   </v-container>
 </template>
