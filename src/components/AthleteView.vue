@@ -17,26 +17,20 @@ const user = ref(null)
 const picture = ref("../public/oc-logo-white.png");
 const name = ref("");
 const props = defineProps({
-  currentAthlete: { type: [Number, String] }
+  currentAthlete: { type: [Number, String] },
+  teamId: { type: [Number, String] },
 })
 
-defineExpose({
-  currentAthlete
-})
-onMounted(async () => {
-  //console.log("onMounted ran")
-  await getGoals();
-  await getExercises();
-  await getUser(props.currentAthlete);
-  if(user.value)
-  {
-    picture.value = user.value.picture;
-    let temp = user.value.fName;
-    name.value = temp + "'s Progress";
-  }
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+
+watch(() => props.currentAthlete, async (newId) => {
+  if (!newId) return;
+  const response = await userServices.get(newId)
+  const userData = response.data;
+  user.value = response.data
+  picture.value = userData.picture;
+  name.value = userData.fName + "'s Progress";
 });
+
 
 //console.log(user.value.picture);
 

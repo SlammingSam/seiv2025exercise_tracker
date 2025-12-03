@@ -7,11 +7,11 @@ import { ref, onMounted } from "vue";
 const currentProgress = ref(75);
 const users = ref([])
 const message = ref("")
+const emit = defineEmits(['select-user']);
 
 const props = defineProps({
   teamId: { type: [Number, String]},
   teamName: { type: [Number, String]},
-  currentAthlete: { type: [Object] }
 })
 
 onMounted(() => {
@@ -64,9 +64,8 @@ function openPlanAssignment(){
   modal.style.top = "7%"
 }
 
-function toggleAthleteView(id){
+function toggleAthleteView(){
 
-  console.log(props.currentAthlete)
    let modal = document.getElementById("athleteView")
    modal.style.opacity = "100%"
    modal.style.top = "7%"
@@ -100,7 +99,7 @@ function toggleAthleteView(id){
             <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.fName }}</td>
             <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.lName }}</td>
             <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">
-              <button @click="toggleAthleteView(item.id)">View</button>
+              <button @click="$emit('select-user', item.id), toggleAthleteView()">View</button>
               <button @click="removeFromTeam(item.id)">Remove</button>
             </td>
           </tr>
