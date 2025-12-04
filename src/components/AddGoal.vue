@@ -20,7 +20,8 @@ async function addGoal() {
   });
   console.log(res);
   emit("refreshes")
-  
+  document.getElementById("name").value = " ";
+  hideModal()
 
   // Close modal or navigate
 }
