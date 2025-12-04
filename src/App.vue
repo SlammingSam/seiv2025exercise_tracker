@@ -73,6 +73,7 @@ watch(userSession, (newUser) => {
          <h3><router-link :to="{ name: 'AthletePlan' }" v-if="isLoggedIn && isCoach">Athlete Plans</router-link></h3>
           <h3><router-link :to="{ name: 'AthletePlan' }" v-if="isLoggedIn">Plans</router-link></h3>
             <h3><router-link :to="{ name: 'AddPlan' }" v-if="isLoggedIn">Add a plan</router-link></h3>
+            
     </div>
     <v-main id="main">
       <router-view />

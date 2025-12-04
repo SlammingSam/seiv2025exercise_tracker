@@ -90,6 +90,17 @@ function openAddGoal() {
   modal.style.top = "7%";
 }
 
+async function saveGoalStatus(goal){
+   try {
+    const response = await goalServices.update(goal.id, {
+      status: goal.status
+    });
+    console.log("Goal updated:", response);
+    // Optionally show a toast or small message here
+  } catch (err) {
+    console.error("Error updating goal status:", err);
+  }
+}
 </script>
 
 
@@ -150,16 +161,19 @@ function openAddGoal() {
           </thead>
 
           <tbody class="long-table">
-            <tr v-for="goal in teamGoals" :key="goal.id" class="long-table">
-              <td>{{ goal.name }}</td>
-              <td>{{ goal.status }}</td>
-            </tr>
-
-            <tr v-if="teamGoals.length === 0">
-              <td colspan="2" style="text-align:center; padding: 10px;">
-                No goals have been created for this team yet.
-              </td>
-            </tr>
+           <tr v-for="goal in teamGoals" :key="goal.id" class="long-table">
+  <td>{{ goal.name }}</td>
+  <td>
+    <select v-model="goal.status">
+      <option value="not started">Not Started</option>
+      <option value="in-progress">In Progress</option>
+      <option value="complete">Complete</option>
+    </select>
+  </td>
+  <td>
+    <button @click="saveGoalStatus(goal)">Save</button>
+  </td>
+</tr>
           </tbody>
         </table>
       </div>
