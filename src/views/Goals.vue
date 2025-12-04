@@ -63,7 +63,8 @@ function openAddGoal() {
     </v-toolbar>
 
     <div class="flex-between mb-2">
-      <h3>User Goals</h3>
+      <div class="space">
+    </div>
       <button class="add-button" @click="openAddGoal()">
         + 
       </button>

@@ -89,7 +89,6 @@ async function deletePlan(planId) {
     </v-toolbar>
     <div class="flex-row-home">
     <div class="left-header">
-      <p>My Plans</p>
     </div>
 </div>
 <div class = "flex-row-search">
