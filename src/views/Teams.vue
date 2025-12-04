@@ -151,7 +151,6 @@ function openAthleteProfile(id) {
         />
       </button>
       <input type="file" id="file-input" style="display:none;"/>
-      <input type="text" class="inputBetter" v-model="input" placeholder="Search teams" />
     </div>
    
   <div class = flex-row-table>
@@ -188,7 +187,8 @@ function openAthleteProfile(id) {
       <AthleteAdd id="athleteAdd" class="athlete_add_modal"
         :teamId="team_id"
         :teamName="team_name" 
-         ref = "athleteAddRef"        
+         ref = "athleteAddRef"    
+        @refresh="reloadUsers"    
       />
       <TeamEdit id="teamEdit" class="team_edit_modal"
         :teamId="team_id"

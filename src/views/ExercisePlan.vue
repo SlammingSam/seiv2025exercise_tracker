@@ -93,7 +93,6 @@ async function deletePlan(planId) {
     </div>
 </div>
 <div class = "flex-row-search">
-    <input type="text"  class = inputBetter v-model="input" placeholder="Search Plans..." />
 </div>
    
   <div class = flex-row-table>

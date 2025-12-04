@@ -71,7 +71,6 @@ watch(userSession, (newUser) => {
         <h3><router-link :to="{ name: 'ExercisePlan' }">Exercise Plans</router-link></h3>
          <h3><router-link :to="{ name: 'Goals' }">Goals</router-link></h3>
           <h3><router-link :to="{ name: 'Profile' }">Profile</router-link></h3>
-            <h3><router-link :to="{ name: 'AddPlan' }">Add a plan</router-link></h3>
       </div>
       <div id = "menu" class = "accordion-menu" v-if="isLoggedIn && isCoach">
        <h3><router-link :to="{ name: 'Home' }">Home</router-link></h3>
@@ -79,7 +78,6 @@ watch(userSession, (newUser) => {
          <h3><router-link :to="{ name: 'Goals' }">Goals</router-link></h3>
           <h3><router-link :to="{ name: 'Profile' }">Profile</router-link></h3>
            <h3><router-link :to="{ name: 'Teams' }">My Teams</router-link></h3>
-             <h3><router-link :to="{ name: 'AddPlan' }">Add a plan</router-link></h3>
     </div>
     <v-main id="main">
       <router-view />

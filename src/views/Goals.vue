@@ -65,7 +65,7 @@ function openAddGoal() {
     <div class="flex-between mb-2">
       <h3>User Goals</h3>
       <button class="add-button" @click="openAddGoal()">
-        + Add Goal
+        + 
       </button>
     </div>
 

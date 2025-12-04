@@ -15,7 +15,7 @@ const props = defineProps({
   teamName: { type: [Number, String] },
 });
 defineExpose({
-loadTeamGoals
+loadTeamGoals, getUsers
 });
 onMounted(() => {
   console.log("team id:" + props.teamId);
@@ -62,6 +62,7 @@ async function removeFromTeam(id) {
     team_id: null,
   });
   console.log(response);
+  emit("refresh");
 }
 
 async function addToTeam(user_id) {
@@ -159,7 +160,6 @@ async function saveGoalStatus(goal){
 
 
     <div style="margin-top: 24px;">
-      <h3>{{ props.teamName }}'s Goals</h3>
       <div class="flex-between mb-2">
   <h3>Team Goals</h3>
   <button class="button-gradient" @click="openAddGoal()">
