@@ -40,8 +40,9 @@ function close() {
       <h2>Choose Role:</h2>
       <button v-if="isLoggedIn" @click="select('Coach')">Coach</button>
       <button v-if="isLoggedIn" @click="select('Athlete')">Athlete</button>
-      <button v-if="isLoggedIn && isAdmin" @click="select('Admin')">Admin</button>
-
+      <button v-if="isLoggedIn && isAdmin" @click="select('Admin')">
+        Admin
+      </button>
     </div>
   </div>
 </template>
