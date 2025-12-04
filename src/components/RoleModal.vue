@@ -1,6 +1,8 @@
 <script setup>
 import { useRouter } from "vue-router";
 import setRole from "./SetRole.js";
+import store from "../store/store.js";
+import { computed, watch, ref, onMounted } from "vue";
 
 const props = defineProps({
   user: { type: Object, default: null }, // User prop that is passed in
@@ -8,6 +10,10 @@ const props = defineProps({
 
 const emit = defineEmits(["select", "close"]);
 const router = useRouter();
+const isLoggedIn = computed(() => store.getters.isLoggedIn);
+const isAdmin = isLoggedIn && localStorage.getItem("role") === "Admin";
+
+console.log(props.user.role);
 
 async function select(role) {
   // function to handle role selecting
@@ -32,8 +38,11 @@ function close() {
   <div class="modal-overlay" @click.self="close">
     <div class="modal-content">
       <h2>Choose Role:</h2>
-      <button @click="select('Coach')">Coach</button>
-      <button @click="select('Athlete')">Athlete</button>
+      <button v-if="isLoggedIn" @click="select('Coach')">Coach</button>
+      <button v-if="isLoggedIn" @click="select('Athlete')">Athlete</button>
+      <button v-if="isLoggedIn && isAdmin" @click="select('Admin')">
+        Admin
+      </button>
     </div>
   </div>
 </template>
