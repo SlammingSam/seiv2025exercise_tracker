@@ -82,7 +82,7 @@ async function reloadGoals() {
     data.value = response.data;
 }
 const teamEditRef = ref(null);
-const altleteAddRef = ref(null);
+const athleteAddRef = ref(null);
 function reloadTeamGoals() {
   if (teamEditRef.value?.loadTeamGoals) {
     teamEditRef.value.loadTeamGoals();
@@ -90,8 +90,8 @@ function reloadTeamGoals() {
 }
 
 function reloadUsers() {
-  if (altleteAddRef.value?.getUsers) {
-    altleteAddRef.value.getUsers();
+  if (athleteAddRef.value?.getUsers) {
+    athleteAddRef.value.getUsers();
   }
 }
 const lists = ref([]);

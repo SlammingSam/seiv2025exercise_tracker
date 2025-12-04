@@ -144,6 +144,7 @@ async function saveGoalStatus(goal){
           <tr class="long-table">
            <th>First Name</th>
            <th>Last Name</th>
+           <th>________________________________________</th>
         </tr>
         <tr v-for="item in users" :key="item.id" class="long-table">
           <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.fName }}</td>
