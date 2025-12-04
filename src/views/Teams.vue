@@ -76,6 +76,28 @@ function changeTeamId(id, name) {
   modal.style.top = "7%";
 }
 
+async function reloadGoals() {
+  const response = await teamServices.getAll();
+    data.value = response.data;
+}
+const teamEditRef = ref(null);
+const athleteAddRef = ref(null);
+function reloadTeamGoals() {
+  if (teamEditRef.value?.loadTeamGoals) {
+    teamEditRef.value.loadTeamGoals();
+  }
+}
+
+function reloadUsers() {
+  if (athleteAddRef.value?.getUsers) {
+    athleteAddRef.value.getUsers();
+  }
+}
+function reloadTeamUsers() {
+  if (teamEditRef.value?.getUsers) {
+    teamEditRef.value.getUsers();
+  }
+}
 const lists = ref([]);
 const parsedList = ref([]);
 
@@ -126,128 +148,47 @@ function openAthleteProfile(id) {
       <button id="plus-icon" @click="toggleTeamCreate()">
         <plusIcon size="45" color="#9d9e9d" stroke-width="2" />
       </button>
-      <input type="file" id="file-input" style="display: none" />
-      <input
-        type="text"
-        class="inputBetter"
-        v-model="input"
-        placeholder="Search teams"
-      />
+      <input type="file" id="file-input" style="display:none;"/>
     </div>
+   
+  <div class = flex-row-table>
+    <div v-if="loadingUser">Loading...</div>
+    <table v-else class ="my-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <!-- This is the header for the list. -->
+        </tr>
+      </thead>
+      <tbody >
+        <!-- Here the type can be declared to represent the item, just like other languages.  -->
+          <tr v-for="item in data" :key="item.id" >
+            <td class ="padding-team" v-if="item.user_id == userSession?.userId">{{ item.name }}</td>
+            <td class ="centerTable"><button class="button-gradient" v-if="item.user_id == userSession?.userId" @click = "toggleTeamEdit(item.id, item.name)">View</button></td>
+            <td class ="centerTable"><button class="button-gradient" v-if="item.user_id == userSession?.userId" @click = "toggleNameChange(item.id, item.name)">Change Name</button></td>
+            <td class ="centerTable"><button class="button-gradient" v-if="item.user_id == userSession?.userId" @click="changeTeamId(item.id, item.name)">Add to Team</button></td>
+            <td class ="centerTable"><button class="button-gradient" v-if="item.user_id == userSession?.userId" @click="toggleDeleteConfirm(item.id, item.name)">Remove</button></td>
+      
+        </tr>
+      </tbody>
+    </table> 
 
-    <div class="flex-row-table">
-      <div v-if="loadingUser">Loading...</div>
-      <table v-else class="my-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <!-- This is the header for the list. -->
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Here the type can be declared to represent the item, just like other languages.  -->
-          <tr v-for="item in data" :key="item.id">
-            <td
-              class="padding-team"
-              v-if="
-                item.user_id == userSession?.userId ||
-                currentUser.role.toLowerCase() == 'admin'
-              "
-            >
-              {{ item.name }}
-            </td>
-            <td class="centerTable">
-              <button
-                class="button-gradient"
-                v-if="
-                  item.user_id == userSession?.userId ||
-                  currentUser.role.toLowerCase() == 'admin'
-                "
-                @click="toggleTeamEdit(item.id, item.name)"
-              >
-                View
-              </button>
-            </td>
-            <td class="centerTable">
-              <button
-                class="button-gradient"
-                v-if="
-                  item.user_id == userSession?.userId ||
-                  currentUser.role.toLowerCase() == 'admin'
-                "
-                @click="toggleNameChange(item.id, item.name)"
-              >
-                Change Name
-              </button>
-            </td>
-            <td class="centerTable">
-              <button
-                class="button-gradient"
-                v-if="
-                  item.user_id == userSession?.userId ||
-                  currentUser.role.toLowerCase() == 'admin'
-                "
-                @click="changeTeamId(item.id, item.name)"
-              >
-                Add to Team
-              </button>
-            </td>
-            <td class="centerTable">
-              <button
-                class="button-gradient"
-                v-if="
-                  item.user_id == userSession?.userId ||
-                  currentUser.role.toLowerCase() == 'admin'
-                "
-                @click="toggleDeleteConfirm(item.id, item.name)"
-              >
-                Remove
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <TeamCreate
-        id="teamCreate"
-        class="team_create_modal"
-        teamName=""
+      <TeamCreate id="teamCreate" class="team_create_modal"
+        teamName=""  
         :id="'teamCreate'"
+        @refresh="reloadGoals"
       />
       <AthleteAdd
         id="athleteAdd"
         class="athlete_add_modal"
         :teamId="team_id"
-        :teamName="team_name"
-      />
-      <!-- I intended on using this for multiple things, but thats ok. Thats why the props are named different. -->
-      <DeleteConfirm
-        class="delete_confirm"
-        id="deleteConfirm"
-        :objectId="team_id"
-        :objectName="team_name"
-      />
-      <TeamNameEdit
-        id="teamNameEdit"
-        class="team_create_modal"
-        :teamId="team_id"
-        :teamName="team_name"
-      />
-
-      <TeamCreate
-        id="teamCreate"
-        class="team_create_modal"
-        teamName=""
-        :id="'teamCreate'"
-      />
-      <AthleteAdd
-        id="athleteAdd"
-        class="athlete_add_modal"
-        :teamId="team_id"
-        :teamName="team_name"
+        :teamName="team_name" 
+         ref = "athleteAddRef"    
+        @refreshed="reloadTeamUsers"    
       />
       <TeamEdit
         id="teamEdit"
@@ -255,18 +196,23 @@ function openAthleteProfile(id) {
         :teamId="team_id"
         :teamName="team_name"
         @select-user="openAthleteProfile"
+        ref = "teamEditRef"
+        @refresh="reloadUsers"
       />
       <DeleteConfirm
         class="delete_confirm"
         id="deleteConfirm"
         :objectId="team_id"
         :objectName="team_name"
+         @refresh="reloadGoals"
       />
       <TeamNameEdit
         id="teamNameEdit"
         class="team_create_modal"
         :teamId="team_id"
-        :teamName="team_name"
+        :teamName="team_name" 
+        @refresh="reloadGoals"
+
       />
       <PlanAssignment
         id="planAssignment"
@@ -279,7 +225,10 @@ function openAthleteProfile(id) {
         class="athlete_view_modal"
         :currentAthlete="selectedUserId"
       />
-      <AddGoal id="addGoal" class="add_goal_modal" :teamId="team_id" />
+      <AddGoal id ="addGoal" class = "add_goal_modal"
+        :teamId ="team_id"
+        @refreshes="reloadTeamGoals"
+      />
     </div>
   </v-container>
 </template>

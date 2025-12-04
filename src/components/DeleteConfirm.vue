@@ -7,6 +7,7 @@ const currentProgress = ref(75);
 const users = ref([])
 const message = ref("")
 const response = ref([])
+const emit = defineEmits(["refresh"]);
 
 const props = defineProps({
   objectId: { type: [Number, String]},
@@ -23,15 +24,17 @@ console.log(response)
  let modal = document.getElementById("deleteConfirm")
    modal.style.opacity = "0%"
    modal.style.top = "-100%"
-}
+   emit("refresh");
+  }
+
 </script>
 
 <template>  
    
   <v-container>
     <h3>Remove {{ props.objectName }} ?</h3>
-            <button @click = "removeTeam()">Remove</button>
-     <button @click="hideModal()">Cancel</button>
+            <button class="button-gradient-2" @click = "removeTeam()">Remove</button>
+     <button class="button-gradient-2" @click="hideModal()">Cancel</button>
   </v-container>
   
 </template>

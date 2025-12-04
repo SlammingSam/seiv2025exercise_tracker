@@ -82,39 +82,25 @@ watch(
 
 <template>
   <v-app>
-    <MenuBar
-      :key="$route.fullPath"
-      size="45"
-      color="#9d9e9d"
-      stroke-width="3"
-    />
-    <div
-      id="menu"
-      class="accordion-menu"
-      v-if="isLoggedIn && !isCoach && !isAdmin"
-    >
-      <h3><router-link :to="{ name: 'Home' }">Home</router-link></h3>
-      <h3>
-        <router-link :to="{ name: 'ExercisePlan' }">Exercise Plans</router-link>
-      </h3>
-      <h3><router-link :to="{ name: 'Goals' }">Goals</router-link></h3>
-      <h3><router-link :to="{ name: 'Profile' }">Profile</router-link></h3>
-      <h3><router-link :to="{ name: 'AddPlan' }">Add a plan</router-link></h3>
+    <MenuBar :key="$route.fullPath" 
+        size="45" 
+        color="#9d9e9d" 
+        stroke-width="3"
+        />
+      <div id = "menu" class = "accordion-menu" v-if="isLoggedIn && !isCoach">
+       <h3><router-link :to="{ name: 'Home' }">Home</router-link></h3>
+        <h3><router-link :to="{ name: 'ExercisePlan' }">Exercise Plans</router-link></h3>
+         <h3><router-link :to="{ name: 'Goals' }">Goals</router-link></h3>
+          <h3><router-link :to="{ name: 'Profile' }">Profile</router-link></h3>
+      </div>
+      <div id = "menu" class = "accordion-menu" v-if="isLoggedIn && isCoach">
+       <h3><router-link :to="{ name: 'Home' }">Home</router-link></h3>
+        <h3><router-link :to="{ name: 'ExercisePlan' }">Exercise Plans</router-link></h3>
+         <h3><router-link :to="{ name: 'Goals' }">Goals</router-link></h3>
+          <h3><router-link :to="{ name: 'Profile' }">Profile</router-link></h3>
+           <h3><router-link :to="{ name: 'Teams' }">My Teams</router-link></h3>
     </div>
-    <div id="menu" class="accordion-menu" v-else-if="isLoggedIn && isCoach">
-      <h3><router-link :to="{ name: 'Home' }">Home</router-link></h3>
-      <h3>
-        <router-link :to="{ name: 'ExercisePlan' }">Exercise Plans</router-link>
-      </h3>
-      <h3><router-link :to="{ name: 'Goals' }">Goals</router-link></h3>
-      <h3><router-link :to="{ name: 'Profile' }">Profile</router-link></h3>
-      <h3><router-link :to="{ name: 'Teams' }">My Teams</router-link></h3>
-      <h3>
-        <router-link :to="{ name: 'AthletePlan' }">Athlete Plans</router-link>
-      </h3>
-      <h3><router-link :to="{ name: 'AddPlan' }">Add a plan</router-link></h3>
-    </div>
-    <div id="menu" class="accordion-menu" v-else-if="isLoggedIn && isAdmin">
+         <div id="menu" class="accordion-menu" v-else-if="isLoggedIn && isAdmin">
       <h3><router-link :to="{ name: 'Home' }">Home</router-link></h3>
       <h3>
         <router-link :to="{ name: 'ExercisePlan' }">Exercise Plans</router-link>
@@ -128,8 +114,8 @@ watch(
       <h3><router-link :to="{ name: 'AddPlan' }">Add a plan</router-link></h3>
       <h3>
         <router-link :to="{ name: 'AdminPage' }">Admin Panel</router-link>
-      </h3>
-    </div>
+  </h3> 
+  </div>
     <v-main id="main">
       <router-view />
     </v-main>

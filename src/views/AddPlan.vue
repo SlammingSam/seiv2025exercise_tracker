@@ -107,8 +107,8 @@ function togglePrexistingModal(){
     </v-toolbar>
     <div class="flex-column">
      <div class = flex-row-add>
-  <router-link :to="{ name: 'AthletePlan' }"><button class="home-button">Cancel</button></router-link>
-   <button class="save-button" @click="savePlan">Save</button>
+  <router-link :to="{ name: 'ExercisePlan' }"><button class="button-gradient-2">Cancel</button></router-link>
+   <button class="button-gradient" @click="savePlan">Save</button>
 </div>
 <div class="flex-row-form">
     <div class="form-container">

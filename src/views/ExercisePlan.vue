@@ -3,11 +3,13 @@ import PlusIcon from "../components/plusIcon.vue";
 import SocialLogin from "../components/SocialLogin.vue";
 import exerciseServices from "../services/exercisesServices.js"
 import exercise_planServices from "../services/exercise_planServices.js";
+import {useRouter} from 'vue-router';
 import planServices from "../services/planServices.js"
 import PlanView from "../components/PlanView.vue"
 import { ref, onMounted, computed } from "vue";
 import userServices from "../services/userServices.js";
 import store from "../store/store.js";
+const router = useRouter();
 const currentUser = ref(null)
 const currentProgress = ref(75);
 const plans = ref([])
@@ -89,15 +91,13 @@ async function deletePlan(planId) {
     </v-toolbar>
     <div class="flex-row-home">
     <div class="left-header">
-      <p>My Plans</p>
     </div>
 </div>
 <div class = "flex-row-search">
-    <input type="text"  class = inputBetter v-model="input" placeholder="Search Plans..." />
 </div>
    
   <div class = flex-row-table>
-      <button id = "plan-add" @click=" this.$router.push('/add-plan')">
+      <button id = "plan-add" @click=" router.push('/add-plan')">
          <PlusIcon/>
       </button>
         <input type="file" id="plan-file-input" style="display:none;"/>
@@ -108,7 +108,7 @@ async function deletePlan(planId) {
        </tr>
          <tr>
           <th>
-            Plan name
+          Plan name
           </th>
           <th>
             Description
@@ -117,8 +117,8 @@ async function deletePlan(planId) {
        <tr v-for="item in plans" :key="item.id" class ="long-table">
             <td>{{ item.name }}</td>
             <td >{{ item.description }}</td>
-            <td><button @click="togglePlanView(item.exercise_plans[0].id, item.name)">View</button></td>
-            <td><button @click="deletePlan(item.id)">Delete</button></td>
+            <td><button class="button-gradient" @click="togglePlanView(item.exercise_plans[0].id, item.name)">View</button></td>
+            <td><button class="button-gradient" @click="deletePlan(item.id)">Delete</button></td>
         </tr>
   
       </tbody>
