@@ -15,6 +15,7 @@ import AddPlan from "./views/AddPlan.vue";
 import AddGoal from "./components/AddGoal.vue";
 import RoleSelect from "./views/RoleSelect.vue";
 import Teams from "./views/Teams.vue"
+import AdminPage from "./views/AdminPage.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,6 +81,11 @@ const router = createRouter({
       name: "Teams",
       component: Teams,
     },
+    {
+      path: "/admin-page",
+      name: "AdminPage",
+      component: AdminPage,
+    }
   ],
 });
 

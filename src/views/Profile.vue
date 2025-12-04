@@ -186,9 +186,9 @@ function closeModal() {
 
         <img class="image_pfp" :src="picture" />
         <div class="pfp-header">
-          <button @click="openModal" class="role-button">
+          <v-btn @click="openModal" color="secondary">
             Change Role
-          </button>
+          </v-btn>
           <p class="pfp-table-header">{{ name }}</p>
         </div>
 
