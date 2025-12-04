@@ -405,7 +405,9 @@ textarea {
   height: 30%;
   width: 40%;
 }
-
+.space{
+  margin-top: 50px;
+}
 .small_modal_body {
 }
 

@@ -196,7 +196,7 @@ function closeModal() {
           :model-value="overallProgress"
           :rotate="90"
           :size="140"
-          :width="20"
+          :width="40"
         >
           <span class="profile-words">{{ overallProgress }}%</span>
         </v-progress-circular>

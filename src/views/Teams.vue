@@ -94,6 +94,11 @@ function reloadUsers() {
     athleteAddRef.value.getUsers();
   }
 }
+function reloadTeamUsers() {
+  if (teamEditRef.value?.getUsers) {
+    teamEditRef.value.getUsers();
+  }
+}
 const lists = ref([]);
 const parsedList = ref([]);
 
@@ -188,7 +193,7 @@ function openAthleteProfile(id) {
         :teamId="team_id"
         :teamName="team_name" 
          ref = "athleteAddRef"    
-        @refresh="reloadUsers"    
+        @refreshed="reloadTeamUsers"    
       />
       <TeamEdit id="teamEdit" class="team_edit_modal"
         :teamId="team_id"

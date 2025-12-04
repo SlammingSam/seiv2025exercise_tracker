@@ -36,7 +36,7 @@ async function getUsers(){
 
 
 async function addToTeam(user_id){
-  userServices.update(user_id, {
+  await userServices.update(user_id, {
       team_id: props.teamId
   })
   emit("refreshed")
