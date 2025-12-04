@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from "vue";
 import goalServices from "../services/goalServices.js";
-
+const emit = defineEmits(["refresh"]);
 const props = defineProps({
   userId: { type: [Number, String], required: true }
 });
@@ -19,6 +19,7 @@ async function addGoal() {
       team_id: null,       // user goal, not team
       user_id: props.userId
     });
+   
     hideModal();
   } catch (err) {
     console.error("Error adding user goal:", err);
@@ -28,7 +29,8 @@ async function addGoal() {
 function hideModal() {
    let modal = document.getElementById("addUserGoal");
   modal.style.opacity = "0%";
-  modal.style.top = "-100%";
+  modal.style.top = "-100%"; 
+  emit("refresh");
 }
 </script>
 

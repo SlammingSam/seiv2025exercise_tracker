@@ -117,8 +117,8 @@ async function deletePlan(planId) {
        <tr v-for="item in plans" :key="item.id" class ="long-table">
             <td>{{ item.name }}</td>
             <td >{{ item.description }}</td>
-            <td><button @click="togglePlanView(item.exercise_plans[0].id, item.name)">View</button></td>
-            <td><button @click="deletePlan(item.id)">Delete</button></td>
+            <td><button class="button-gradient" @click="togglePlanView(item.exercise_plans[0].id, item.name)">View</button></td>
+            <td><button class="button-gradient" @click="deletePlan(item.id)">Delete</button></td>
         </tr>
   
       </tbody>

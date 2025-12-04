@@ -5,10 +5,15 @@ import { ref, onMounted } from "vue";
 const currentProgress = ref(75);
 const users = ref([])
 const message = ref("")
+
+const emit = defineEmits(["refreshed"]);
 const props = defineProps({
   teamId: { type: [Number, String]},
   teamName: { type: [Number, String]}
 })
+defineExpose({
+getUsers
+});
 onMounted(() => {
   console.log(props.teamName)
   console.log("onMounted ran")
@@ -33,11 +38,14 @@ async function addToTeam(user_id){
   userServices.update(user_id, {
       team_id: props.teamId
   })
+  emit("refreshed")
+  hideModal()
 }
   function hideModal(){
       let modal = document.getElementById("athleteAdd")
    modal.style.opacity = "0%"
    modal.style.top = "-100%"
+   emit("refreshed")
   }
 
 </script>

@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from "vue";
 import goalServices from "../services/goalServices.js";
-
+const emit = defineEmits(["refreshes"]);
 const props = defineProps({
   teamId: { type: [Number, String], required: true }
 });
@@ -19,7 +19,8 @@ async function addGoal() {
     user_id: null      // team goal, not per-athlete
   });
   console.log(res);
-  hideModal()
+  emit("refreshes")
+  
 
   // Close modal or navigate
 }

@@ -77,6 +77,23 @@ function changeTeamId(id, name){
    modal.style.top = "7%"
 }
 
+async function reloadGoals() {
+  const response = await teamServices.getAll();
+    data.value = response.data;
+}
+const teamEditRef = ref(null);
+const altleteAddRef = ref(null);
+function reloadTeamGoals() {
+  if (teamEditRef.value?.loadTeamGoals) {
+    teamEditRef.value.loadTeamGoals();
+  }
+}
+
+function reloadUsers() {
+  if (altleteAddRef.value?.getUsers) {
+    altleteAddRef.value.getUsers();
+  }
+}
 const lists = ref([]);
 const parsedList = ref([]);
 
@@ -162,46 +179,33 @@ function openAthleteProfile(id) {
         </tr>
       </tbody>
     </table> 
-    <TeamCreate id = "teamCreate" class = "team_create_modal"
-            teamName=""  
-            :id="'teamCreate'"
-       />
-          <AthleteAdd id="athleteAdd" class = "athlete_add_modal"
-            :teamId="team_id"
-            :teamName="team_name"          
-          />
-          <!-- I intended on using this for multiple things, but thats ok. Thats why the props are named different. -->
-          <DeleteConfirm class = "delete_confirm" id = "deleteConfirm"
-          :objectId="team_id"
-            :objectName="team_name"
-          />
-          <TeamNameEdit id = "teamNameEdit" class = "team_create_modal"
-          
-           :teamId="team_id"
-            :teamName="team_name" 
-            
-             />
 
       <TeamCreate id="teamCreate" class="team_create_modal"
         teamName=""  
         :id="'teamCreate'"
+        @refresh="reloadGoals"
       />
       <AthleteAdd id="athleteAdd" class="athlete_add_modal"
         :teamId="team_id"
-        :teamName="team_name"          
+        :teamName="team_name" 
+         ref = "athleteAddRef"        
       />
       <TeamEdit id="teamEdit" class="team_edit_modal"
         :teamId="team_id"
         :teamName="team_name"  
         @select-user="openAthleteProfile"
+        ref = "teamEditRef"
+        @refresh="reloadUsers"
       />
       <DeleteConfirm class="delete_confirm" id="deleteConfirm"
         :objectId="team_id"
         :objectName="team_name"
+         @refresh="reloadGoals"
       />
       <TeamNameEdit id="teamNameEdit" class="team_create_modal"
         :teamId="team_id"
         :teamName="team_name" 
+        @refresh="reloadGoals"
       />
       <PlanAssignment id="planAssignment" class="plan_assignment_modal"
         :teamId="team_id"
@@ -212,6 +216,7 @@ function openAthleteProfile(id) {
       />
       <AddGoal id ="addGoal" class = "add_goal_modal"
         :teamId ="team_id"
+        @refreshes="reloadTeamGoals"
       />
 
     </div>

@@ -4,6 +4,7 @@ import { reactive } from 'vue'
 import teamServices from "../services/teamServices.js"
 import userServices from "../services/userServices.js"
 import store from "../store/store.js";
+const emit = defineEmits(["refresh"]);
 const currentUser = ref("")
 const props = defineProps({
   teamName: { type: [Number, String]}
@@ -22,11 +23,13 @@ async function addTeam(){
    modal.style.opacity = "0%"
    modal.style.top = "-100%"
    console.log(response)
+    emit("refresh");
   }
   function hideModal(){
       let modal = document.getElementById("teamCreate")
    modal.style.opacity = "0%"
    modal.style.top = "-100%"
+   emit("refresh");
   }
   async function getCurrentUser(){
   let userSession = computed(() => store.getters.getLoginUserInfo);
