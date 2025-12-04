@@ -53,7 +53,7 @@ async function addToTeam(user_id){
     </v-toolbar>
    
 <div class = "flex-row-search">
-  <button @click="hideModal()">Cancel</button>
+  <button class="button-gradient-2" @click="hideModal()">Cancel</button>
     <input type="text"  class = inputBetter v-model="input" placeholder="Search Athletes..." />
 </div>
    
@@ -69,7 +69,7 @@ async function addToTeam(user_id){
           <td v-if="item.role == 'Athlete' && item.team_id == null">{{ item.fName }}</td>
           <td v-if="item.role == 'Athlete' && item.team_id == null">{{ item.lName }}</td>
            <td v-if="item.role == 'Athlete' && item.team_id == null">{{ item.email }}</td>
-           <button v-if="item.role == 'Athlete' && item.team_id == null" @click="addToTeam(item.id)">Add to Team</button>
+           <button class="button-gradient-2" v-if="item.role == 'Athlete' && item.team_id == null" @click="addToTeam(item.id)">Add to Team</button>
             <!-- i'll need to write this today. -->
         </tr>
       </tbody>

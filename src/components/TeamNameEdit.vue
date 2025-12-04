@@ -66,8 +66,8 @@ async function updateTeam(id){
     </v-toolbar>
     <div class="flex-column">
      <div class = flex-row-add>
-  <button class="home-button" @click = "hideModal()">Cancel</button>
-    <button class="save-button" @click=updateTeam(props.teamId)>Save</button>
+  <button class="button-gradient-2"  @click = "hideModal()">Cancel</button>
+    <button class="button-gradient-2"  @click=updateTeam(props.teamId)>Save</button>
 </div>
 <div class="flex-row-form">
     <div class="form-container">
