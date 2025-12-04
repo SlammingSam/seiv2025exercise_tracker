@@ -63,6 +63,7 @@ function togglePlanView(id, name){
    console.log("id selected: " + exercise_plan_id.value)
 }
   
+
 async function deletePlan(planId) {
   try {
     // Call backend to delete the plan
