@@ -25,6 +25,12 @@ export default {
       }
     },
     async changeRole(user, newRole) {
+      if (newRole === 'Admin') {
+        const confirmAdmin = window.confirm(`Are you sure you want to make ${user.fName} ${user.lName} an Admin?`);
+        if (!confirmAdmin) {
+          return; // User cancelled
+        }
+      }
       const new_user = {
         fName: user.fName,
         lName: user.lName,
