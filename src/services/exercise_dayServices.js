@@ -10,6 +10,10 @@ export default {
   get(id) {
     return apiClient.get(`/exercise_days/exercise_plans/${id}`);
   },
+  getPlanExercisesForUser(planId, userId) {
+  return apiClient.get(`/exercise_days/plan/${planId}/user/${userId}`);
+},
+
   create(data) {
     return apiClient.post("/exercise_days", data);
   },

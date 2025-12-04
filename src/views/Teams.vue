@@ -36,8 +36,8 @@ onMounted(async () => {
   } finally {
     loadingUser.value = false;
   }
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+   let menu = document.getElementById("menu")
+  menu.style.top = "-20vh"
 });
 
 async function getTeams(){

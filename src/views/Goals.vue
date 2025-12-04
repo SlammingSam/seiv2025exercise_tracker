@@ -1,84 +1,103 @@
 <script setup>
-import SocialLogin from "../components/SocialLogin.vue";
-import { ref, onMounted } from "vue";
-import goalServices from "../services/goalServices";
-import plusIcon from "../components/plusIcon.vue"
-const currentProgress = ref(75);
-const message = ref("");
-const data = ref([]);
-//console.log("on goals page!");
+import { ref, onMounted, computed } from "vue";
+import goalServices from "../services/goalServices.js";
+import AddUserGoal from "../components/AddUserGoal.vue";
+import store from "../store/store.js";
 
-onMounted(() => {
-  console.log("onMounted ran")
-  getGoals();
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+const goals = ref([]);
+const currentUser = computed(() => store.getters.getLoginUserInfo);
+const isAddModalVisible = ref(false);
+const message = ref("");
+
+onMounted(async () => {
+  if (!currentUser.value || !currentUser.value.userId) return;
+
+  try {
+    const res = await goalServices.getAll();
+    goals.value = res.data.filter(goal => goal.user_id === currentUser.value.userId);
+  } catch (err) {
+    console.error("Error loading goals:", err);
+    message.value = "Failed to load goals.";
+  }
+   let menu = document.getElementById("menu")
+  menu.style.top = "-20vh"
 });
 
-async function getGoals(){
-  try{
-    const response = await goalServices.getAll();
-    data.value = response.data;
-    console.log(data)
-  }
-  catch(error){
-    message.value = "Error: " + error.code + ":" + error.message;
-    console.log(error);
+
+async function saveGoalStatus(goal) {
+  try {
+    await goalServices.update(goal.id, { status: goal.status });
+    console.log("Goal status updated:", goal);
+  } catch (err) {
+    console.error("Error updating goal:", err);
   }
 }
 
 
+async function deleteGoal(goalId) {
+  try {
+    await goalServices.delete(goalId);
+    goals.value = goals.value.filter(g => g.id !== goalId);
+  } catch (err) {
+    console.error("Error deleting goal:", err);
+  }
+}
 
-
-const lists = ref([]);//list for the page display
-const parsedList = ref([]);//list to send to the database
-
-
+function openAddGoal() {
+  const modal = document.getElementById("addUserGoal");
+  modal.style.opacity = "100%";
+  modal.style.top = "7%";
+}
 </script>
 
-<template>  
-   
+<template>
   <v-container>
     <v-toolbar>
       <div class="home-header">
-      <p>Goals</p>
-    </div>
+        <p>{{ currentUser?.fName }}'s Goals</p>
+      </div>
     </v-toolbar>
-    
-<div class = "flex-row-search">
- <div class = "normal-header">
-  <p>Add a Goal:</p>
- </div>
- <button id="plus-icon" @click="this.$router.push('/add-goal')">
-<plusIcon
-        size="45" 
-        color="#9d9e9d" 
-        stroke-width="2"
-        />
- </button>
-   
-    <input type="file" id="file-input" style="display:none;"/>
-    <input type="text"  class = inputBetter v-model="input" placeholder="Search goals" />
-</div>
-   
-  <div class = flex-row-table>
-    <table class ="long-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Status</th>
-          <!-- This is the header for the list. -->
-        </tr>
-      </thead>
-      <tbody class ="long-table">
-        <!-- Here the type can be declared to represent the item, just like other languages.  -->
-          <tr v-for="item in data" :key="item.goal_id" class ="long-table">
-            <td>{{ item.name }}</td>
-            <td>{{ item.status }}</td>
-        </tr>
-      </tbody>
-    </table> 
- 
-  </div>
+
+    <div class="flex-between mb-2">
+      <h3>User Goals</h3>
+      <button class="add-button" @click="openAddGoal()">
+        + Add Goal
+      </button>
+    </div>
+
+    <div class="flex-row-table">
+      <table class="long-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="goal in goals" :key="goal.id">
+            <td>{{ goal.name }}</td>
+            <td>
+              <select v-model="goal.status">
+                <option value="not started">Not Started</option>
+                <option value="in-progress">In Progress</option>
+                <option value="complete">Complete</option>
+              </select>
+            </td>
+            <td>
+              <button @click="saveGoalStatus(goal)">Save</button>
+              <button @click="deleteGoal(goal.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <AddUserGoal
+      class = "add_user_goal"
+      id="addUserGoal"
+      :userId="currentUser?.userId"
+      
+    />
   </v-container>
 </template>

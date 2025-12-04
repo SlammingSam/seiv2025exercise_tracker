@@ -37,7 +37,6 @@ onMounted(async () => {
   if (menu) menu.style.top = "-12vh";
 });
 
-// Watch for changes to teamId and reload data when it changes
 watch(() => props.teamId, async (newTeamId, oldTeamId) => {
   console.log("Team ID changed from", oldTeamId, "to", newTeamId);
   if (newTeamId) {
@@ -47,19 +46,16 @@ watch(() => props.teamId, async (newTeamId, oldTeamId) => {
 
 async function loadAvailablePlans() {
   try {
-    // Get all plans for this user (includes nested exercise_plans with their IDs)
     const plansResponse = await planServices.get(userSession.value.userId);
     const plans = plansResponse.data;
     
-    // Build available plans from the nested exercise_plans data
     availablePlans.value = plans.flatMap(plan => {
-      // Each plan has an array of exercise_plans with their IDs
       return plan.exercise_plans.map(ep => ({
         exercise_plan_id: ep.id,
         plan_id: plan.id,
         plan_name: plan.name,
         plan_description: plan.description,
-        goal_id: null // We don't have goal_id in this response, but it's in the exercise_plan
+        goal_id: null 
       }));
     });
     
@@ -72,7 +68,6 @@ async function loadAvailablePlans() {
 
 async function loadPlanAssignments() {
   try {
-    // Don't try to load if teamId is not set yet
     if (!props.teamId) {
       console.log("Team ID not set yet, skipping load");
       return;
@@ -82,13 +77,11 @@ async function loadPlanAssignments() {
     console.log("All plan assignments from API:", response.data);
     console.log("Looking for team_id:", props.teamId, "Type:", typeof props.teamId);
     
-    // Convert both to numbers for comparison
     planAssignments.value = response.data.filter(
       pa => Number(pa.team_id) === Number(props.teamId)
     );
     console.log("Plan assignments loaded for team:", props.teamId, planAssignments.value);
     
-    // Only build calendar if we have assignments
     if (planAssignments.value.length > 0) {
       await buildCalendarData();
     } else {
@@ -107,7 +100,6 @@ async function assignPlan() {
     return;
   }
 
-  // Convert to Unix timestamp in SECONDS (not milliseconds)
   const startTimestamp = Math.floor(new Date(startDate.value).getTime() / 1000);
   const endTimestamp = Math.floor(new Date(endDate.value).getTime() / 1000);
 
@@ -144,23 +136,21 @@ async function buildCalendarData() {
 
   for (const assignment of planAssignments.value) {
     try {
-      // Use the service's get method - it already handles the route structure
+  
       const response = await exercise_dayServices.get(assignment.exercise_plan_id);
       const exerciseDays = response.data;
       
       console.log(`Exercise days for plan ${assignment.exercise_plan_id}:`, exerciseDays);
 
-      // Convert Unix timestamps (in SECONDS) to dates by multiplying by 1000
+
       const start = new Date(assignment.start_date * 1000);
       const end = new Date(assignment.end_date * 1000);
       
       console.log(`Date range: ${start.toLocaleDateString()} to ${end.toLocaleDateString()}`);
 
-      // Iterate through each day in the range
       for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
         const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()];
 
-        // Find exercises scheduled for this day of week
         const dayExercises = exerciseDays
           .filter(ed => ed.day === dayName && ed.exercise)
           .map(ed => ({
@@ -168,7 +158,6 @@ async function buildCalendarData() {
             name: ed.exercise.name,
             sets: ed.exercise.sets,
             reps: ed.exercise.reps,
-            status: ed.status, // Status is now on exercise_day, not exercise
             exercise_day_id: ed.id
           }));
 
@@ -224,7 +213,7 @@ function hideModal() {
   let modal = document.getElementById("planAssignment");
   if (modal) {
     modal.style.opacity = "0%";
-    modal.style.top = "-300%";
+    modal.style.top = "-100%";
   }
 }
 
@@ -243,7 +232,6 @@ async function toggleExerciseStatus(exerciseDayId, currentStatus) {
   try {
     console.log("Toggling status for exercise_day_id:", exerciseDayId, "Current status:", currentStatus);
     
-    // Toggle between 'not started' and 'complete'
     const newStatus = currentStatus === 'complete' ? 'not started' : 'complete';
     
     console.log("Sending update request with new status:", newStatus);
@@ -255,7 +243,6 @@ async function toggleExerciseStatus(exerciseDayId, currentStatus) {
     console.log("Update response:", response);
     console.log(`Successfully updated exercise_day ${exerciseDayId} status to ${newStatus}`);
     
-    // Rebuild calendar to show updated status
     await buildCalendarData();
     
     message.value = `Status updated to ${newStatus}`;
@@ -334,13 +321,6 @@ function getPlanName(exercisePlanId) {
                 <div v-for="exercise in day.exercises" :key="exercise.exercise_day_id" class="exercise-item">
                   <strong>{{ exercise.name }}</strong>
                   <span>{{ exercise.sets }} sets × {{ exercise.reps }} reps</span>
-                  <span 
-                    class="status clickable" 
-                    :class="exercise.status.replace(/ /g, '-')"
-                    @click="toggleExerciseStatus(exercise.exercise_day_id, exercise.status)"
-                  >
-                    {{ exercise.status }}
-                  </span>
                 </div>
               </div>
             </div>
@@ -375,148 +355,3 @@ function getPlanName(exercisePlanId) {
   </v-container>
 </template>
 
-<style scoped>
-.loading {
-  text-align: center;
-  padding: 40px;
-  font-size: 1.2em;
-  color: #666;
-}
-
-.assignment-form {
-  background: #f5f5f5;
-  padding: 20px;
-  border-radius: 8px;
-  margin: 20px 0;
-}
-
-.form-group {
-  margin: 15px 0;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.form-group select,
-.form-group input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.calendar-container {
-  margin-top: 30px;
-}
-
-.calendar-weeks {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.calendar-week {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
-}
-
-.calendar-day {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  background: white;
-}
-
-.day-header {
-  background: #4CAF50;
-  color: white;
-  padding: 10px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.exercises-list {
-  padding: 10px;
-}
-
-.exercise-item {
-  display: flex;
-  flex-direction: column;
-  padding: 8px;
-  margin: 5px 0;
-  background: #f9f9f9;
-  border-radius: 4px;
-  font-size: 0.9em;
-}
-
-.exercise-item strong {
-  color: #333;
-}
-
-.exercise-item span {
-  color: #666;
-  font-size: 0.85em;
-}
-
-.status {
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 0.75em;
-  margin-top: 4px;
-  display: inline-block;
-  width: fit-content;
-}
-
-.status.clickable {
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.1s, box-shadow 0.2s;
-}
-
-.status.clickable:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.status.clickable:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-}
-
-.status.complete {
-  background: #4CAF50;
-  color: white;
-}
-
-.status.in-progress {
-  background: #FFC107;
-  color: black;
-}
-
-.status.not-started {
-  background: #9E9E9E;
-  color: white;
-}
-
-.no-data {
-  text-align: center;
-  padding: 40px;
-  color: #999;
-  font-style: italic;
-}
-
-.assignments-list {
-  margin-top: 30px;
-}
-
-.message {
-  margin-top: 10px;
-  padding: 10px;
-  background: #e3f2fd;
-  border-radius: 4px;
-}
-</style>
