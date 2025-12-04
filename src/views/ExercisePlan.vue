@@ -3,11 +3,13 @@ import PlusIcon from "../components/plusIcon.vue";
 import SocialLogin from "../components/SocialLogin.vue";
 import exerciseServices from "../services/exercisesServices.js"
 import exercise_planServices from "../services/exercise_planServices.js";
+import {useRouter} from 'vue-router';
 import planServices from "../services/planServices.js"
 import PlanView from "../components/PlanView.vue"
 import { ref, onMounted, computed } from "vue";
 import userServices from "../services/userServices.js";
 import store from "../store/store.js";
+const router = useRouter();
 const currentUser = ref(null)
 const currentProgress = ref(75);
 const plans = ref([])
@@ -95,7 +97,7 @@ async function deletePlan(planId) {
 </div>
    
   <div class = flex-row-table>
-      <button id = "plan-add" @click=" this.$router.push('/add-plan')">
+      <button id = "plan-add" @click=" router.push('/add-plan')">
          <PlusIcon/>
       </button>
         <input type="file" id="plan-file-input" style="display:none;"/>
