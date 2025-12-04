@@ -14,6 +14,7 @@ const props = defineProps({
 defineExpose({
 getUsers
 });
+
 onMounted(() => {
   console.log(props.teamName)
   console.log("onMounted ran")
