@@ -23,6 +23,10 @@ onMounted(async () => {
   menu.style.top = "-20vh"
 });
 
+async function reloadGoals() {
+  const res = await goalServices.getAll();
+  goals.value = res.data.filter(goal => goal.user_id === currentUser.value.userId);
+}
 
 async function saveGoalStatus(goal) {
   try {
@@ -85,8 +89,8 @@ function openAddGoal() {
               </select>
             </td>
             <td>
-              <button @click="saveGoalStatus(goal)">Save</button>
-              <button @click="deleteGoal(goal.id)">Delete</button>
+              <button class="button-gradient-2" @click="saveGoalStatus(goal)">Save</button>
+              <button class="button-gradient-2" @click="deleteGoal(goal.id)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -97,6 +101,7 @@ function openAddGoal() {
       class = "add_user_goal"
       id="addUserGoal"
       :userId="currentUser?.userId"
+      @refresh="reloadGoals"
       
     />
   </v-container>

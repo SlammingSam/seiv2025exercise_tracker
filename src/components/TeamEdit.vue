@@ -4,18 +4,19 @@ import userServices from "../services/userServices.js";
 import goalServices from "../services/goalServices.js"; 
 import TeamNameEdit from "./TeamNameEdit.vue";
 import {watch, ref, onMounted } from "vue";
-
 const currentProgress = ref(75);
 const users = ref([]);
 const message = ref("");
-const emit = defineEmits(['select-user']);
+const emit = defineEmits(['select-user', 'refresh']);
 const teamGoals = ref([]); 
 
 const props = defineProps({
   teamId: { type: [Number, String] },
   teamName: { type: [Number, String] },
 });
-
+defineExpose({
+loadTeamGoals
+});
 onMounted(() => {
   console.log("team id:" + props.teamId);
   console.log("onMounted ran");  
@@ -31,6 +32,7 @@ watch(() => props.teamId, (newId) => {
 async function getUsers() {
   try {
     const response = await userServices.getAll();
+    console.log(response);
     users.value = response.data;
   } catch (error) {
     message.value = "Error: " + error.code + ":" + error.message;
@@ -54,6 +56,8 @@ async function deleteGoal(id) {
 function changeName() {}
 
 async function removeFromTeam(id) {
+  
+  users.value = users.value.filter(g => g.id !== id);
   const response = await userServices.update(id, {
     team_id: null,
   });
@@ -70,6 +74,7 @@ function hideModal() {
   let modal = document.getElementById("teamEdit");
   modal.style.opacity = "0%";
   modal.style.top = "-100%";
+  emit("refresh");
 }
 
 function openPlanAssignment() {
@@ -128,7 +133,6 @@ async function saveGoalStatus(goal){
    
     <div class="flex-row-search">
       <button class="button-gradient-2" @click="hideModal()">Back</button>
-      <button class="button-gradient-2" @click="changeName()">Change Name</button>
       <button class="button-gradient-2" @click="openPlanAssignment()">Training Calendar</button>
       <input type="text" class="inputBetter" v-model="input" placeholder="Search Athletes..." />
     </div>
@@ -158,7 +162,7 @@ async function saveGoalStatus(goal){
       <h3>{{ props.teamName }}'s Goals</h3>
       <div class="flex-between mb-2">
   <h3>Team Goals</h3>
-  <button class="button-gradient-2" @click="openAddGoal()">
+  <button class="button-gradient" @click="openAddGoal()">
     + Add Goal
   </button>
 </div>

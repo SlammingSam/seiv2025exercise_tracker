@@ -393,7 +393,7 @@ textarea {
   background-color: white;
   height: 100%;
   width: 100%;
-  z-index: -1;
+  z-index: 3;
 }
 .delete_confirm{
    transition: 0.2s;
@@ -401,7 +401,7 @@ textarea {
   position:absolute;
   top:-100%;
   left: 30%;
-  background-color: rgb(133, 133, 133);
+  background-color: rgb(212, 212, 212);
   height: 30%;
   width: 40%;
 }

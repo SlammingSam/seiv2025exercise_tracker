@@ -79,7 +79,6 @@ watch(userSession, (newUser) => {
          <h3><router-link :to="{ name: 'Goals' }">Goals</router-link></h3>
           <h3><router-link :to="{ name: 'Profile' }">Profile</router-link></h3>
            <h3><router-link :to="{ name: 'Teams' }">My Teams</router-link></h3>
-            <h3><router-link :to="{ name: 'AthletePlan' }">Athlete Plans</router-link></h3>
              <h3><router-link :to="{ name: 'AddPlan' }">Add a plan</router-link></h3>
     </div>
     <v-main id="main">
