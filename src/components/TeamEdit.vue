@@ -38,6 +38,19 @@ async function getUsers() {
   }
 }
 
+async function deleteGoal(id) {
+  try {
+    await goalServices.delete(id);
+
+    // remove from UI without reloading
+    teamGoals.value = teamGoals.value.filter(g => g.id !== id);
+
+  } catch (err) {
+    console.error("Error deleting goal:", err);
+  }
+}
+
+
 function changeName() {}
 
 async function removeFromTeam(id) {
@@ -171,6 +184,7 @@ async function saveGoalStatus(goal){
     </select>
   </td>
   <td>
+    <button @click="deleteGoal(goal.id)">Delete</button>
     <button @click="saveGoalStatus(goal)">Save</button>
   </td>
 </tr>
