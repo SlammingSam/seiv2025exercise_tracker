@@ -106,7 +106,7 @@ async function deletePlan(planId) {
        </tr>
          <tr>
           <th>
-            Plan name
+          Plan name
           </th>
           <th>
             Description
