@@ -4,8 +4,8 @@ import { ref, onMounted } from "vue";
 const currentProgress = ref(75);
 
 onMounted(() => {
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+   let menu = document.getElementById("menu")
+   menu.style.top = "-20vh"
 });
 </script>
 

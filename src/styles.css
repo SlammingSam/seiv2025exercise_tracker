@@ -61,7 +61,7 @@ p {
 }
 
 .progress-words {
-  font-size: 3vw;
+  font-size: 2.5vw;
   font-weight: lighter;
 }
 .profile-words {
@@ -374,6 +374,17 @@ textarea {
   width: 100%;
 }
 
+.add_user_goal{
+     transition: 0.2s;
+  opacity: 0%;
+  position:absolute;
+  top:-100%;
+  background-color: white;
+  height: 100%;
+  width: 100%;
+}
+
+
 .delete_confirm {
   transition: 0.2s;
   opacity: 0%;
@@ -397,6 +408,22 @@ textarea {
 
 .small_modal_body {
 }
+
+.status-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}
+
+.status-btn:hover {
+  background: #ddd;
+}
+
+
+/*Plan assignment styles*/
+
 #teamCreate {
 }
 #teamEdit {
@@ -511,6 +538,161 @@ a {
   text-align: center;
   vertical-align: middle; 
 }
+
+
+.week-grid-horizontal {
+  display: flex;
+  gap: 16px;       /* space between columns */
+  overflow-x: auto; /* scroll if too wide */
+  padding-bottom: 8px;
+}
+
+.day-cell-horizontal {
+  min-width: 150px;       /* adjust width as needed */
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  flex-shrink: 0;         /* prevents shrinking when scrolling */
+}
+
+.day-item {
+  margin: 4px 0;
+  padding: 4px 6px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  cursor: grab;
+}
+
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2em;
+  color: #666;
+}
+
+.assignment-form {
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.form-group {
+  margin: 15px 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.calendar-container {
+  margin-top: 30px;
+}
+
+.calendar-weeks {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.calendar-week {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.calendar-day {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+.day-header {
+  background: #4CAF50;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.exercises-list {
+  padding: 10px;
+}
+
+.exercise-item {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  margin: 5px 0;
+  background: #f9f9f9;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.exercise-item strong {
+  color: #333;
+}
+
+.exercise-item span {
+  color: #666;
+  font-size: 0.85em;
+}
+
+.status {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.75em;
+  margin-top: 4px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.status.complete {
+  background: #4CAF50;
+  color: white;
+}
+
+.status.in-progress {
+  background: #FFC107;
+  color: black;
+}
+
+.status.not-started {
+  background: #9E9E9E;
+  color: white;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-style: italic;
+}
+
+.assignments-list {
+  margin-top: 30px;
+}
+
+.message {
+  margin-top: 10px;
+  padding: 10px;
+  background: #e3f2fd;
+  border-radius: 4px;
+}
+
 #editExercisePlanDiv{
   width: 50%;
 }

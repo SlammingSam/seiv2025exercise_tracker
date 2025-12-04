@@ -22,7 +22,7 @@ onMounted(async () => {
   await getCurrentUser()
   await getPlans(currentUser.value.id)
   let menu = document.getElementById("menu")
-  menu.style.top = "-12vh"
+   menu.style.top = "-20vh"
   
   // Use Vue lifecycle instead of DOMContentLoaded so elements from this component are present
 });
@@ -63,6 +63,19 @@ function togglePlanView(id, name){
    console.log("id selected: " + exercise_plan_id.value)
 }
   
+async function deletePlan(planId) {
+  try {
+    // Call backend to delete the plan
+    await planServices.delete(planId);
+
+    // Remove the plan from the local plans array so the UI updates immediately
+    plans.value = plans.value.filter(plan => plan.id !== planId);
+
+    console.log(`Plan ${planId} deleted successfully.`);
+  } catch (err) {
+    console.error("Failed to delete plan:", err);
+  }
+}
 
 </script>
 
@@ -105,6 +118,7 @@ function togglePlanView(id, name){
             <td>{{ item.name }}</td>
             <td >{{ item.description }}</td>
             <td><button @click="togglePlanView(item.exercise_plans[0].id, item.name)">View</button></td>
+            <td><button @click="deletePlan(item.id)">Delete</button></td>
         </tr>
   
       </tbody>

@@ -87,8 +87,8 @@ async function savePlan(){
 onMounted(async () => {
   await getCurrentUser()
   console.log(currentUser)
-  let menu = document.getElementById("menu");
-  menu.style.top = "-12vh";
+   let menu = document.getElementById("menu")
+  menu.style.top = "-20vh"
 });
 
 function togglePrexistingModal(){

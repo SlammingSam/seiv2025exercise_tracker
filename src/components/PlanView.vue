@@ -2,9 +2,9 @@
 import exercise_dayServices from "../services/exercise_dayServices.js";
 import { watch, ref, computed } from "vue";
 
-const exercise_days = ref([]);            // working copy
-const originalExerciseDays = ref([]);     // backup for cancel
-const allExercises = ref([]);             // <--- NEW fixed exercise list
+const exercise_days = ref([]);           
+const originalExerciseDays = ref([]);     
+const allExercises = ref([]);             
 const draggedItem = ref(null);
 
 const props = defineProps({
@@ -12,7 +12,7 @@ const props = defineProps({
   planName: { type: [Number, String] }
 });
 
-// Days of the week
+
 const weekDays = [
   "Sunday", "Monday", "Tuesday", "Wednesday",
   "Thursday", "Friday", "Saturday"
@@ -28,7 +28,6 @@ watch(
   { immediate: true }
 );
 
-//resetting the schedule... hope it works!
 async function resetSchedule() {
   if (!confirm("This will clear your current schedule. Are you sure?")) return;
 
@@ -40,9 +39,9 @@ async function resetSchedule() {
 
   const seen = new Set();
   exercise_days.value = exercise_days.value.filter(ex => {
-    if (seen.has(ex.exercise_id)) return true; // keep first occurrence
+    if (seen.has(ex.exercise_id)) return true; 
     seen.add(ex.exercise_id);
-    return true; // keep first, remove duplicates? Actually first is kept above
+    return true; 
   });
 
 
@@ -55,17 +54,12 @@ async function resetSchedule() {
   }
 }
 
-
-// LOAD DATA
 async function getExerciseDays(id) {
   const response = await exercise_dayServices.get(id);
 
   originalExerciseDays.value = JSON.parse(JSON.stringify(response.data)); 
   exercise_days.value = JSON.parse(JSON.stringify(response.data));
 
-  // ---------------------------
-  // BUILD FIXED UNIQUE LIST ONCE
-  // ---------------------------
   const map = new Map();
   for (const entry of response.data) {
     if (!map.has(entry.exercise_id)) {
@@ -76,18 +70,12 @@ async function getExerciseDays(id) {
   allExercises.value = [...map.values()];
 }
 
-// =============================
-// UNIQUE EXERCISE LIST (LEFT)
-// ALWAYS UNIQUE, NEVER DUPLICATES
-// =============================
 const uniqueExercises = computed(() => allExercises.value);
 
-// DRAG START
 function onDragStart(item) {
   draggedItem.value = item;
 }
 
-// DROP -> Add or modify entries
 function onDrop(day) {
   if (!draggedItem.value) return;
 
@@ -95,7 +83,7 @@ function onDrop(day) {
 
   const exists = exercise_days.value.some(
     ex =>
-      ex.exercise_id === original.id && // FIXED
+      ex.exercise_id === original.id && 
       ex.exercise_plan_id === original.exercise_plan_id &&
       ex.day === day
   );
@@ -105,7 +93,7 @@ function onDrop(day) {
     return;
   }
 
-  // CASE 1: Exercise is in an "Unset" existing row
+
   const unsetRow = exercise_days.value.find(
     ex => ex.exercise_id === original.id && ex.day === "Unset"
   );
@@ -113,13 +101,12 @@ function onDrop(day) {
   if (unsetRow) {
     unsetRow.day = day;
   } else {
-    // CASE 2: Create a NEW exercise_day entry
     exercise_days.value.push({
       id: null,
       exercise_id: original.id,
       exercise_plan_id: props.exercisePlanId,
       day: day,
-      exercise: original  // IMPORTANT FIX
+      exercise: original 
     });
   }
 
@@ -143,19 +130,17 @@ async function saveSchedule() {
     }
 
     alert("Weekly schedule saved!");
-    await getExerciseDays(props.exercisePlanId); // reload fresh
+    await getExerciseDays(props.exercisePlanId); 
   } catch (err) {
     console.error(err);
     alert("Error saving schedule");
   }
 }
 
-// CANCEL → restore from original backup
 function cancelChanges() {
   exercise_days.value = JSON.parse(JSON.stringify(originalExerciseDays.value));
 }
 
-// Close modal
 function hideModal() {
   cancelChanges();
   let modal = document.getElementById("planView");
@@ -177,7 +162,6 @@ function hideModal() {
 
     <button @click="hideModal">Cancel</button>
 
-    <!-- ==== UNIQUE DRAGGABLE EXERCISE LIST ==== -->
     <table class="long-table">
       <tbody class="long-table">
         <h3>Exercises</h3>
@@ -201,28 +185,28 @@ function hideModal() {
       </tbody>
     </table>
 
-    <!-- ==== WEEKLY SCHEDULE GRID ==== -->
-    <h3>Weekly Schedule</h3>
+   <h3>Weekly Schedule</h3>
 
-    <div class="week-grid">
-      <div
-        v-for="day in weekDays"
-        :key="day"
-        class="day-cell"
-        @dragover.prevent
-        @drop="onDrop(day)"
-      >
-        <strong>{{ day }}</strong>
+<div class="week-grid-horizontal">
+  <div
+    v-for="day in weekDays"
+    :key="day"
+    class="day-cell-horizontal"
+    @dragover.prevent
+    @drop="onDrop(day)"
+  >
+    <strong>{{ day }}</strong>
 
-        <div
-          class="day-item"
-          v-for="ex in exercise_days.filter(e => e.day === day)"
-          :key="ex.exercise_id + '-' + ex.day"
-        >
-          {{ ex.exercise.name }}
-        </div>
-      </div>
+    <div
+      class="day-item"
+      v-for="ex in exercise_days.filter(e => e.day === day)"
+      :key="ex.exercise_id + '-' + ex.day"
+    >
+      {{ ex.exercise.name }}
     </div>
+  </div>
+</div>
+
 
     <button @click="saveSchedule">Save</button>
     <button @click="resetSchedule">Reset</button>
