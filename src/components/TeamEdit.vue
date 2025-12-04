@@ -127,9 +127,9 @@ async function saveGoalStatus(goal){
     </v-toolbar>
    
     <div class="flex-row-search">
-      <button @click="hideModal()">Back</button>
-      <button @click="changeName()">Change Name</button>
-      <button @click="openPlanAssignment()">Training Calendar</button>
+      <button class="button-gradient-2" @click="hideModal()">Back</button>
+      <button class="button-gradient-2" @click="changeName()">Change Name</button>
+      <button class="button-gradient-2" @click="openPlanAssignment()">Training Calendar</button>
       <input type="text" class="inputBetter" v-model="input" placeholder="Search Athletes..." />
     </div>
    
@@ -144,8 +144,8 @@ async function saveGoalStatus(goal){
           <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.fName }}</td>
           <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">{{ item.lName }}</td>
           <td v-if="item.role == 'Athlete' && item.team_id == props.teamId">
-            <button @click="$emit('select-user', item.id); toggleAthleteView()">View</button>
-            <button @click="removeFromTeam(item.id)">Remove</button>
+            <button class="button-gradient-2" @click="$emit('select-user', item.id); toggleAthleteView()">View</button>
+            <button class="button-gradient-2" @click="removeFromTeam(item.id)">Remove</button>
           </td>
             <!-- i'll need to write this today. -->
         </tr>
@@ -158,7 +158,7 @@ async function saveGoalStatus(goal){
       <h3>{{ props.teamName }}'s Goals</h3>
       <div class="flex-between mb-2">
   <h3>Team Goals</h3>
-  <button class="add-button" @click="openAddGoal()">
+  <button class="button-gradient-2" @click="openAddGoal()">
     + Add Goal
   </button>
 </div>
@@ -184,8 +184,8 @@ async function saveGoalStatus(goal){
     </select>
   </td>
   <td>
-    <button @click="deleteGoal(goal.id)">Delete</button>
-    <button @click="saveGoalStatus(goal)">Save</button>
+    <button class="button-gradient-2" @click="deleteGoal(goal.id)">Delete</button>
+    <button class="button-gradient-2" @click="saveGoalStatus(goal)">Save</button>
   </td>
 </tr>
           </tbody>
