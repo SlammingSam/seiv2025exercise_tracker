@@ -10,11 +10,11 @@ import exercise_dayServices from "../services/exercise_dayServices.js";
 import store from "../store/store.js";
 import { computed, watch } from "vue";
 
+const teamGoals = ref([])
 const currentAthlete = ref(null);
 const goals = ref([])
 const exercises = ref([])
 const message = ref("")
-const currentProgress = ref(75);
 const user = ref(null)
 const picture = ref("../public/oc-logo-white.png");
 const name = ref("");
@@ -24,7 +24,6 @@ const props = defineProps({
 })
 
 
-
 watch(() => props.currentAthlete, async (newId) => {
   if (!newId) return;
 
@@ -32,10 +31,12 @@ watch(() => props.currentAthlete, async (newId) => {
   const userRes = await userServices.get(newId);
   user.value = userRes.data;
   const teamId = user.value.team_id;
-
+  name.value = user.value.fName
+  await loadTeamGoals(teamId)
   // STEP 2: get ALL plan assignments for the team
   const paRes = await planAssignmentServices.getByTeam(teamId);
   const assignments = paRes.data;
+
 
   if (!assignments.length) {
     exercises.value = [];
@@ -58,23 +59,27 @@ watch(() => props.currentAthlete, async (newId) => {
   exercises.value = allDays.filter(d => d.day === todayName);
 
   console.log("exercises for today:", exercises.value);
+  
+});
+const currentProgress = computed(() => {
+  if (!exercises.value.length) return 0;
+
+  const completed = exercises.value.filter(e => e.status === "complete").length;
+  return Math.round((completed / exercises.value.length) * 100);
 });
 
 
-
-//console.log(user.value.picture);
-
-async function getGoals(){
-  try{
-    const response = await goalServices.getAll();
-    goals.value = response.data;
-    console.log("Goals: " + goals.value)
-  }
-  catch(error){
-    message.value = "Error: " + error.code + ":" + error.message;
-    console.log(error);
+  async function loadTeamGoals(id) {
+  try {
+    const response = await goalServices.get(id);
+    console.log("loadTeamGoals response:", response);
+    teamGoals.value = response.data; // check if response.data is actually an array
+  } catch (err) {
+    console.error("Error loading team goals:", err);
   }
 }
+
+//console.log(user.value.picture);
 
 async function getExercises(){
   try{
@@ -88,15 +93,7 @@ async function getExercises(){
   }
 }
 
-async function getUser(id){
-  try{
-    const response = await userServices.get(id);
-  }
-  catch(error){
-    message.value = "Error: " + error.code + ":" + error.message;
-    console.log(error);
-  }
-}
+
 function hideModal(){
   let modal = document.getElementById("athleteView")
   modal.style.opacity = "0%"
@@ -116,18 +113,23 @@ function hideModal(){
         <p class="pfp-table-header">{{ name }}</p>
          </div>
      <div class="left-header">
-      <p>Today's Workouts</p>
+      <p>{{ name }}'s Progress for today</p>
     </div>
-        <v-progress-circular :model-value="currentProgress" :rotate="90" :size="140" :width="10" class="home-pro"><span class="profile-words">75%</span> 
+        <v-progress-circular 
+        :model-value="currentProgress" 
+        :rotate="90" 
+        :size="140" 
+        :width="10" 
+        class="home-pro"><span class="profile-words">{{ currentProgress }}%</span> 
   </v-progress-circular>
     </div>
 <div class="flex-column-pfp">
      <div class="pfp-header">
-        <p class="pfp-table-header">Goals</p>
+        <p class="pfp-table-header">Team Goals</p>
          </div>
   <table class="pfp_table">
       <tbody class="pfp_table">
-          <tr v-for="item in goals" :key="item.goal_id" class="pfp_table">
+          <tr v-for="item in teamGoals" :key="item.id" class="pfp_table">
             <td>{{ item.name }}</td>
              <td>{{ item.status }}</td>
         </tr>
@@ -143,7 +145,7 @@ function hideModal(){
       <tbody class="pfp_table">
          <tr v-for="item in exercises" :key="item.id" class="pfp_table">
   <td>{{ item.exercise.name }}</td>
-  <td>{{ item.exercise.status }}</td>
+  <td>{{ item.status }}</td>
 </tr>
 
       </tbody>

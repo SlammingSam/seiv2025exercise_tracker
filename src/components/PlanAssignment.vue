@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watch } from "vue";
 import planAssignmentServices from "../services/planAssignmentServices.js";
 import exercisePlanServices from "../services/exercise_planServices.js";
-import exerciseDayServices from "../services/exercise_dayServices.js";
+import exercise_dayServices from "../services/exercise_dayServices.js";
 import planServices from "../services/planServices.js";
 import store from "../store/store.js";
 
@@ -22,6 +22,7 @@ const calendarData = ref([]);
 const loading = ref(true);
 
 onMounted(async () => {
+  console.log("PlanAssignment component mounted for team:", props.teamId);
   try {
     await loadAvailablePlans();
     await loadPlanAssignments();
@@ -144,7 +145,7 @@ async function buildCalendarData() {
   for (const assignment of planAssignments.value) {
     try {
       // Use the service's get method - it already handles the route structure
-      const response = await exerciseDayServices.get(assignment.exercise_plan_id);
+      const response = await exercise_dayServices.get(assignment.exercise_plan_id);
       const exerciseDays = response.data;
       
       console.log(`Exercise days for plan ${assignment.exercise_plan_id}:`, exerciseDays);
@@ -167,7 +168,7 @@ async function buildCalendarData() {
             name: ed.exercise.name,
             sets: ed.exercise.sets,
             reps: ed.exercise.reps,
-            status: ed.exercise.status,
+            status: ed.status, // Status is now on exercise_day, not exercise
             exercise_day_id: ed.id
           }));
 
@@ -238,6 +239,36 @@ async function removePlanAssignment(assignmentId) {
   }
 }
 
+async function toggleExerciseStatus(exerciseDayId, currentStatus) {
+  try {
+    console.log("Toggling status for exercise_day_id:", exerciseDayId, "Current status:", currentStatus);
+    
+    // Toggle between 'not started' and 'complete'
+    const newStatus = currentStatus === 'complete' ? 'not started' : 'complete';
+    
+    console.log("Sending update request with new status:", newStatus);
+    
+    const response = await exercise_dayServices.update(exerciseDayId, {
+      status: newStatus
+    });
+    
+    console.log("Update response:", response);
+    console.log(`Successfully updated exercise_day ${exerciseDayId} status to ${newStatus}`);
+    
+    // Rebuild calendar to show updated status
+    await buildCalendarData();
+    
+    message.value = `Status updated to ${newStatus}`;
+    setTimeout(() => {
+      message.value = "";
+    }, 2000);
+  } catch (error) {
+    console.error("Error updating status:", error);
+    console.error("Error details:", error.response?.data);
+    message.value = "Error updating status: " + error.message;
+  }
+}
+
 function getPlanName(exercisePlanId) {
   const plan = availablePlans.value.find(p => p.exercise_plan_id == exercisePlanId);
   return plan ? plan.plan_name : `Plan #${exercisePlanId}`;
@@ -300,10 +331,16 @@ function getPlanName(exercisePlanId) {
                 {{ formatDate(day.date) }}
               </div>
               <div class="exercises-list">
-                <div v-for="exercise in day.exercises" :key="exercise.id" class="exercise-item">
+                <div v-for="exercise in day.exercises" :key="exercise.exercise_day_id" class="exercise-item">
                   <strong>{{ exercise.name }}</strong>
                   <span>{{ exercise.sets }} sets × {{ exercise.reps }} reps</span>
-                  <span class="status" :class="exercise.status.replace(/ /g, '-')">{{ exercise.status }}</span>
+                  <span 
+                    class="status clickable" 
+                    :class="exercise.status.replace(/ /g, '-')"
+                    @click="toggleExerciseStatus(exercise.exercise_day_id, exercise.status)"
+                  >
+                    {{ exercise.status }}
+                  </span>
                 </div>
               </div>
             </div>
@@ -432,6 +469,22 @@ function getPlanName(exercisePlanId) {
   margin-top: 4px;
   display: inline-block;
   width: fit-content;
+}
+
+.status.clickable {
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.status.clickable:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.status.clickable:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 .status.complete {
